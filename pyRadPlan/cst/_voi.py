@@ -34,6 +34,8 @@ class VOI(PyRadPlanBaseModel, ABC):
         The alpha_x value. Defaults to 0.1.
     beta_x : float, optional
         The beta_x value. Defaults to 0.05.
+    overlap_priority : int
+        The overlap priority of the VOI. Lowest number is overlapping higher numbers.
     """
 
     name: str
@@ -41,6 +43,7 @@ class VOI(PyRadPlanBaseModel, ABC):
     mask: sitk.Image
     alpha_x: float = Field(default=0.1)
     beta_x: float = Field(default=0.05)
+    overlap_priority: int = Field(alias="Priority")
 
     voi_type: Annotated[str, StringConstraints(strip_whitespace=True, to_upper=True)]
 
@@ -384,6 +387,7 @@ class OAR(VOI):
     """
 
     voi_type: str = "OAR"
+    overlap_priority: int = Field(default=5, alias="Priority")
 
     @field_validator("voi_type", mode="after")
     @classmethod
@@ -427,6 +431,7 @@ class Target(VOI):
     """
 
     voi_type: str = "TARGET"
+    overlap_priority: int = Field(default=0, alias="Priority")
 
     @field_validator("voi_type", mode="after")
     @classmethod
@@ -470,6 +475,7 @@ class HelperVOI(VOI):
     """
 
     voi_type: str = "HELPER"
+    overlap_priority: int = Field(default=10, alias="Priority")
 
     @field_validator("voi_type", mode="after")
     @classmethod
@@ -513,6 +519,7 @@ class ExternalVOI(VOI):
     """
 
     voi_type: str = "EXTERNAL"
+    overlap_priority: int = Field(default=15, alias="Priority")
 
     @field_validator("voi_type", mode="after")
     @classmethod

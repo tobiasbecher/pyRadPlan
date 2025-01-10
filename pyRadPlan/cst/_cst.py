@@ -160,6 +160,44 @@ class StructureSet(PyRadPlanBaseModel):
             new_model["vois"] = [voi.resample_on_new_ct(new_ct) for voi in self.vois]
         return self.model_validate(new_model)
 
+    def apply_overlap_priorities(self) -> Self:
+        """
+        Apply overlaps to the StructureSet.
+
+        Returns
+        -------
+        StructureSet
+            The StructureSet with overlaps applied.
+        """
+
+        # gather overlaps
+        overlaps = [v.overlap_priority for v in self.vois]
+
+        # sort by overlap priority
+        ix_sorted = np.argsort(overlaps)
+
+        overlap_mask = self.vois[ix_sorted[0]].mask
+        new_vois = [None] * len(self.vois)
+        new_vois[ix_sorted[0]] = self.vois[ix_sorted[0]].copy()
+
+        for i, ix_voi in enumerate(ix_sorted[1:], 1):
+            curr_voi = self.vois[ix_voi].copy()
+            curr_mask = curr_voi.mask
+
+            # if the overlap prirority is higher than we need to apply overlap
+            if curr_voi.overlap_priority > new_vois[i - 1].overlap_priority:
+                curr_mask = sitk.MaskNegated(curr_mask, overlap_mask)
+
+            curr_voi.mask = curr_mask
+
+            overlap_mask = sitk.Or(overlap_mask, curr_mask)
+
+            # sitk.Show(overlap_mask, debugOn = True)
+
+            new_vois[ix_voi] = curr_voi
+
+        return self.model_copy(deep=True, update={"vois": new_vois})
+
 
 def create_cst(
     cst_data: Union[dict[str, Any], StructureSet, None] = None,
