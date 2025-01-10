@@ -1,6 +1,3 @@
-![tests](https://git.dkfz.de/e040/e0404/pyRadPlan/badges/main/pipeline.svg)
-![coverage](https://git.dkfz.de/e040/e0404/pyRadPlan/badges/main/coverage.svg?min_medium=50&min_acceptable=65&min_good=80)
-
 # pyRadPlan
 pyRadPlan is an open-source radiotherapy treatment planning toolkit designed for interoperability with [matRad](http://www.matRad.org).
 
