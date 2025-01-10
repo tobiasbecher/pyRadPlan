@@ -206,7 +206,7 @@ class VOI(PyRadPlanBaseModel, ABC):
         else:
             raise ValueError(f"Unknown order: {order}")
 
-    def scenario_indices(self, order_type="numpy") -> List[np.ndarray]:
+    def scenario_indices(self, order_type="numpy") -> np.ndarray | list[np.ndarray]:
         """
         Returns the flattened indices of the individual scenarios.
 
@@ -277,7 +277,7 @@ class VOI(PyRadPlanBaseModel, ABC):
 
     @computed_field
     @property
-    def scenario_ct_data(self) -> list[np.ndarray]:
+    def scenario_ct_data(self) -> Union[list[np.ndarray], np.ndarray]:
         """
         Returns a list of CT data for the individual scenarios.
 

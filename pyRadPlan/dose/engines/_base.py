@@ -2,6 +2,7 @@
 from importlib import resources
 import logging
 import warnings
+import time
 from typing import ClassVar, Union
 from abc import ABC, abstractmethod
 
@@ -244,6 +245,7 @@ class DoseEngineBase(ABC):
         """Set overlap priorities for the structures in the CST."""
 
         logger.info("Adjusting structures for overlap... ")
+        t_start = time.time()
 
         num_of_ct_scenarios = np.unique([x.num_of_scenarios for x in cst.vois])
 
@@ -251,16 +253,13 @@ class DoseEngineBase(ABC):
         if len(num_of_ct_scenarios) > 1:
             raise ValueError("Inconsistent number of scenarios in cst struct.")
 
-        # TODO: This is not yet implemented
-        # for i in range(num_of_ct_scenarios[0]):
-        #     # consider VOI priorities
-        #     for j in range(len(cst.vois)):
-        #         idx = cst.vois[j].indices[i]
+        new_cst = cst.apply_overlap_priorities()
 
-        #         for k in range(len(cst.vois)):
-        #             pass
+        t_end = time.time()
 
-        return cst
+        logger.info("Done in %.2f seconds.", t_end - t_start)
+
+        return new_cst
 
     def select_voxels_from_cst(self, cst, dose_grid, selection_mode):
         """
@@ -365,9 +364,13 @@ class DoseEngineBase(ABC):
 
         logger.info("Resampling structure set... ")
 
+        t_start = time.time()
+
         cst.resample_on_new_ct(new_ct)
 
-        logger.info("Done!")
+        t_end = time.time()
+
+        logger.info("Done in  %.2f seconds.", t_end - t_start)
         return cst
 
     # private methods

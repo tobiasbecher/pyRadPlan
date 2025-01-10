@@ -163,7 +163,7 @@ class Beam(PyRadPlanBaseModel):
     @computed_field
     @property
     def total_number_of_bixels(self) -> int:
-        return sum(self.num_of_bixels_per_ray)
+        return int(sum(self.num_of_bixels_per_ray))
 
     # serialization
     @field_serializer("rays")

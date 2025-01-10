@@ -185,7 +185,7 @@ class StructureSet(PyRadPlanBaseModel):
             curr_mask = curr_voi.mask
 
             # if the overlap prirority is higher than we need to apply overlap
-            if curr_voi.overlap_priority > new_vois[i - 1].overlap_priority:
+            if curr_voi.overlap_priority > new_vois[ix_sorted[i - 1]].overlap_priority:
                 curr_mask = sitk.MaskNegated(curr_mask, overlap_mask)
 
             curr_voi.mask = curr_mask
