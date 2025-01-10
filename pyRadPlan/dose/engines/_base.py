@@ -75,12 +75,11 @@ class DoseEngineBase(ABC):
         self.mult_scen = "nomScen"
         self.select_voxels_in_scenarios = None
         self.dose_grid = None
+        self.voxel_sub_ix = None  # selection of where to calculate / store dose, empty by default
 
         if pln is not None:
             self.assign_properties_from_pln(pln, True)
 
-        self.dose_grid = None
-        self.voxel_sub_ix = None  # selection of where to calculate / store dose, empty by default
         self._dose_grid = None
         self._ct_grid = None
 
@@ -136,9 +135,7 @@ class DoseEngineBase(ABC):
 
         # Overwrite default properties within the engine
         # with the ones given in the prop_dose_calc dict
-        if hasattr(pln, "prop_dose_calc") and isinstance(
-            pln.prop_dose_calc, dict
-        ):  # TODO: This is not tested yet
+        if pln.prop_dose_calc is not None:
             prop_dict = pln.prop_dose_calc
             if (
                 "engine" in prop_dict
