@@ -1,0 +1,289 @@
+"""Interface for voxel geometry ray tracers."""
+from abc import ABC, abstractmethod
+from typing import Union, Any
+import logging
+import time
+from pyRadPlan.core.np2sitk import linear_indices_to_image_coordinates
+import numpy as np
+import SimpleITK as sitk
+
+from pyRadPlan.geometry import lps
+from pyRadPlan.stf._beam import Beam
+
+from ._perf import fast_spatial_circle_lookup
+
+logger = logging.getLogger(__name__)
+
+
+class RayTracerBase(ABC):
+    """Base class for all ray tracers."""
+
+    lateral_cut_off: float
+    precision: np.dtype
+
+    @property
+    def cubes(self):
+        """CT or other abritrary cubes of similar resolution to be traced."""
+        return self._cubes
+
+    @cubes.setter
+    def cubes(self, cubes: Union[sitk.Image, list[sitk.Image]]):
+        if not isinstance(cubes, list):
+            cubes = [cubes]
+        self._cubes = cubes
+        self._initialize_geometry()
+
+    def __init__(self, cubes: Union[sitk.Image, list[sitk.Image]]):
+        self.lateral_cut_off = 50.0
+        self.precision = np.float32
+        self.cubes = cubes
+
+    def trace_rays(
+        self,
+        isocenter: Union[list, np.ndarray],
+        source_points: Union[list, np.ndarray],
+        target_points: Union[list, np.ndarray],
+    ) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], np.ndarray, np.ndarray]:
+        """
+        Trace multiple rays from source points to target points through the
+        cubes.
+
+        Parameters
+        ----------
+        isocenter : Union[list, np.ndarray]
+            Isocenter coordinates (1x3) array or list
+        source_points : Union[list, np.ndarray]
+            Source points coordinates. (nx3) array or list
+        target_points : Union[list, np.ndarray]
+            Target points coordinates. (nx3) array or list
+
+        Returns
+        -------
+        alphas : ndarray
+            Array of alpha values for each ray
+        lengths : ndarray
+            Array of lengths for each ray
+        rho : list[ndarray]
+            Array of rho values for each ray and each cube
+        d12 : ndarray
+            Array of full length of each ray
+        ix : ndarray
+            Linear indices (in numpy ordering) of the voxels intersected by each ray
+
+        Notes
+        -----
+        The default implementation loops over the trace_ray function. The separte implementation is
+        here to enable more performant implementations for specific ray tracers, e.g. through
+        vectorization.
+        """
+
+        # Assuming size function equivalent is numpy's shape attribute.
+        num_rays = target_points.shape[0]
+        num_sources = source_points.shape[0]
+
+        if num_sources != num_rays and num_sources != 1:
+            # MatRad_Config.instance() and dispError equivalent in Python needs handling.
+            raise (
+                f"Number of source points ({num_sources}) needs to be one "
+                f"or equal to number of target points ({num_rays})!"
+            )
+        elif num_sources == 1:
+            source_points = np.tile(source_points, (num_rays, 1))
+            num_sources = num_rays
+
+        alphas, lengths, rho, d12, ix = [], [], [], [], []
+        for r in range(num_rays):
+            alpha, l_val, rho_val, d12_val, ix_val = self.trace_ray(
+                isocenter, source_points[r, :], target_points[r, :]
+            )
+            alphas.append(alpha)
+            lengths.append(l_val)
+            rho.append(rho_val)
+            d12.append(d12_val)
+            ix.append(ix_val)
+
+        # Padding with NaN values
+        maxnumval = max(len(x) for x in ix)
+
+        def nanpad(x):
+            return np.pad(x, (0, maxnumval - len(x)), constant_values=np.nan)
+
+        alphas = [nanpad(alpha) for alpha in alphas]
+        lengths = [nanpad(l_val) for l_val in lengths]
+        ix = [nanpad(ix_val) for ix_val in ix]
+
+        for c in range(len(self.cubes)):
+            rho[c] = [nanpad(rho_val) for rho_val in rho[c]]
+
+        return np.array(alphas), np.array(lengths), rho, np.array(d12), np.array(ix)
+
+    @abstractmethod
+    def trace_ray(
+        self,
+        isocenter: Union[list, np.ndarray],
+        source_points: Union[list, np.ndarray],
+        target_points: Union[list, np.ndarray],
+    ) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], np.ndarray, np.ndarray]:
+        """
+        Trace a single ray from source point to target point through the
+        cubes.
+        Abstract Method to be implemented in subclasses.
+        """
+
+    def trace_cubes(self, beam: Union[dict[str, Any], Beam]) -> list[sitk.Image]:
+        """
+        Sets up ray matrix to trace through all cubes and generate
+        corresponding cubes of the
+        traced depths the same size of the supplied images.
+        """
+
+        if not isinstance(beam, Beam) and isinstance(beam, dict):
+            beam = Beam.model_validate(beam)
+        else:
+            raise ValueError("Beam invalid. Must be dictionary or Beam object!")
+
+        logger.debug("Initializing geometry...")
+        t_trace_start = time.perf_counter()
+        self._initialize_geometry()
+        t_trace_end = time.perf_counter()
+        logger.debug("took %s seconds!", t_trace_end - t_trace_start)
+
+        # central_ray_vector = np.array(iso_center) - np.array(source_point).reshape
+        logger.debug("Setting up Ray matrix...")
+        t_trace_start = time.perf_counter()
+        source_point = beam.source_point
+        # source_point_bev = beam["source_point_bev"]
+        iso_center = beam.iso_center
+
+        resolution = np.array(self.cubes[0].GetSpacing(), self.precision)
+        ray_spacing = 0.5 * np.min(resolution) / np.sqrt(2.0, dtype=self.precision)
+
+        # num_candidate_rays = 2 * np.ceil(500.0 / ray_spacing).astype(np.int64) + 1
+
+        spacing_range = np.arange(
+            np.floor(-500.0 / ray_spacing), np.ceil(500.0 / ray_spacing) + 1, dtype=self.precision
+        )
+        candidate_ray_coords_x, candidate_ray_coords_z = np.meshgrid(spacing_range, spacing_range)
+
+        # If we have reference positions, we use them to restrict the raytracing region
+        reference_positions_bev = np.array([ray.ray_pos for ray in beam.rays])
+
+        # use a precompiled numba function to speed up the spatial lookup
+        candidate_ray_mx = fast_spatial_circle_lookup(
+            candidate_ray_coords_x,
+            candidate_ray_coords_z,
+            reference_positions_bev,
+            self.lateral_cut_off,
+        )
+
+        # candidate_ray_mx = np.full(
+        #   (num_candidate_rays, num_candidate_rays), False, dtype=np.bool)
+        # )
+        # for i in range(reference_positions_bev.shape[0]):
+        #     notix = (candidate_ray_coords_x - reference_positions_bev[i, 0]) ** 2 + (
+        #         candidate_ray_coords_z - reference_positions_bev[i, 2]
+        #     ) ** 2 <= self.lateral_cut_off**2
+        #     candidate_ray_mx[notix] = True
+
+        ray_matrix_bev = np.hstack(
+            (
+                candidate_ray_coords_x[candidate_ray_mx].reshape(-1, 1),
+                np.zeros(np.sum(candidate_ray_mx), dtype=self.precision).reshape(-1, 1),
+                candidate_ray_coords_z[candidate_ray_mx].reshape(-1, 1),
+            )
+        )
+
+        rot_mat = lps.get_beam_rotation_matrix(beam.gantry_angle, beam.couch_angle)
+
+        ray_matrix_lps = ray_matrix_bev @ rot_mat.T
+
+        target_points = 2 * (ray_matrix_lps - source_point) + source_point
+
+        t_trace_end = time.perf_counter()
+        logger.debug("took %s seconds!", t_trace_end - t_trace_start)
+
+        logger.debug("Tracing %d rays through the cubes", np.count_nonzero(candidate_ray_mx))
+
+        t_trace_start = time.perf_counter()
+        _, lengths, rho, d12, ix = self.trace_rays(
+            iso_center.reshape(1, 3), source_point.reshape(1, 3), target_points
+        )
+        t_trace_end = time.perf_counter()
+
+        logger.debug("Cube ray tracing took %s seconds...", t_trace_end - t_trace_start)
+
+        # Now we compute which rays will respectively give the voxel value for radiological depth
+        valid_ix = np.isfinite(ix)
+        # ix = ix[valid_ix]
+        # lengths = lengths[valid_ix]
+        # rho = [rho_val[valid_ix] for rho_val in rho]
+        scale_factor = np.zeros_like(ix, dtype=self.precision)
+
+        # Obtain Voxel coordinates
+        t_index_transformation = time.perf_counter()
+        coords = np.zeros((self.cubes[0].GetNumberOfPixels(), 3), dtype=self.precision)
+        cube_ix = np.arange(coords.shape[0], dtype=np.int64)
+
+        # TODO: [] needed for changing ordering back and forth.
+        # might also write a different function for this
+        coords = linear_indices_to_image_coordinates(cube_ix, self.cubes[0], index_type="sitk")
+
+        t_index_transformation_end = time.perf_counter()
+        logger.debug(
+            "Index transformation took %s seconds...",
+            t_index_transformation_end - t_index_transformation,
+        )
+
+        coords = coords - iso_center
+        coords = coords @ rot_mat
+
+        scale_factor[valid_ix] = -beam.sad / (coords[ix[valid_ix], 1] - beam.sad)
+
+        x_dist = np.ones_like(ix, dtype=self.precision) * np.nan
+        z_dist = np.ones_like(ix, dtype=self.precision) * np.nan
+
+        x_dist[valid_ix] = coords[ix[valid_ix], 0] * scale_factor[valid_ix]
+        x_dist = x_dist - ray_matrix_bev[:, 0, np.newaxis]
+
+        z_dist[valid_ix] = coords[ix[valid_ix], 2] * scale_factor[valid_ix]
+        z_dist = z_dist - ray_matrix_bev[:, 2, np.newaxis]
+
+        ray_selection = ray_spacing  # / 2.0
+
+        ix_remember_from_tracing = x_dist > -ray_selection
+        np.logical_and(
+            ix_remember_from_tracing, x_dist <= ray_selection, out=ix_remember_from_tracing
+        )
+        np.logical_and(
+            ix_remember_from_tracing, z_dist > -ray_selection, out=ix_remember_from_tracing
+        )
+        np.logical_and(
+            ix_remember_from_tracing, z_dist <= ray_selection, out=ix_remember_from_tracing
+        )
+
+        logger.debug(
+            "Found %d ray indices for radiological depth calculation",
+            np.count_nonzero(ix_remember_from_tracing),
+        )
+        rad_depth_cubes = [
+            np.nan * np.ones_like(sitk.GetArrayViewFromImage(cube), dtype=self.precision)
+            for cube in self.cubes
+        ]
+
+        for i, cube in enumerate(rad_depth_cubes):
+            rel_eq_distances = lengths * rho[i]
+            rel_depths = np.cumsum(rel_eq_distances, axis=1) - rel_eq_distances / 2.0
+            ix_assign = np.unravel_index(ix[ix_remember_from_tracing], cube.shape, order="F")
+            cube[ix_assign] = rel_depths[ix_remember_from_tracing]
+            rad_depth_cubes[i] = sitk.GetImageFromArray(cube)
+            rad_depth_cubes[i].CopyInformation(self.cubes[i])
+
+        return rad_depth_cubes
+        # scale_factor[valid_ix] = lengths[valid_ix] / d12[valid_ix]
+
+    @abstractmethod
+    def _initialize_geometry(self):
+        """
+        Initialize geometry of the ray tracer. Will be automatically called
+        when the cubes are set.
+        """

@@ -1,0 +1,80 @@
+#image: python:3.10-alpine3.19
+image: python:3.11.9-slim-bookworm
+
+variables:  # Change pip's cache directory to be inside the project directory since we can only cache local items.
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip/"
+
+stages:
+    - build
+    - test
+
+# before_script:
+    # - apk add --no-cache alpine-sdk g++ hdf5-dev llvm14-dev linux-headers
+    # - apt-get update
+
+build:
+    stage: build
+    script:
+        - python3 -m venv .venv
+        - source .venv/bin/activate
+        # - LLVM_CONFIG=/usr/bin/llvm14-config pip install llvmlite
+        - pip install -e .
+    cache:
+        key: "cache-$CI_COMMIT_REF_SLUG"
+        paths:
+            - .venv/
+            - .cache/pip/
+        policy: pull-push
+
+# TODO: as soon as the COS cache on gitlab works, separate into three jobs running in parallel to the tests
+lint:
+    stage: test
+    cache:
+        key: "cache-$CI_COMMIT_REF_SLUG"
+        paths:
+            - .venv/
+            - .cache/pip/
+        policy: pull
+    script:
+        - source .venv/bin/activate
+        - pip install flake8-gl-codeclimate Flake8-pyproject black pylint
+        - return_code=0
+        - flake8 --format gl-codeclimate --output-file gl-code-quality-report.json --toml-config ./pyproject.toml || return_code=$(($return_code + $?))
+        - black --check . 2> >(tee black-report.txt >&2) || return_code=$(($return_code + $?))
+        - pylint --output-format=json:pylint.txt,colorized pyRadPlan pyRadPlan.py || return_code=$(($return_code + $?))
+        - exit $return_code
+    artifacts:
+        reports:
+            codequality: gl-code-quality-report.json
+        paths:
+            - black-report.txt
+            - pylint.txt
+        when: always
+
+    allow_failure: true
+
+
+tests:
+    stage: test
+    cache:
+        key: "cache-$CI_COMMIT_REF_SLUG"
+        paths:
+            - .venv/
+            - .cache/pip/
+        policy: pull
+    script:
+        - source .venv/bin/activate
+        - pip install coverage pytest pytest-cov
+        - pytest test --junitxml=.testreports/report.xml --cov=pyRadPlan --cov-report term --cov-report xml:.testreports/coverage.xml --cov-report html:.testreports/html
+    artifacts:
+        when: always
+        reports:
+          coverage_report:
+            coverage_format: cobertura
+            path: .testreports/coverage.xml
+          junit: .testreports/report.xml
+        paths:
+            - .testreports/html
+            - .testreports/coverage.xml
+            - .testreports/report.xml
+    coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
