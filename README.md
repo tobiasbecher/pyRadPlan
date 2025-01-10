@@ -2,9 +2,17 @@
 ![coverage](https://git.dkfz.de/e040/e0404/pyRadPlan/badges/main/coverage.svg?min_medium=50&min_acceptable=65&min_good=80)
 
 # pyRadPlan
-Python interface / clone of matRad
+pyRadPlan is an open-source radiotherapy treatment planning toolkit designed for interoperability with [matRad](http://www.matRad.org).
 
-The matRad folder contains the version which is compatible with the python interface being developed.
+Development is lead by the [Radiotherapy Optimization group](https://www.dkfz.de/radopt) at the [German Cancer Research Center (DKFZ)](https://www.dkfz.de)
+
+## Concept and Goals
+pyRadPlan uses a similar datastructure and workflow concept as in matRad, while trying to ensure that the corresponding datastructures can be easily imported and exported from/to matRad. This facilitates the application of either algortihms from matRad or native pyRadPlan at any staget of the treatment planning workflow.
+
+To enforce valid datastructures, we perform validation and serialization with pydantic.
+Datastructures and algorithms rely mostly on SimpleITK, numpy, and scipy for internal data representation and processing.
+
+If you are interested in helping with development, get in touch.
 
 ## Note for Developers
 pyRadPlan development uses unit-testing and code formatting via pre-commit hooks to ensure clean code.

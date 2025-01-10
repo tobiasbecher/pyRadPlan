@@ -1,11 +1,13 @@
 # Rules for Contribution
 
+Everybody is welcome to contribute, still we recommend to get in touch such that we do not double the work.
+
 ## Branch Name Rules
 In the future, branch name rules will be enforced.
 
 There's two predefined branch names for main development
-- **main:**       Protected main branch. ~~Only latest release version + hotfixes~~ (more relaxed development usage until the first package version)
-- ~~**develop:**  Development branch. Used to prepare patches & minor versions.~~ (will be used in the future)
+- **main:**         Protected main branch. Only latest release version + hotfixes
+- **develop:**      Development branch. Used to prepare patches & minor versions.
 
 For individual development work, we will use branch groups. The following groups are allowed
 - **bugfix/*:**      Fixing a bug
