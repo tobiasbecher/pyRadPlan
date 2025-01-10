@@ -22,19 +22,19 @@ name = "pyRadPlan"
 version = "0.0.1"
 # dynamic = ["version"] # Will be used in the future
 authors = [
-  { name="Goran Stanic"},
-  { name="Tim Ortkamp"},
-  { name="Tobias Becher"},
-  { name="Lina Bucher"},
-  { name="Florian Leininger"},
-  { name="Antonios Kontopoulos"},
+  { name="Goran Stanic", email = "goran.stanic@dkfz-heidelberg.de" },
+  { name="Tim Ortkamp", email = "tim.ortkamp@kit.edu" },
+  { name="Tobias Becher", email = "t.becher@dkfz-heidelberg.de" },
+  { name="Lina Bucher", email = "lina.bucher@dkfz-heidelberg.de" },
+  { name="Florian Leininger", email = "florian.leininger@dkfz-heidelberg.de" },
+  { name="Antonios Kontopoulos", email = "antonios.kontopoulos@dkfz-heidelberg.de" },
   { name="Niklas Wahl", email = "n.wahl@dkfz-heidelberg.de"}
 ]
 
 maintainers = [
-  { name="Goran Stanic"},
-  { name="Tim Ortkamp"},
-  { name="Tobias Becher"},
+  { name="Goran Stanic", email = "goran.stanic@dkfz-heidelberg.de" },
+  { name="Tim Ortkamp", email = "tim.ortkamp@kit.edu" },
+  { name="Tobias Becher", email = "t.becher@dkfz-heidelberg.de" },
   { name="Niklas Wahl", email = "n.wahl@dkfz-heidelberg.de"}
 ]
 
