@@ -19,7 +19,7 @@ good-names-rgxs = "[_a-z][_a-z0-9]?$"
 
 [project]
 name = "pyRadPlan"
-version = "0.0.1"
+version = "0.0.2"
 # dynamic = ["version"] # Will be used in the future
 authors = [
   { name="Niklas Wahl", email = "n.wahl@dkfz-heidelberg.de"},
