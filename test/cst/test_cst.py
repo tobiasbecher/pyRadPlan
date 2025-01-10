@@ -233,7 +233,7 @@ def test_apply_overlap_priorities(generic_ct, generic_vois):
 
     # Check VOI 4 overlapped by VOI 3, VOI 2 and VOI 1
     assert (voi4_mask_overlapped[ol_mask] == 0).all()
-    assert (voi4_mask_overlapped[np.logical_and(voi3_mask > 0, ol_mask == 0)] == 1).all()
+    assert (voi4_mask_overlapped[np.logical_and(voi4_mask > 0, ol_mask == 0)] == 1).all()
 
 
 def test_apply_overlap_priorities_same_priority(generic_ct, generic_vois):
