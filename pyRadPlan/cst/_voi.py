@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Any, Dict, List, Union
+from typing import Any, Union
 from typing_extensions import Annotated, Self
 import warnings
 from pydantic import (
@@ -553,13 +553,13 @@ class ExternalVOI(VOI):
 __VOITYPES__ = {"OAR": OAR, "TARGET": Target, "HELPER": HelperVOI, "EXTERNAL": ExternalVOI}
 
 
-def create_voi(data: Union[Dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
+def create_voi(data: Union[dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
     """
     Factory function to create a VOI object.
 
     Parameters
     ----------
-    data : Union[Dict[str, Any], VOI, None]
+    data : Union[dict[str, Any], VOI, None]
         Dictionary containing the data to create the VOI object.
     **kwargs
         Arbitrary keyword arguments.
@@ -592,14 +592,14 @@ def create_voi(data: Union[Dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
         raise ValueError(f"Invalid VOI type: {voi_type}")
 
 
-def validate_voi(data: Union[Dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
+def validate_voi(data: Union[dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
     """
     Validates and creates a VOI object.
     Synonym to create_voi but should be used in validation context.
 
     Parameters
     ----------
-    voi : Union[Dict[str, Any], VOI, None], optional
+    voi : Union[dict[str, Any], VOI, None], optional
         Dictionary containing the data to create the VOI object, by default None.
     **kwargs
         Arbitrary keyword arguments.
