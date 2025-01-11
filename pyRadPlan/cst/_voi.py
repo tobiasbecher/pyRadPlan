@@ -16,6 +16,9 @@ import SimpleITK as sitk
 from pyRadPlan.core import PyRadPlanBaseModel, np2sitk
 from pyRadPlan.ct import CT
 
+# Default overlap priorities
+DEFAULT_OVERLAPS = {"TARGET": 0, "OAR": 5, "HELPER": 10, "EXTERNAL": 15}
+
 
 class VOI(PyRadPlanBaseModel, ABC):
     """
@@ -43,9 +46,12 @@ class VOI(PyRadPlanBaseModel, ABC):
     mask: sitk.Image
     alpha_x: float = Field(default=0.1)
     beta_x: float = Field(default=0.05)
-    overlap_priority: int = Field(alias="Priority")
 
     voi_type: Annotated[str, StringConstraints(strip_whitespace=True, to_upper=True)]
+
+    overlap_priority: int = Field(
+        alias="Priority", default_factory=lambda data: DEFAULT_OVERLAPS[data["voi_type"]]
+    )
 
     @field_validator("mask", mode="before")
     @classmethod
@@ -387,7 +393,6 @@ class OAR(VOI):
     """
 
     voi_type: str = "OAR"
-    overlap_priority: int = Field(default=5, alias="Priority")
 
     @field_validator("voi_type", mode="after")
     @classmethod
@@ -431,7 +436,6 @@ class Target(VOI):
     """
 
     voi_type: str = "TARGET"
-    overlap_priority: int = Field(default=0, alias="Priority")
 
     @field_validator("voi_type", mode="after")
     @classmethod
@@ -475,7 +479,6 @@ class HelperVOI(VOI):
     """
 
     voi_type: str = "HELPER"
-    overlap_priority: int = Field(default=10, alias="Priority")
 
     @field_validator("voi_type", mode="after")
     @classmethod
@@ -519,7 +522,6 @@ class ExternalVOI(VOI):
     """
 
     voi_type: str = "EXTERNAL"
-    overlap_priority: int = Field(default=15, alias="Priority")
 
     @field_validator("voi_type", mode="after")
     @classmethod

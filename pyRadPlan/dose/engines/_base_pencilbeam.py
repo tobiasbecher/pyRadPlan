@@ -99,7 +99,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
     cube_wed: sitk.Image
     hlut: np.ndarray
 
-    def __init__(self, pln):
+    def __init__(self, pln=None):
         self.keep_rad_depth_cubes = False
         self.geometric_lateral_cutoff: float = 50
         self.dosimetric_lateral_cutoff: float = 0.9950

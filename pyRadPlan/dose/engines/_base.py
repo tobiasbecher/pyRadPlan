@@ -15,7 +15,7 @@ from pyRadPlan.core.resample import resample_numpy_array
 from pyRadPlan.ct import CT, resample_ct
 from pyRadPlan.cst import StructureSet
 from pyRadPlan.stf import SteeringInformation
-from pyRadPlan.plan import Plan
+from pyRadPlan.plan import Plan, validate_pln
 from pyRadPlan.dij import Dij, validate_dij
 from pyRadPlan.scenarios import create_scenario_model, ScenarioModel
 from pyRadPlan.machines import load_machine_from_mat, validate_machine
@@ -68,7 +68,7 @@ class DoseEngineBase(ABC):
     select_voxels_in_scenarios: bool
 
     # Public properties
-    def __init__(self, pln: Plan):
+    def __init__(self, pln: Plan | dict = None):
 
         # Assign default parameters from Matrad_Config or manually
         self.dose_grid = None
@@ -121,6 +121,8 @@ class DoseEngineBase(ABC):
         warn_when_property_changed : bool
             Whether to warn when properties are changed.
         """
+
+        pln = validate_pln(pln)
 
         # Set Scenario Model
         if hasattr(pln, "mult_scen"):
