@@ -5,12 +5,12 @@
 from numba import njit
 from numpy import clip, zeros
 
-from ._objectiveClass import ObjectiveClass
+from ._objectiveClass import Objective
 
 # %% Class definition
 
 
-class SquaredOverdosing(ObjectiveClass):
+class SquaredOverdosing(Objective):
 
     name = "Squared Overdosing"
     parameter_names = ["d^{max}"]

@@ -5,12 +5,12 @@
 from numba import njit
 from numpy import zeros
 
-from ._objectiveClass import ObjectiveClass
+from ._objectiveClass import Objective
 
 # %% Class definition
 
 
-class SquaredDeviation(ObjectiveClass):
+class SquaredDeviation(Objective):
 
     name = "Squared Deviation"
     parameter_names = ["d^{ref}"]

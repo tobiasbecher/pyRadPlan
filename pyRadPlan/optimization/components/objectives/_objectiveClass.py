@@ -6,12 +6,12 @@ from collections.abc import Iterable
 #%% Class definition
 
 
-class ObjectiveClass(metaclass=abc.ABCMeta):
+class Objective(metaclass=abc.ABCMeta):
     def flatten(iterable):
 
         for it in iterable:
             if isinstance(it, Iterable) and not isinstance(it, (str, bytes)):
-                yield from ObjectiveClass.flatten(it)
+                yield from Objective.flatten(it)
             else:
                 yield it
 
@@ -70,14 +70,14 @@ class ObjectiveClass(metaclass=abc.ABCMeta):
         if not isinstance(parameter_names, (tuple, list)):
             raise TypeError('Variable "parameter_names" must be a tuple or a list')
         else:
-            if not all([isinstance(el, str) for el in ObjectiveClass.flatten(parameter_names)]):
+            if not all([isinstance(el, str) for el in Objective.flatten(parameter_names)]):
                 raise TypeError('Elements in "parameter_names" must be string')
 
         # Check objective parameter_types
         if not isinstance(parameter_types, (tuple, list)):
             raise TypeError('Variable "parameter_types" must be a tuple or a list')
         else:
-            if not all([isinstance(el, str) for el in ObjectiveClass.flatten(parameter_types)]):
+            if not all([isinstance(el, str) for el in Objective.flatten(parameter_types)]):
                 raise TypeError('Elements in "parameter_names" must be string')
 
         # Check objective parameters
@@ -88,7 +88,7 @@ class ObjectiveClass(metaclass=abc.ABCMeta):
                 'Variable "parameters" must either be a tuple, a list or a single numeric value'
             )
         elif (isinstance(parameters, (tuple, list))) and (
-            not all([isinstance(el, (int, float)) for el in ObjectiveClass.flatten(parameters)])
+            not all([isinstance(el, (int, float)) for el in Objective.flatten(parameters)])
         ):
             raise TypeError('Elements in "parameters" must be numeric')
 

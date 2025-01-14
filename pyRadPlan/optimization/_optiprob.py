@@ -23,6 +23,7 @@ class OptimizationProblem(ABC):
 
     # Properties
     optimizer: Union[str, dict]
+    apply_overlap: bool
 
     def __init__(self, pln: Union[Plan, dict] = None):
 
@@ -37,6 +38,8 @@ class OptimizationProblem(ABC):
 
         if self.optimizer is None:
             self.optimizer = "scipy"
+
+        self.apply_overlap = True
 
     def solve(
         self,
@@ -88,8 +91,20 @@ class OptimizationProblem(ABC):
     def _initialize(self):
         """Initialize the optimization problem."""
 
+        # resampling to dose-grid
         self._ct = self._ct.resample_to_grid(self._dij.dose_grid)
-        self._cst = self._cst.apply_overlap_priorities().resample_on_new_ct(self._ct)
+
+        # apply overlap priorities
+        if self.apply_overlap:
+            self._cst = self._cst.apply_overlap_priorities().resample_on_new_ct(self._ct)
+        else:
+            self._cst = self._cst.resample_on_new_ct(self._ct)
+
+        # sanitize objectives and constraints
+
+        # set solver options
+
+        # initial point
 
     def _optimize(self) -> dict:
         """Optimize the optimization problem."""

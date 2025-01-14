@@ -8,5 +8,6 @@ backprojection classes.
 
 from ._fluenceOptimizer import FluenceOptimizer
 from ._fluence_optimization import fluence_optimization
+from .components.objectives._objectiveClass import Objective
 
-__all__ = ["FluenceOptimizer", "fluence_optimization"]
+__all__ = ["FluenceOptimizer", "fluence_optimization", "Objective"]

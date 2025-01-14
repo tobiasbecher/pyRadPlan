@@ -5,12 +5,12 @@
 from numba import njit
 from numpy import ones, zeros
 
-from ._objectiveClass import ObjectiveClass
+from ._objectiveClass import Objective
 
 # %% Class definition
 
 
-class MeanDose(ObjectiveClass):
+class MeanDose(Objective):
 
     name = "Mean Dose"
     parameter_names = ["d^{ref}"]

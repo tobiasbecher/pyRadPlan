@@ -5,12 +5,12 @@
 from numba import njit
 from numpy import zeros, sum as npsum
 
-from ._objectiveClass import ObjectiveClass
+from ._objectiveClass import Objective
 
 # %% Class definition
 
 
-class EUD(ObjectiveClass):
+class EUD(Objective):
 
     name = "EUD"
     parameter_names = ["EUD^{ref}", "k"]

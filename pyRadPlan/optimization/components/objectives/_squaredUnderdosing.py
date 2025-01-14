@@ -5,12 +5,12 @@
 from numba import njit
 from numpy import clip, zeros
 
-from ._objectiveClass import ObjectiveClass
+from ._objectiveClass import Objective
 
 # %% Class definition
 
 
-class SquaredUnderdosing(ObjectiveClass):
+class SquaredUnderdosing(Objective):
 
     name = "Squared Underdosing"
     parameter_names = ["d^{min}"]

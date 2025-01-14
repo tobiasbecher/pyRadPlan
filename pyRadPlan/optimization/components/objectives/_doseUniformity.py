@@ -6,12 +6,12 @@ from math import sqrt
 from numba import njit
 from numpy import zeros
 
-from ._objectiveClass import ObjectiveClass
+from ._objectiveClass import Objective
 
 # %% Class definition
 
 
-class DoseUniformity(ObjectiveClass):
+class DoseUniformity(Objective):
 
     name = "Dose Uniformity"
     parameter_names = []

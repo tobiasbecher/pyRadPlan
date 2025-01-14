@@ -5,12 +5,12 @@
 from numba import njit
 from numpy import logical_or, quantile, sort, zeros
 
-from ._objectiveClass import ObjectiveClass
+from ._objectiveClass import Objective
 
 # %% Class definition
 
 
-class MaxDVH(ObjectiveClass):
+class MaxDVH(Objective):
 
     name = "Max DVH"
     parameter_names = ["d", "V^{max}"]
