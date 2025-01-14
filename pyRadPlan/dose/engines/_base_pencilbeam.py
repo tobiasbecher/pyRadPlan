@@ -99,7 +99,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
     cube_wed: sitk.Image
     hlut: np.ndarray
 
-    def __init__(self, pln):
+    def __init__(self, pln=None):
         self.keep_rad_depth_cubes = False
         self.geometric_lateral_cutoff: float = 50
         self.dosimetric_lateral_cutoff: float = 0.9950
@@ -155,7 +155,9 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                 beam.iso_center += self.mult_scen.iso_shift[ix_shift_scen, :].reshape(-1)
 
             if self.mult_scen.tot_num_shift_scen > 1:
-                print(f"Shift scenario {shift_scen} of {self.mult_scen.tot_num_shift_scen}: \n")
+                logger.info(
+                    f"Shift scenario {shift_scen} of {self.mult_scen.tot_num_shift_scen}: \n"
+                )
 
             bixel_counter = 0
 
@@ -163,7 +165,9 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             with logging_redirect_tqdm():
                 for i in tqdm(range(dij["num_of_beams"]), desc="Beam", unit="b", leave=False):
                     # Initialize Beam Geometry
+                    t = time.time()
                     curr_beam = self._init_beam(dij, ct, cst, scen_stf, i)
+                    logger.info("Beam %d initialized in %f seconds.", i + 1, time.time() - t)
 
                     # Keep tabs on bixels computed in this beam
                     bixel_beam_counter = 0

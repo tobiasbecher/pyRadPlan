@@ -43,7 +43,7 @@ def sample_cst(sample_ct):
     target_mask = sitk.GetImageFromArray(target_mask)
 
     target1 = VOI(name="testtarget", voi_type="TARGET", mask=target_mask, ct_image=sample_ct)
-    organ1 = VOI(name="testorgan", voi_type="ORGAN", mask=organ_mask, ct_image=sample_ct)
+    organ1 = VOI(name="testorgan", voi_type="OAR", mask=organ_mask, ct_image=sample_ct)
 
     cst = StructureSet(vois=[target1, organ1], ct_image=sample_ct)
 
