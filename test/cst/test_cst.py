@@ -8,7 +8,17 @@ import pyRadPlan.io.matRad as matRadIO
 from pyRadPlan.ct import create_ct
 
 
-from pyRadPlan.cst import StructureSet, create_cst, validate_cst, create_voi
+from pyRadPlan.ct import CT
+from pyRadPlan.cst import (
+    StructureSet,
+    create_cst,
+    validate_cst,
+    create_voi,
+    ExternalVOI,
+    HelperVOI,
+    Target,
+    OAR,
+)
 
 
 def test_cst_from_matrad_mat_file(matrad_import):
@@ -142,3 +152,103 @@ def test_target_center_of_mass():
 
     com = cst.target_center_of_mass()
     assert np.allclose(com, np.array([1.5, 1.5, 1.5]))
+
+
+@pytest.fixture
+def generic_ct():
+    # Create a simple 3D CT image
+    ct_array = np.zeros((10, 10, 10), dtype=np.float32)
+    ct_image = sitk.GetImageFromArray(ct_array)
+    ct_image.SetSpacing((1.0, 1.0, 1.0))
+    ct_image.SetOrigin((0.0, 0.0, 0.0))
+    ct_image.SetDirection((1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0))
+    return CT(cube_hu=ct_image)
+
+
+@pytest.fixture
+def generic_vois(generic_ct):
+    # Create simple VOIs with different overlap priorities
+    mask1 = np.zeros((10, 10, 10), dtype=np.uint8)
+    mask1[4:5, 4:5, 4:5] = 1
+    mask_image1 = sitk.GetImageFromArray(mask1)
+    mask_image1.CopyInformation(generic_ct.cube_hu)
+
+    mask2 = np.zeros((10, 10, 10), dtype=np.uint8)
+    mask2[3:6, 3:6, 3:6] = 1
+    mask_image2 = sitk.GetImageFromArray(mask2)
+    mask_image2.CopyInformation(generic_ct.cube_hu)
+
+    mask3 = np.zeros((10, 10, 10), dtype=np.uint8)
+    mask3[4:7, 4:7, 4:7] = 1
+    mask_image3 = sitk.GetImageFromArray(mask3)
+    mask_image3.CopyInformation(generic_ct.cube_hu)
+
+    mask4 = np.zeros((10, 10, 10), dtype=np.uint8)
+    mask4[1:8, 1:8, 1:8] = 1
+    mask_image4 = sitk.GetImageFromArray(mask4)
+    mask_image4.CopyInformation(generic_ct.cube_hu)
+
+    mask5 = np.zeros((10, 10, 10), dtype=np.uint8)
+    mask5[2:7, 2:7, 2:7] = 1
+    mask_image5 = sitk.GetImageFromArray(mask5)
+    mask_image5.CopyInformation(generic_ct.cube_hu)
+
+    voi1 = Target(name="CTV", mask=mask_image1, ct_image=generic_ct, overlap_priority=1)
+    voi2 = Target(name="PTV", mask=mask_image2, ct_image=generic_ct, overlap_priority=2)
+    voi3 = OAR(name="OAR", mask=mask_image3, ct_image=generic_ct)
+    voi4 = ExternalVOI(name="BODY", mask=mask_image4, ct_image=generic_ct)
+    voi5 = HelperVOI(name="HELPER", mask=mask_image5, ct_image=generic_ct)
+
+    return [voi1, voi2, voi3, voi4, voi5]
+
+
+def test_apply_overlap_priorities(generic_ct, generic_vois):
+    # Create a StructureSet with the VOIs
+    structure_set = StructureSet(ct_image=generic_ct, vois=generic_vois)
+
+    # Apply overlap priorities
+    structure_set_overlap = structure_set.apply_overlap_priorities()
+
+    voi_mask = [None] * len(generic_vois)
+    voi_mask_overlapped = [None] * len(generic_vois)
+    p = [None] * len(generic_vois)
+
+    for i in range(len(generic_vois)):
+        voi_mask[i] = sitk.GetArrayViewFromImage(structure_set.vois[i].mask)
+        voi_mask_overlapped[i] = sitk.GetArrayViewFromImage(structure_set_overlap.vois[i].mask)
+        p[i] = structure_set.vois[i].overlap_priority
+
+    expected_overlap_list = np.argsort(p)
+
+    ol_mask = np.zeros(voi_mask[0].shape, dtype=bool)
+
+    for expected in expected_overlap_list:
+        # the mask that the current voi should have
+        assert (
+            voi_mask_overlapped[expected][np.logical_and(voi_mask[expected] > 0, ~ol_mask)]
+        ).all()
+
+        # Accumulate the ol mask
+        ol_mask = ol_mask | voi_mask[expected] > 0
+
+        # we currently should be zero where overlapped
+        assert not (voi_mask_overlapped[expected][ol_mask] == 0).all()
+        # the accumulated ol mask
+
+
+def test_apply_overlap_priorities_same_priority(generic_ct, generic_vois):
+    for v in generic_vois:
+        v.overlap_priority = 1
+
+    # Create a StructureSet with the VOIs
+    structure_set = StructureSet(ct_image=generic_ct, vois=generic_vois)
+
+    # Apply overlap priorities
+    structure_set_overlap = structure_set.apply_overlap_priorities()
+
+    # Check the resulting masks
+    for i in range(len(generic_vois)):
+        voi_mask = sitk.GetArrayViewFromImage(structure_set.vois[i].mask)
+        voi_mask_overlapped = sitk.GetArrayViewFromImage(structure_set_overlap.vois[i].mask)
+
+        assert np.isclose(voi_mask, voi_mask_overlapped).all()

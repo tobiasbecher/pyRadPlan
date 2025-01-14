@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Any, Dict, List, Union
+from typing import Any, Union
 from typing_extensions import Annotated, Self
 import warnings
 from pydantic import (
@@ -15,6 +15,9 @@ import SimpleITK as sitk
 
 from pyRadPlan.core import PyRadPlanBaseModel, np2sitk
 from pyRadPlan.ct import CT
+
+# Default overlap priorities
+DEFAULT_OVERLAPS = {"TARGET": 0, "OAR": 5, "HELPER": 10, "EXTERNAL": 15}
 
 
 class VOI(PyRadPlanBaseModel, ABC):
@@ -34,6 +37,8 @@ class VOI(PyRadPlanBaseModel, ABC):
         The alpha_x value. Defaults to 0.1.
     beta_x : float, optional
         The beta_x value. Defaults to 0.05.
+    overlap_priority : int
+        The overlap priority of the VOI. Lowest number is overlapping higher numbers.
     """
 
     name: str
@@ -43,6 +48,10 @@ class VOI(PyRadPlanBaseModel, ABC):
     beta_x: float = Field(default=0.05)
 
     voi_type: Annotated[str, StringConstraints(strip_whitespace=True, to_upper=True)]
+
+    overlap_priority: int = Field(
+        alias="Priority", default_factory=lambda data: DEFAULT_OVERLAPS[data["voi_type"]]
+    )
 
     @field_validator("mask", mode="before")
     @classmethod
@@ -203,7 +212,7 @@ class VOI(PyRadPlanBaseModel, ABC):
         else:
             raise ValueError(f"Unknown order: {order}")
 
-    def scenario_indices(self, order_type="numpy") -> List[np.ndarray]:
+    def scenario_indices(self, order_type="numpy") -> np.ndarray | list[np.ndarray]:
         """
         Returns the flattened indices of the individual scenarios.
 
@@ -274,7 +283,7 @@ class VOI(PyRadPlanBaseModel, ABC):
 
     @computed_field
     @property
-    def scenario_ct_data(self) -> list[np.ndarray]:
+    def scenario_ct_data(self) -> Union[list[np.ndarray], np.ndarray]:
         """
         Returns a list of CT data for the individual scenarios.
 
@@ -544,13 +553,13 @@ class ExternalVOI(VOI):
 __VOITYPES__ = {"OAR": OAR, "TARGET": Target, "HELPER": HelperVOI, "EXTERNAL": ExternalVOI}
 
 
-def create_voi(data: Union[Dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
+def create_voi(data: Union[dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
     """
     Factory function to create a VOI object.
 
     Parameters
     ----------
-    data : Union[Dict[str, Any], VOI, None]
+    data : Union[dict[str, Any], VOI, None]
         Dictionary containing the data to create the VOI object.
     **kwargs
         Arbitrary keyword arguments.
@@ -583,14 +592,14 @@ def create_voi(data: Union[Dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
         raise ValueError(f"Invalid VOI type: {voi_type}")
 
 
-def validate_voi(data: Union[Dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
+def validate_voi(data: Union[dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
     """
     Validates and creates a VOI object.
     Synonym to create_voi but should be used in validation context.
 
     Parameters
     ----------
-    voi : Union[Dict[str, Any], VOI, None], optional
+    voi : Union[dict[str, Any], VOI, None], optional
         Dictionary containing the data to create the VOI object, by default None.
     **kwargs
         Arbitrary keyword arguments.

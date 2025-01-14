@@ -2,6 +2,7 @@
 from importlib import resources
 import logging
 import warnings
+import time
 from typing import ClassVar, Union
 from abc import ABC, abstractmethod
 
@@ -67,19 +68,18 @@ class DoseEngineBase(ABC):
     select_voxels_in_scenarios: bool
 
     # Public properties
-    def __init__(self, pln: Plan):
+    def __init__(self, pln: Plan | dict = None):
 
         # Assign default parameters from Matrad_Config or manually
         self.dose_grid = None
         self.mult_scen = "nomScen"
         self.select_voxels_in_scenarios = None
         self.dose_grid = None
+        self.voxel_sub_ix = None  # selection of where to calculate / store dose, empty by default
 
         if pln is not None:
             self.assign_properties_from_pln(pln, True)
 
-        self.dose_grid = None
-        self.voxel_sub_ix = None  # selection of where to calculate / store dose, empty by default
         self._dose_grid = None
         self._ct_grid = None
 
@@ -122,6 +122,8 @@ class DoseEngineBase(ABC):
             Whether to warn when properties are changed.
         """
 
+        pln = validate_pln(pln)
+
         # Set Scenario Model
         if hasattr(pln, "mult_scen"):
             self.mult_scen = pln.mult_scen
@@ -135,9 +137,7 @@ class DoseEngineBase(ABC):
 
         # Overwrite default properties within the engine
         # with the ones given in the prop_dose_calc dict
-        if hasattr(pln, "prop_dose_calc") and isinstance(
-            pln.prop_dose_calc, dict
-        ):  # TODO: This is not tested yet
+        if pln.prop_dose_calc is not None:
             prop_dict = pln.prop_dose_calc
             if (
                 "engine" in prop_dict
@@ -263,6 +263,7 @@ class DoseEngineBase(ABC):
         """Set overlap priorities for the structures in the CST."""
 
         logger.info("Adjusting structures for overlap... ")
+        t_start = time.time()
 
         num_of_ct_scenarios = np.unique([x.num_of_scenarios for x in cst.vois])
 
@@ -270,16 +271,13 @@ class DoseEngineBase(ABC):
         if len(num_of_ct_scenarios) > 1:
             raise ValueError("Inconsistent number of scenarios in cst struct.")
 
-        # TODO: This is not yet implemented
-        # for i in range(num_of_ct_scenarios[0]):
-        #     # consider VOI priorities
-        #     for j in range(len(cst.vois)):
-        #         idx = cst.vois[j].indices[i]
+        new_cst = cst.apply_overlap_priorities()
 
-        #         for k in range(len(cst.vois)):
-        #             pass
+        t_end = time.time()
 
-        return cst
+        logger.info("Done in %.2f seconds.", t_end - t_start)
+
+        return new_cst
 
     def select_voxels_from_cst(self, cst, dose_grid, selection_mode):
         """
@@ -384,9 +382,13 @@ class DoseEngineBase(ABC):
 
         logger.info("Resampling structure set... ")
 
+        t_start = time.time()
+
         cst.resample_on_new_ct(new_ct)
 
-        logger.info("Done!")
+        t_end = time.time()
+
+        logger.info("Done in  %.2f seconds.", t_end - t_start)
         return cst
 
     # private methods
