@@ -121,6 +121,18 @@ class SteeringInformation(PyRadPlanBaseModel):
         export = super().to_matrad(context=context)
         return export["beams"]
 
+    @property
+    def num_of_beams(self) -> int:
+        return len(self.beams)
+
+    @property
+    def num_of_rays(self) -> int:
+        return sum([beam.num_of_rays for beam in self.beams])
+
+    @property
+    def total_number_of_bixels(self) -> int:
+        return sum([beam.total_number_of_bixels for beam in self.beams])
+
 
 def create_stf(
     stf: Union[dict[str, Any], SteeringInformation, None] = None, **kwargs
