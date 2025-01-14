@@ -281,7 +281,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                 if self.mult_scen.scen_mask.flat[i]:
                     if self._calc_dose_direct:
                         dij[q_name].flat[i] = np.zeros(
-                            (self.dose_grid.num_voxels,), dtype=np.float32
+                            (self.dose_grid.num_voxels, dij["num_of_beams"]), dtype=np.float32
                         )
                     else:
                         # This could probably be optimized by using direct access to the
@@ -663,7 +663,9 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             for q_name in self._computed_quantities:
                 if self._calc_dose_direct:
                     # We accumulate the current bixel to the container
-                    dij[q_name][sub_scen_idx][bixel["ix"]] += bixel[q_name]
+                    dij[q_name][sub_scen_idx][bixel["ix"], curr_beam_idx] += (
+                        bixel["weight"] * bixel[q_name]
+                    )
                 else:
                     # We insert into the lil sparse matrix
                     # This could probably be optimized by using direct access to the lil_matrix's
@@ -705,10 +707,11 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             if self.mult_scen.scen_mask.flat[i]:
                 # Loop over all used quantities
                 for q_name in self._computed_quantities:
-                    tmp_matrix = cast(sparse.lil_matrix, dij[q_name].flat[i])
-                    tmp_matrix = tmp_matrix.tocsr().T
-                    tmp_matrix.eliminate_zeros()
-                    dij[q_name].flat[i] = tmp_matrix
+                    if not self._calc_dose_direct:
+                        tmp_matrix = cast(sparse.lil_matrix, dij[q_name].flat[i])
+                        tmp_matrix = tmp_matrix.tocsr().T
+                        tmp_matrix.eliminate_zeros()
+                        dij[q_name].flat[i] = tmp_matrix
 
         if self.keep_rad_depth_cubes and self._rad_depth_cubes:
             dij["rad_depth_cubes"] = self._rad_depth_cubes

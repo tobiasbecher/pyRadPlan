@@ -26,6 +26,8 @@ class Beamlet(PyRadPlanBaseModel):
     relative_fluence : float
         The fluence of this beamlet relative to the central primary fluence.
         For example, due to a non-uniform primary fluence
+    weight : float
+        The applied fluence weight of the beamlet
     min_mu : float
         The minimum monitor unit
     max_mu : float
@@ -41,6 +43,7 @@ class Beamlet(PyRadPlanBaseModel):
     min_mu: float = Field(alias="minMU", default=0.0)
     max_mu: float = Field(alias="maxMU", default=float("inf"))
     relative_fluence: float = Field(default=1.0)
+    weight: float = Field(default=1.0)
     range_shifter: RangeShifter = Field(default_factory=RangeShifter)
     focus_ix: int = Field(default=0)
 
@@ -50,6 +53,7 @@ class Beamlet(PyRadPlanBaseModel):
         "min_mu",
         "max_mu",
         "relative_fluence",
+        "weight",
         "focus_ix",
         mode="wrap",
     )
