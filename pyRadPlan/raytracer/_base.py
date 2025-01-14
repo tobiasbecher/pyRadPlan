@@ -145,6 +145,18 @@ class RayTracerBase(ABC):
         logger.debug("Initializing geometry...")
         t_trace_start = time.perf_counter()
         self._initialize_geometry()
+
+        iso_center = beam.iso_center
+
+        # Obtain coordinates
+        cube_ix = np.arange(self.cubes[0].GetNumberOfPixels(), dtype=np.int64)
+        coords = linear_indices_to_image_coordinates(cube_ix, self.cubes[0], index_type="sitk")
+
+        # obtain rotation matrix
+        rot_mat = lps.get_beam_rotation_matrix(beam.gantry_angle, beam.couch_angle)
+
+        # rotate coordinates
+        coords = (coords - iso_center) @ rot_mat - beam.source_point_bev
         t_trace_end = time.perf_counter()
         logger.debug("took %s seconds!", t_trace_end - t_trace_start)
 
@@ -153,20 +165,21 @@ class RayTracerBase(ABC):
         t_trace_start = time.perf_counter()
         source_point = beam.source_point
         # source_point_bev = beam["source_point_bev"]
-        iso_center = beam.iso_center
 
         resolution = np.array(self.cubes[0].GetSpacing(), self.precision)
-        ray_spacing = 0.5 * np.min(resolution) / np.sqrt(2.0, dtype=self.precision)
+        ray_spacing = np.min(resolution) / np.sqrt(2.0, dtype=self.precision)
+        ray_matrix_bev_y = np.max(coords[:, 1]) + np.max(resolution) + beam.source_point_bev[1]
+        ray_matrix_scale = 1 + ray_matrix_bev_y / beam.sad
 
         # num_candidate_rays = 2 * np.ceil(500.0 / ray_spacing).astype(np.int64) + 1
 
-        spacing_range = np.arange(
+        spacing_range = ray_spacing * np.arange(
             np.floor(-500.0 / ray_spacing), np.ceil(500.0 / ray_spacing) + 1, dtype=self.precision
         )
         candidate_ray_coords_x, candidate_ray_coords_z = np.meshgrid(spacing_range, spacing_range)
 
         # If we have reference positions, we use them to restrict the raytracing region
-        reference_positions_bev = np.array([ray.ray_pos for ray in beam.rays])
+        reference_positions_bev = ray_matrix_scale * np.array([ray.ray_pos for ray in beam.rays])
 
         # use a precompiled numba function to speed up the spatial lookup
         candidate_ray_mx = fast_spatial_circle_lookup(
@@ -176,9 +189,8 @@ class RayTracerBase(ABC):
             self.lateral_cut_off,
         )
 
-        # candidate_ray_mx = np.full(
-        #   (num_candidate_rays, num_candidate_rays), False, dtype=np.bool)
-        # )
+        # candidate_ray_mx = np.full(candidate_ray_coords_x.shape, False, dtype=np.bool)
+
         # for i in range(reference_positions_bev.shape[0]):
         #     notix = (candidate_ray_coords_x - reference_positions_bev[i, 0]) ** 2 + (
         #         candidate_ray_coords_z - reference_positions_bev[i, 2]
@@ -188,16 +200,13 @@ class RayTracerBase(ABC):
         ray_matrix_bev = np.hstack(
             (
                 candidate_ray_coords_x[candidate_ray_mx].reshape(-1, 1),
-                np.zeros(np.sum(candidate_ray_mx), dtype=self.precision).reshape(-1, 1),
+                ray_matrix_bev_y
+                * np.ones(np.sum(candidate_ray_mx), dtype=self.precision).reshape(-1, 1),
                 candidate_ray_coords_z[candidate_ray_mx].reshape(-1, 1),
             )
         )
 
-        rot_mat = lps.get_beam_rotation_matrix(beam.gantry_angle, beam.couch_angle)
-
         ray_matrix_lps = ray_matrix_bev @ rot_mat.T
-
-        target_points = 2 * (ray_matrix_lps - source_point) + source_point
 
         t_trace_end = time.perf_counter()
         logger.debug("took %s seconds!", t_trace_end - t_trace_start)
@@ -206,7 +215,7 @@ class RayTracerBase(ABC):
 
         t_trace_start = time.perf_counter()
         _, lengths, rho, d12, ix = self.trace_rays(
-            iso_center.reshape(1, 3), source_point.reshape(1, 3), target_points
+            iso_center.reshape(1, 3), source_point.reshape(1, 3), ray_matrix_lps
         )
         t_trace_end = time.perf_counter()
 
@@ -214,19 +223,9 @@ class RayTracerBase(ABC):
 
         # Now we compute which rays will respectively give the voxel value for radiological depth
         valid_ix = np.isfinite(ix)
-        # ix = ix[valid_ix]
-        # lengths = lengths[valid_ix]
-        # rho = [rho_val[valid_ix] for rho_val in rho]
-        scale_factor = np.zeros_like(ix, dtype=self.precision)
 
         # Obtain Voxel coordinates
         t_index_transformation = time.perf_counter()
-        coords = np.zeros((self.cubes[0].GetNumberOfPixels(), 3), dtype=self.precision)
-        cube_ix = np.arange(coords.shape[0], dtype=np.int64)
-
-        # TODO: [] needed for changing ordering back and forth.
-        # might also write a different function for this
-        coords = linear_indices_to_image_coordinates(cube_ix, self.cubes[0], index_type="sitk")
 
         t_index_transformation_end = time.perf_counter()
         logger.debug(
@@ -234,10 +233,8 @@ class RayTracerBase(ABC):
             t_index_transformation_end - t_index_transformation,
         )
 
-        coords = coords - iso_center
-        coords = coords @ rot_mat
-
-        scale_factor[valid_ix] = -beam.sad / (coords[ix[valid_ix], 1] - beam.sad)
+        scale_factor = np.zeros_like(ix, dtype=self.precision)
+        scale_factor[valid_ix] = (ray_matrix_bev_y + beam.sad) / coords[ix[valid_ix], 1]
 
         x_dist = np.ones_like(ix, dtype=self.precision) * np.nan
         z_dist = np.ones_like(ix, dtype=self.precision) * np.nan
@@ -248,7 +245,7 @@ class RayTracerBase(ABC):
         z_dist[valid_ix] = coords[ix[valid_ix], 2] * scale_factor[valid_ix]
         z_dist = z_dist - ray_matrix_bev[:, 2, np.newaxis]
 
-        ray_selection = ray_spacing  # / 2.0
+        ray_selection = ray_spacing / 2.0
 
         ix_remember_from_tracing = x_dist > -ray_selection
         np.logical_and(

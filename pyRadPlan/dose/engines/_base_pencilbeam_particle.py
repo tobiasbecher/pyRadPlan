@@ -156,7 +156,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
             The initialized bixel.
         """
 
-        bixel = {}
+        bixel = curr_ray["beamlets"][k]
         bixel["beam_index"] = curr_ray["beam_index"]
         bixel["ray_index"] = curr_ray["ray_index"]
         bixel["bixel_index"] = k

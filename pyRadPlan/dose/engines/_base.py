@@ -14,7 +14,7 @@ from pyRadPlan.core.np2sitk import linear_indices_to_grid_coordinates
 from pyRadPlan.core.resample import resample_numpy_array
 from pyRadPlan.ct import CT, resample_ct
 from pyRadPlan.cst import StructureSet
-from pyRadPlan.stf import SteeringInformation
+from pyRadPlan.stf import SteeringInformation, validate_stf
 from pyRadPlan.plan import Plan, validate_pln
 from pyRadPlan.dij import Dij, validate_dij
 from pyRadPlan.scenarios import create_scenario_model, ScenarioModel
@@ -171,7 +171,7 @@ class DoseEngineBase(ABC):
 
     def calc_dose_forward(
         self, ct: CT, cst: StructureSet, stf: SteeringInformation, w: np.ndarray
-    ):
+    ) -> dict:
         """
         Perform a forward dose calculation, i.e., compute a dose cube by
         directly applying
@@ -200,13 +200,32 @@ class DoseEngineBase(ABC):
         influence matrix calculations.
         """
 
-        raise NotImplementedError("This method is not implemented yet!")
         self._calc_dose_direct = True
+
+        stf = validate_stf(stf)
+
+        if w is None:
+            logger.info("No weights given. Using weights stored in stf.")
+        else:
+            logger.info("Using provided weights for forward dose calculation.")
+
+            if w.size != stf.total_number_of_bixels:
+                raise ValueError("Number of weights does not match the number of bixels in stf.")
+
+            # Assign the weights to the stf
+            bixel_num = 0
+            for beam in stf.beams:
+                for ray in beam.rays:
+                    for bixel in ray.beamlets:
+                        bixel.weight = w[bixel_num]
+                        bixel_num += 1
+
+        # Run dose calculation (direct flag is on)
         dij = self._calc_dose(ct, cst, stf)
 
         # TODO: now do the forward weighting with w
 
-        return dij
+        return dij.compute_result_ct_grid(np.ones(dij.total_num_of_bixels, dtype=np.float32))
 
     def calc_dose_influence(self, ct: CT, cst: StructureSet, stf: SteeringInformation) -> Dij:
         """

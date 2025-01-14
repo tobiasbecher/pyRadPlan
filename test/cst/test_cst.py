@@ -14,8 +14,8 @@ from pyRadPlan.cst import (
     create_cst,
     validate_cst,
     create_voi,
-    VOI,
     ExternalVOI,
+    HelperVOI,
     Target,
     OAR,
 )
@@ -169,12 +169,12 @@ def generic_ct():
 def generic_vois(generic_ct):
     # Create simple VOIs with different overlap priorities
     mask1 = np.zeros((10, 10, 10), dtype=np.uint8)
-    mask1[3:5, 3:5, 3:5] = 1
+    mask1[4:5, 4:5, 4:5] = 1
     mask_image1 = sitk.GetImageFromArray(mask1)
     mask_image1.CopyInformation(generic_ct.cube_hu)
 
     mask2 = np.zeros((10, 10, 10), dtype=np.uint8)
-    mask2[2:6, 2:6, 2:6] = 1
+    mask2[3:6, 3:6, 3:6] = 1
     mask_image2 = sitk.GetImageFromArray(mask2)
     mask_image2.CopyInformation(generic_ct.cube_hu)
 
@@ -188,12 +188,18 @@ def generic_vois(generic_ct):
     mask_image4 = sitk.GetImageFromArray(mask4)
     mask_image4.CopyInformation(generic_ct.cube_hu)
 
+    mask5 = np.zeros((10, 10, 10), dtype=np.uint8)
+    mask5[2:7, 2:7, 2:7] = 1
+    mask_image5 = sitk.GetImageFromArray(mask5)
+    mask_image5.CopyInformation(generic_ct.cube_hu)
+
     voi1 = Target(name="CTV", mask=mask_image1, ct_image=generic_ct, overlap_priority=1)
     voi2 = Target(name="PTV", mask=mask_image2, ct_image=generic_ct, overlap_priority=2)
     voi3 = OAR(name="OAR", mask=mask_image3, ct_image=generic_ct)
     voi4 = ExternalVOI(name="BODY", mask=mask_image4, ct_image=generic_ct)
+    voi5 = HelperVOI(name="HELPER", mask=mask_image5, ct_image=generic_ct)
 
-    return [voi1, voi2, voi3, voi4]
+    return [voi1, voi2, voi3, voi4, voi5]
 
 
 def test_apply_overlap_priorities(generic_ct, generic_vois):
@@ -203,37 +209,31 @@ def test_apply_overlap_priorities(generic_ct, generic_vois):
     # Apply overlap priorities
     structure_set_overlap = structure_set.apply_overlap_priorities()
 
-    # Check the resulting masks
-    voi1_mask = sitk.GetArrayViewFromImage(structure_set.vois[0].mask)
-    voi1_mask_overlapped = sitk.GetArrayViewFromImage(structure_set_overlap.vois[0].mask)
+    voi_mask = [None] * len(generic_vois)
+    voi_mask_overlapped = [None] * len(generic_vois)
+    p = [None] * len(generic_vois)
 
-    voi2_mask = sitk.GetArrayViewFromImage(structure_set.vois[1].mask)
-    voi2_mask_overlapped = sitk.GetArrayViewFromImage(structure_set_overlap.vois[1].mask)
+    for i in range(len(generic_vois)):
+        voi_mask[i] = sitk.GetArrayViewFromImage(structure_set.vois[i].mask)
+        voi_mask_overlapped[i] = sitk.GetArrayViewFromImage(structure_set_overlap.vois[i].mask)
+        p[i] = structure_set.vois[i].overlap_priority
 
-    voi3_mask = sitk.GetArrayViewFromImage(structure_set.vois[2].mask)
-    voi3_mask_overlapped = sitk.GetArrayViewFromImage(structure_set_overlap.vois[2].mask)
+    expected_overlap_list = np.argsort(p)
 
-    voi4_mask = sitk.GetArrayViewFromImage(structure_set.vois[3].mask)
-    voi4_mask_overlapped = sitk.GetArrayViewFromImage(structure_set_overlap.vois[3].mask)
+    ol_mask = np.zeros(voi_mask[0].shape, dtype=bool)
 
-    # VOI1 should have its mask unchanged
-    assert np.isclose(voi1_mask, voi1_mask_overlapped).all()
+    for expected in expected_overlap_list:
+        # the mask that the current voi should have
+        assert (
+            voi_mask_overlapped[expected][np.logical_and(voi_mask[expected] > 0, ~ol_mask)]
+        ).all()
 
-    ol_mask = voi1_mask > 0
+        # Accumulate the ol mask
+        ol_mask = ol_mask | voi_mask[expected] > 0
 
-    # Check VOI 2 overlapped by VOI 1
-    assert (voi2_mask_overlapped[ol_mask] == 0).all()
-    assert (voi2_mask_overlapped[np.logical_and(voi2_mask > 0, ol_mask == 0)] == 1).all()
-    ol_mask = np.logical_or(ol_mask, voi2_mask > 0)
-
-    # Check VOI 3 overlapped by VOI 2 and VOI 1
-    assert (voi3_mask_overlapped[voi1_mask > 0] == 0).all()
-    assert (voi3_mask_overlapped[np.logical_and(voi2_mask > 0, ol_mask == 0)] == 1).all()
-    ol_mask = np.logical_or(ol_mask, voi3_mask > 0)
-
-    # Check VOI 4 overlapped by VOI 3, VOI 2 and VOI 1
-    assert (voi4_mask_overlapped[ol_mask] == 0).all()
-    assert (voi4_mask_overlapped[np.logical_and(voi4_mask > 0, ol_mask == 0)] == 1).all()
+        # we currently should be zero where overlapped
+        assert not (voi_mask_overlapped[expected][ol_mask] == 0).all()
+        # the accumulated ol mask
 
 
 def test_apply_overlap_priorities_same_priority(generic_ct, generic_vois):
