@@ -7,6 +7,8 @@ variables:  # Change pip's cache directory to be inside the project directory si
 stages:
     - build
     - test
+    - docs
+    - deploy
 
 # before_script:
     # - apk add --no-cache alpine-sdk g++ hdf5-dev llvm14-dev linux-headers
@@ -78,3 +80,41 @@ tests:
             - .testreports/coverage.xml
             - .testreports/report.xml
     coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+
+docs:
+    stage: docs
+    cache:
+        key: "cache-$CI_COMMIT_REF_SLUG"
+        paths:
+            - .venv/
+            - .cache/pip/
+        policy: pull
+    script:
+        - source .venv/bin/activate
+        - pip install sphinx
+        - pip install sphinx-autodoc-typehints
+        - pip install autodoc_pydantic
+        - pip install sphinx-design
+        - pip install pydata-sphinx-theme
+        - pip install numpydoc
+        - sphinx-build docs .doc
+    artifacts:
+        when: always
+        paths:
+            - .doc
+    only:
+        - main  # Adjust this to the branch you want to build on
+
+pages:
+    stage: deploy
+    dependencies:
+        - tests
+        - docs
+    script:
+        - mv .doc public/
+
+    artifacts:
+        paths:
+            - public
+    only:
+        - main
