@@ -5,7 +5,7 @@ api documentation
 
 .. toctree::
    :maxdepth: 1
-   :caption: Modules:
+   :caption: Api documentation:
 
    ct
    stf
@@ -14,3 +14,11 @@ api documentation
    dij
    optimization
    machines
+   core
+   util
+   io
+   raytracer
+   scenarios
+   dose.engines
+   dose
+   geometry
