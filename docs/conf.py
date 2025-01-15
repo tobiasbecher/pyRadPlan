@@ -40,7 +40,6 @@ add_module_names = False
 
 html_theme = "pydata_sphinx_theme"
 html_static_path = ["_static"]
-html_sidebars = {"**": ["globaltoc.html", "relations.html", "sourcelink.html", "searchbox.html"]}
 
 autodoc_type_aliases = {
     "npt.ArrayLike": "npt.ArrayLike",
