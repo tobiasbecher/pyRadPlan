@@ -19,7 +19,7 @@ from pyRadPlan.scenarios import ScenarioModel
 # Example subclass
 class NominalScenario(ScenarioModel):
     """
-    MyScenarioModel class represents an example scenario.
+    NominalScenario class represents an example scenario.
 
     Attributes
     ----------
