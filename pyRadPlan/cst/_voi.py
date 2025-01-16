@@ -16,8 +16,6 @@ import SimpleITK as sitk
 from pyRadPlan.core import PyRadPlanBaseModel, np2sitk
 from pyRadPlan.ct import CT
 
-from ..optimization.components.objectives import Objective
-
 # Default overlap priorities
 DEFAULT_OVERLAPS = {"TARGET": 0, "OAR": 5, "HELPER": 10, "EXTERNAL": 15}
 
@@ -55,7 +53,10 @@ class VOI(PyRadPlanBaseModel, ABC):
         alias="Priority", default_factory=lambda data: DEFAULT_OVERLAPS[data["voi_type"]]
     )
 
-    objectives: list[Objective] = Field(default=[])
+    # TODO: it would be nicer if this was a list of optimization.Objective, but that would create a
+    # circular import. Forward type hinting does not work directly due to pydantic. If someone has
+    # a better idea how to solve this, please do so.
+    objectives: list[Any] = Field(default=[], description="List of objective function definitions")
 
     @field_validator("mask", mode="before")
     @classmethod
@@ -107,24 +108,6 @@ class VOI(PyRadPlanBaseModel, ABC):
             return v
 
         raise ValueError("mask must be either passed as numpy array or SimpleITK image")
-
-    @field_validator("objectives", mode="before")
-    @classmethod
-    def validate_objectives(cls, v: Any) -> Any:
-        """
-        Validates the objectives.
-
-        Parameters
-        ----------
-        v : list[Objective]
-            The objectives to be validated.
-
-        Returns
-        -------
-        list[Objective]
-            The validated objectives.
-        """
-        return v
 
     @model_validator(mode="after")
     def validate_mask(self):
