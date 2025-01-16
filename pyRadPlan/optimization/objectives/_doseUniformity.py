@@ -6,7 +6,7 @@ from math import sqrt
 from numba import njit
 from numpy import zeros
 
-from ._objectiveClass import Objective
+from .._objective import Objective
 
 # %% Class definition
 

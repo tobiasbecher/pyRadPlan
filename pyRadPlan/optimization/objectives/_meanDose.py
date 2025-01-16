@@ -1,40 +1,37 @@
-"""Equivalent (possibly) useless dose."""
+"""Mean dose."""
 
 # %% Imports
 
 from numba import njit
-from numpy import zeros, sum as npsum
+from numpy import ones, zeros
 
-from ._objectiveClass import Objective
+from .._objective import Objective
 
 # %% Class definition
 
 
-class EUD(Objective):
+class MeanDose(Objective):
 
-    name = "EUD"
-    parameter_names = ["EUD^{ref}", "k"]
-    parameter_types = ["dose", "numeric"]
-    parameters = [0.0, 3.5]
+    name = "Mean Dose"
+    parameter_names = ["d^{ref}"]
+    parameter_types = ["dose"]
+    parameters = 0.0
     weight = 1.0
 
-    def __init__(self, cst, dij, ref=parameters[0], k=parameters[1], weight=weight):
+    def __init__(self, cst, dij, dRef=parameters, weight=weight):
 
         self.cst = cst
         self.dij = dij
 
         self.adjusted_params = False
 
-        self.name = EUD.name
-        self.parameter_names = EUD.parameter_names
-        self.parameter_types = EUD.parameter_types
-        self.parameters = [
-            ref if isinstance(ref, float) else float(ref),
-            k if isinstance(k, float) else float(k),
-        ]
+        self.name = MeanDose.name
+        self.parameter_names = MeanDose.parameter_names
+        self.parameter_types = MeanDose.parameter_types
+        self.parameters = dRef if isinstance(dRef, float) else float(dRef)
         self.weight = weight if isinstance(weight, float) else float(weight)
 
-        super(EUD, EUD)._check_objective(
+        super(MeanDose, MeanDose)._check_objective(
             self,
             self.name,
             self.parameter_names,
@@ -70,24 +67,14 @@ class EUD(Objective):
 
 @njit
 def _compute_objective(dose, parameters, weight):
-
-    eud = (npsum(dose ** (1 / parameters[1])) / len(dose)) ** parameters[1]
-
-    return weight * (eud - parameters[0]) ** 2
+    return weight * (dose.mean() - parameters) ** 2
 
 
-# njit
+# @njit
 def _compute_gradient(dose, parameters, weight, n_voxels, struct_idx):
 
-    eud = (npsum(dose ** (1 / parameters[1])) / len(dose)) ** parameters[1]
-    eud_gradient = (
-        npsum(dose ** (1 / parameters[1])) ** (parameters[1] - 1)
-        * dose ** (1 / parameters[1] - 1)
-        / (len(dose) ** parameters[1])
-    )
-
     obj_grad = zeros((n_voxels,))
-    grad = 2 * (eud - parameters[0]) * eud_gradient
+    grad = 2 * (dose.mean() - parameters) * ones(dose.shape) / len(dose)
     obj_grad[struct_idx] = weight * grad
 
     return obj_grad

@@ -1,37 +1,37 @@
-"""Squared Overdosing."""
+"""Squared Deviation."""
 
 # %% Imports
 
 from numba import njit
-from numpy import clip, zeros
+from numpy import zeros
 
-from ._objectiveClass import Objective
+from .._objective import Objective
 
 # %% Class definition
 
 
-class SquaredOverdosing(Objective):
+class SquaredDeviation(Objective):
 
-    name = "Squared Overdosing"
-    parameter_names = ["d^{max}"]
+    name = "Squared Deviation"
+    parameter_names = ["d^{ref}"]
     parameter_types = ["dose"]
-    parameters = 100000.0
+    parameters = 30.0
     weight = 1.0
 
-    def __init__(self, cst, dij, dMax=parameters, weight=weight):
+    def __init__(self, cst, dij, dRef=parameters, weight=weight):
 
         self.cst = cst
         self.dij = dij
 
         self.adjusted_params = False
 
-        self.name = SquaredOverdosing.name
-        self.parameter_names = SquaredOverdosing.parameter_names
-        self.parameter_types = SquaredOverdosing.parameter_types
-        self.parameters = dMax if isinstance(dMax, float) else float(dMax)
+        self.name = SquaredDeviation.name
+        self.parameter_names = SquaredDeviation.parameter_names
+        self.parameter_types = SquaredDeviation.parameter_types
+        self.parameters = dRef if isinstance(dRef, float) else float(dRef)
         self.weight = weight if isinstance(weight, float) else float(weight)
 
-        super(SquaredOverdosing, SquaredOverdosing)._check_objective(
+        super(SquaredDeviation, SquaredDeviation)._check_objective(
             self,
             self.name,
             self.parameter_names,
@@ -41,7 +41,7 @@ class SquaredOverdosing(Objective):
         )
 
     def compute_objective(self, dose, struct):
-        return _compute_objective(dose, struct, self.parameters, self.weight)
+        return _compute_objective(dose, self.parameters, self.weight)
 
     def compute_gradient(self, dose, struct):
         return _compute_gradient(
@@ -66,19 +66,17 @@ class SquaredOverdosing(Objective):
 
 
 @njit
-def _compute_objective(dose, struct, parameters, weight):
+def _compute_objective(dose, parameters, weight):
 
-    overdose = clip(dose - parameters, a_min=0, a_max=None)
+    deviation = dose - parameters
 
-    return weight * (overdose @ overdose) / len(dose)
+    return weight * (deviation @ deviation) / len(dose)
 
 
 # @njit
 def _compute_gradient(dose, parameters, weight, n_voxels, struct_idx):
 
-    obj_grad = zeros((n_voxels,))
-    overdose = clip(dose - parameters, a_min=0, a_max=None)
-    grad = 2 * overdose / len(overdose)
-    obj_grad[struct_idx] = weight * grad
+    obj_grad = zeros(n_voxels)
+    obj_grad[struct_idx] = 2 * weight * (dose - parameters) / len(dose)
 
     return obj_grad

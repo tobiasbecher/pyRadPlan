@@ -1,37 +1,37 @@
-"""Squared Underdosing."""
+"""Squared Overdosing."""
 
 # %% Imports
 
 from numba import njit
 from numpy import clip, zeros
 
-from ._objectiveClass import Objective
+from .._objective import Objective
 
 # %% Class definition
 
 
-class SquaredUnderdosing(Objective):
+class SquaredOverdosing(Objective):
 
-    name = "Squared Underdosing"
-    parameter_names = ["d^{min}"]
+    name = "Squared Overdosing"
+    parameter_names = ["d^{max}"]
     parameter_types = ["dose"]
-    parameters = 0.0
+    parameters = 100000.0
     weight = 1.0
 
-    def __init__(self, cst, dij, dMin=parameters, weight=weight):
+    def __init__(self, cst, dij, dMax=parameters, weight=weight):
 
         self.cst = cst
         self.dij = dij
 
         self.adjusted_params = False
 
-        self.name = SquaredUnderdosing.name
-        self.parameter_names = SquaredUnderdosing.parameter_names
-        self.parameter_types = SquaredUnderdosing.parameter_types
-        self.parameters = dMin if isinstance(dMin, float) else float(dMin)
+        self.name = SquaredOverdosing.name
+        self.parameter_names = SquaredOverdosing.parameter_names
+        self.parameter_types = SquaredOverdosing.parameter_types
+        self.parameters = dMax if isinstance(dMax, float) else float(dMax)
         self.weight = weight if isinstance(weight, float) else float(weight)
 
-        super(SquaredUnderdosing, SquaredUnderdosing)._check_objective(
+        super(SquaredOverdosing, SquaredOverdosing)._check_objective(
             self,
             self.name,
             self.parameter_names,
@@ -68,17 +68,17 @@ class SquaredUnderdosing(Objective):
 @njit
 def _compute_objective(dose, struct, parameters, weight):
 
-    underdose = clip(dose - parameters, a_min=None, a_max=0)
+    overdose = clip(dose - parameters, a_min=0, a_max=None)
 
-    return weight * (underdose @ underdose) / len(dose)
+    return weight * (overdose @ overdose) / len(dose)
 
 
 # @njit
 def _compute_gradient(dose, parameters, weight, n_voxels, struct_idx):
 
     obj_grad = zeros((n_voxels,))
-    underdose = clip(dose - parameters, a_min=None, a_max=0)
-    grad = 2 * underdose / len(underdose)
+    overdose = clip(dose - parameters, a_min=0, a_max=None)
+    grad = 2 * overdose / len(overdose)
     obj_grad[struct_idx] = weight * grad
 
     return obj_grad
