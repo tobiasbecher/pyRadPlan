@@ -1,9 +1,9 @@
 """Squared Overdosing."""
 
-# %% Imports
+from pydantic import Field
 
 from numba import njit
-from numpy import clip, zeros
+from numpy import clip
 
 from .._objective import Objective
 
@@ -13,72 +13,30 @@ from .._objective import Objective
 class SquaredOverdosing(Objective):
 
     name = "Squared Overdosing"
-    parameter_names = ["d^{max}"]
-    parameter_types = ["dose"]
-    parameters = 100000.0
-    weight = 1.0
+    # parameter_types = ["dose"]
+    parameter_names = ["d_max"]
 
-    def __init__(self, cst, dij, dMax=parameters, weight=weight):
-
-        self.cst = cst
-        self.dij = dij
-
-        self.adjusted_params = False
-
-        self.name = SquaredOverdosing.name
-        self.parameter_names = SquaredOverdosing.parameter_names
-        self.parameter_types = SquaredOverdosing.parameter_types
-        self.parameters = dMax if isinstance(dMax, float) else float(dMax)
-        self.weight = weight if isinstance(weight, float) else float(weight)
-
-        super(SquaredOverdosing, SquaredOverdosing)._check_objective(
-            self,
-            self.name,
-            self.parameter_names,
-            self.parameter_types,
-            self.parameters,
-            self.weight,
-        )
+    d_max: float = Field(default=30.0, ge=0.0)
 
     def compute_objective(self, dose, struct):
-        return _compute_objective(dose, struct, self.parameters, self.weight)
+        return _compute_objective(dose, self.d_max, self.priority)
 
     def compute_gradient(self, dose, struct):
-        return _compute_gradient(
-            dose,
-            self.parameters,
-            self.weight,
-            self.dij["numOfVoxels"],
-            self.cst[struct]["resized_indices"],
-        )
-
-    def get_parameters(self):
-        return self.parameters
-
-    def set_parameters(self, value):
-        self.parameters = value
-
-    def get_weight(self):
-        return self.weight
-
-    def set_weight(self, value):
-        self.weight = value
+        return _compute_gradient(dose, self.d_max, self.priority)
 
 
 @njit
-def _compute_objective(dose, struct, parameters, weight):
+def _compute_objective(dose, d_max, priority):
 
-    overdose = clip(dose - parameters, a_min=0, a_max=None)
+    overdose = clip(dose - d_max, a_min=0, a_max=None)
 
-    return weight * (overdose @ overdose) / len(dose)
+    return priority * (overdose @ overdose) / len(dose)
 
 
 # @njit
-def _compute_gradient(dose, parameters, weight, n_voxels, struct_idx):
+def _compute_gradient(dose, d_max, priority):
 
-    obj_grad = zeros((n_voxels,))
-    overdose = clip(dose - parameters, a_min=0, a_max=None)
+    overdose = clip(dose - d_max, a_min=0, a_max=None)
     grad = 2 * overdose / len(overdose)
-    obj_grad[struct_idx] = weight * grad
 
-    return obj_grad
+    return priority * grad

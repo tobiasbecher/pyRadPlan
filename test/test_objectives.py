@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from pyRadPlan.optimization.components.objectives import *
+from pyRadPlan.optimization.objectives import *
 
 # cst =
 # dij = {'numOfVoxels':27}

@@ -1,6 +1,6 @@
 """Squared Deviation."""
 
-# %% Imports
+from pydantic import Field
 
 from numba import njit
 from numpy import zeros
@@ -13,70 +13,27 @@ from .._objective import Objective
 class SquaredDeviation(Objective):
 
     name = "Squared Deviation"
-    parameter_names = ["d^{ref}"]
-    parameter_types = ["dose"]
-    parameters = 30.0
-    weight = 1.0
+    parameter_names = ["d_ref"]
+    # parameter_types = ["dose"]
 
-    def __init__(self, cst, dij, dRef=parameters, weight=weight):
-
-        self.cst = cst
-        self.dij = dij
-
-        self.adjusted_params = False
-
-        self.name = SquaredDeviation.name
-        self.parameter_names = SquaredDeviation.parameter_names
-        self.parameter_types = SquaredDeviation.parameter_types
-        self.parameters = dRef if isinstance(dRef, float) else float(dRef)
-        self.weight = weight if isinstance(weight, float) else float(weight)
-
-        super(SquaredDeviation, SquaredDeviation)._check_objective(
-            self,
-            self.name,
-            self.parameter_names,
-            self.parameter_types,
-            self.parameters,
-            self.weight,
-        )
+    d_ref: float = Field(default=60.0, ge=0.0)
 
     def compute_objective(self, dose, struct):
-        return _compute_objective(dose, self.parameters, self.weight)
+        return _compute_objective(dose, self.d_ref, self.priority)
 
     def compute_gradient(self, dose, struct):
-        return _compute_gradient(
-            dose,
-            self.parameters,
-            self.weight,
-            self.dij["numOfVoxels"],
-            self.cst[struct]["resized_indices"],
-        )
-
-    def get_parameters(self):
-        return self.parameters
-
-    def set_parameters(self, value):
-        self.parameters = value
-
-    def get_weight(self):
-        return self.weight
-
-    def set_weight(self, value):
-        self.weight = value
+        return _compute_gradient(dose, self.d_ref, self.priority)
 
 
 @njit
-def _compute_objective(dose, parameters, weight):
+def _compute_objective(dose, d_ref, priority):
 
-    deviation = dose - parameters
+    deviation = dose - d_ref
 
-    return weight * (deviation @ deviation) / len(dose)
+    return priority * (deviation @ deviation) / len(dose)
 
 
 # @njit
-def _compute_gradient(dose, parameters, weight, n_voxels, struct_idx):
+def _compute_gradient(dose, d_ref, priority):
 
-    obj_grad = zeros(n_voxels)
-    obj_grad[struct_idx] = 2 * weight * (dose - parameters) / len(dose)
-
-    return obj_grad
+    return 2 * priority * (dose - d_ref) / len(dose)
