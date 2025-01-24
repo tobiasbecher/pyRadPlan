@@ -14,13 +14,12 @@ from .._objective import Objective
 class DoseUniformity(Objective):
 
     name = "Dose Uniformity"
-    parameter_names = []
 
-    def compute_objective(self, dose, struct):
-        return _compute_objective(dose, self.priority)
+    def compute_objective(self, values):
+        return _compute_objective(values, self.priority)
 
-    def compute_gradient(self, dose, struct):
-        return _compute_gradient(dose, self.priority)
+    def compute_gradient(self, values):
+        return _compute_gradient(values, self.priority)
 
 
 @njit

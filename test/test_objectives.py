@@ -1,371 +1,204 @@
 import pytest
 import numpy as np
-from pyRadPlan.optimization.objectives import *
+from pyRadPlan.optimization.objectives import (
+    DoseUniformity,
+    SquaredDeviation,
+    SquaredOverdosing,
+    SquaredUnderdosing,
+    EUD,
+    MeanDose,
+    MinDVH,
+    MaxDVH,
+)
 
-# cst =
-# dij = {'numOfVoxels':27}
 
-# Arrange
-@pytest.fixture
-def get_cst_dij():
-    cst = {"PTV": {"resized_indices": [1, 2, 3]}}
-    dij = {"numOfVoxels": 27}
-    return (cst, dij)
-
-
-def test_DoseUniformity_constructor(get_cst_dij):
-    cst, dij = get_cst_dij
-    doseUni = DoseUniformity(cst, dij)
+def test_DoseUniformity_constructor():
+    doseUni = DoseUniformity()
     assert doseUni.name == "Dose Uniformity"
-    assert doseUni.parameter_names == []
-    assert doseUni.parameter_types == []
     assert doseUni.parameters == []
-    assert doseUni.weight == 1.0
-    assert doseUni.cst == cst
-    assert doseUni.dij == dij
+    assert doseUni.priority == 1.0
 
 
-def test_DoseUniformity_getters_setters(get_cst_dij):
-    cst, dij = get_cst_dij
-    doseUni = DoseUniformity(cst, dij)
-
-    # check non computing functions
-    assert [] == doseUni.get_parameters()
-    doseUni.set_parameters([1, 2, 3])
-    assert [1, 2, 3] == doseUni.get_parameters()
-    assert 1.0 == doseUni.get_weight()
-    doseUni.set_weight(2.0)
-    assert 2.0 == doseUni.get_weight()
-
-
-def test_DoseUniformity_compute_objective(get_cst_dij):
-    cst, dij = get_cst_dij
-    doseUni = DoseUniformity(cst, dij)
+def test_DoseUniformity_compute_objective():
+    doseUni = DoseUniformity()
 
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    assert np.abs(doseUni.compute_objective(dose, struct) - 1) < 1e-10
+    assert np.abs(doseUni.compute_objective(dose) - 1) < 1e-10
 
 
-def test_DoseUniformity_compute_gradient(get_cst_dij):
-    cst, dij = get_cst_dij
-    doseUni = DoseUniformity(cst, dij)
+def test_DoseUniformity_compute_gradient():
+    doseUni = DoseUniformity()
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    grad_expected = np.zeros(27)
-    grad_expected[1:4] = 1 / 2 * np.array([-1, 0, 1])
-    assert np.all((doseUni.compute_gradient(dose, struct) - grad_expected) < 1e-10)
+    grad_expected = 1 / 2 * np.array([-1, 0, 1])
+    assert np.all((doseUni.compute_gradient(dose) - grad_expected) < 1e-10)
 
 
-def test_SquaredDeviation_constructor(get_cst_dij):
-    cst, dij = get_cst_dij
-    sqDev = SquaredDeviation(cst, dij, 2)
-    assert sqDev.name == "Squared Deviation"
-    assert sqDev.parameter_names == ["d^{ref}"]
-    assert sqDev.parameter_types == ["dose"]
-    assert sqDev.parameters == 2.0
-    assert sqDev.weight == 1.0
-    assert sqDev.cst == cst
-    assert sqDev.dij == dij
+def test_SquaredDeviation_constructor():
+    sq_dev = SquaredDeviation(d_ref=2, priority=100)
+    assert sq_dev.parameters == [2.0]
+    assert sq_dev.name == "Squared Deviation"
+    assert sq_dev.d_ref == 2.0
+    assert sq_dev.priority == 100.0
 
 
-def test_SquaredDeviation_getters_setters(get_cst_dij):
-    cst, dij = get_cst_dij
-    sqDev = SquaredDeviation(cst, dij, 2)
-    # check non computing functions
-    assert 2.0 == sqDev.get_parameters()
-    sqDev.set_parameters(3.0)
-    assert 3.0 == sqDev.get_parameters()
-    assert 1.0 == sqDev.get_weight()
-    sqDev.set_weight(2.0)
-    assert 2.0 == sqDev.get_weight()
-
-
-def test_SquaredDeviation_compute_objective(get_cst_dij):
-    cst, dij = get_cst_dij
+def test_SquaredDeviation_compute_objective():
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    sqDev = SquaredDeviation(cst, dij, 2)
-    assert sqDev.compute_objective(dose, struct) == 2 / 3
+    sq_dev = SquaredDeviation(d_ref=2.0)
+    assert sq_dev.compute_objective(dose) == 2 / 3
 
 
-def test_SquaredDeviation_compute_gradient(get_cst_dij):
-    cst, dij = get_cst_dij
+def test_SquaredDeviation_compute_gradient():
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    sqDev = SquaredDeviation(cst, dij, 2)
-    grad_expected = np.zeros(27)
-    grad_expected[1:4] = 2 / 3 * np.array([-1, 0, 1])
-    assert np.all(sqDev.compute_gradient(dose, struct) == grad_expected)
+    sq_dev = SquaredDeviation(d_ref=2.0)
+    grad_expected = 2 / 3 * np.array([-1, 0, 1])
+    assert np.all(sq_dev.compute_gradient(dose) == grad_expected)
 
 
-def test_SquaredOverdosing_constructor(get_cst_dij):
-    cst, dij = get_cst_dij
-    sqOver = SquaredOverdosing(cst, dij, 2)
-    assert sqOver.name == "Squared Overdosing"
-    assert sqOver.parameter_names == ["d^{max}"]
-    assert sqOver.parameter_types == ["dose"]
-    assert sqOver.parameters == 2.0
-    assert sqOver.weight == 1.0
-    assert sqOver.cst == cst
-    assert sqOver.dij == dij
+def test_SquaredOverdosing_constructor():
+    sq_over = SquaredOverdosing(d_max=2, priority=100)
+    assert sq_over.parameter_names == ["d_max"]
+    # assert sq_over.parameter_types == ["dose"]
+    assert sq_over.parameters == [2.0]
+    assert sq_over.d_max == 2.0
+    assert sq_over.priority == 100.0
 
 
-def test_SquaredOverdosing_getters_setters(get_cst_dij):
-    cst, dij = get_cst_dij
-    sqOver = SquaredOverdosing(cst, dij, 2)
-    # check non computing functions
-    assert 2.0 == sqOver.get_parameters()
-    sqOver.set_parameters(3.0)
-    assert 3.0 == sqOver.get_parameters()
-    assert 1.0 == sqOver.get_weight()
-    sqOver.set_weight(2.0)
-    assert 2.0 == sqOver.get_weight()
-
-
-def test_SquaredOverdosing_compute_objective(get_cst_dij):
-    cst, dij = get_cst_dij
-    sqOver = SquaredOverdosing(cst, dij, 2)
+def test_SquaredOverdosing_compute_objective():
+    sq_over = SquaredOverdosing(d_max=2.0)
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    assert sqOver.compute_objective(dose, struct) == 1 / 3
+    assert sq_over.compute_objective(dose) == 1 / 3
 
 
-def test_SquaredOverdosing_compute_gradient(get_cst_dij):
-    cst, dij = get_cst_dij
+def test_SquaredOverdosing_compute_gradient():
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    sqOver = SquaredOverdosing(cst, dij, 2)
-    grad_expected = np.zeros(27)
-    grad_expected[1:4] = 2 / 3 * np.array([0, 0, 1])
-    assert np.all(sqOver.compute_gradient(dose, struct) == grad_expected)
+    sq_over = SquaredOverdosing(d_max=2)
+    grad_expected = 2 / 3 * np.array([0, 0, 1])
+    assert np.all(sq_over.compute_gradient(dose) == grad_expected)
 
 
-def test_SquaredUnderdosing_constructor(get_cst_dij):
-    cst, dij = get_cst_dij
-    sqUnder = SquaredUnderdosing(cst, dij, 2)
-    assert sqUnder.name == "Squared Underdosing"
-    assert sqUnder.parameter_names == ["d^{min}"]
-    assert sqUnder.parameter_types == ["dose"]
-    assert sqUnder.parameters == 2.0
-    assert sqUnder.weight == 1.0
-    assert sqUnder.cst == cst
-    assert sqUnder.dij == dij
+def test_SquaredUnderdosing_constructor():
+    sq_under = SquaredUnderdosing(d_min=2, priority=100)
+    assert sq_under.name == "Squared Underdosing"
+    assert sq_under.parameter_names == ["d_min"]
+    # assert sq_under.parameter_types == ["dose"]
+    assert sq_under.parameters == [2.0]
+    assert sq_under.d_min == 2.0
+    assert sq_under.priority == 100.0
 
 
-def test_SquaredUnderdosing_getters_setters(get_cst_dij):
-    cst, dij = get_cst_dij
-    sqUnder = SquaredUnderdosing(cst, dij, 2)
-    # check non computing functions
-    assert 2.0 == sqUnder.get_parameters()
-    sqUnder.set_parameters(3.0)
-    assert 3.0 == sqUnder.get_parameters()
-    assert 1.0 == sqUnder.get_weight()
-    sqUnder.set_weight(2.0)
-    assert 2.0 == sqUnder.get_weight()
-
-
-def test_SquaredUnderdosing_compute_objective(get_cst_dij):
-    cst, dij = get_cst_dij
-    sqUnder = SquaredUnderdosing(cst, dij, 2)
+def test_SquaredUnderdosing_compute_objective():
+    sq_under = SquaredUnderdosing(d_min=2.0)
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    assert sqUnder.compute_objective(dose, struct) == 1 / 3
+    assert sq_under.compute_objective(dose) == 1 / 3
 
 
-def test_SquaredUnderdosing_compute_gradient(get_cst_dij):
-    cst, dij = get_cst_dij
+def test_SquaredUnderdosing_compute_gradient():
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    sqUnder = SquaredUnderdosing(cst, dij, 2)
-    grad_expected = np.zeros(27)
-    grad_expected[1:4] = 2 / 3 * np.array([-1, 0, 0])
-    assert np.all(sqUnder.compute_gradient(dose, struct) == grad_expected)
+    sq_under = SquaredUnderdosing(d_min=2.0)
+    grad_expected = 2 / 3 * np.array([-1, 0, 0])
+    assert np.all(sq_under.compute_gradient(dose) == grad_expected)
 
 
-def test_EUD_constructor(get_cst_dij):
-    cst, dij = get_cst_dij
-    eud = EUD(cst, dij, 0, 3)
+def test_EUD_constructor():
+    eud = EUD(k=3, eud_ref=0.0, priority=100)
     assert eud.name == "EUD"
-    assert eud.parameter_names == ["EUD^{ref}", "k"]
-    assert eud.parameter_types == ["dose", "numeric"]
+    assert eud.parameter_names == ["eud_ref", "k"]
+    assert eud.parameter_types == ["reference", "numeric"]
     assert eud.parameters == [0.0, 3.0]
-    assert eud.weight == 1.0
-    assert eud.cst == cst
-    assert eud.dij == dij
+    assert eud.priority == 100.0
 
 
-def test_EUD_getters_setters(get_cst_dij):
-    cst, dij = get_cst_dij
-    eud = EUD(cst, dij, 0, 3)
-    # check non computing functions
-    assert [0.0, 3.0] == eud.get_parameters()
-    eud.set_parameters([3.0, 4.0])
-    assert [3.0, 4.0] == eud.get_parameters()
-    assert 1.0 == eud.get_weight()
-    eud.set_weight(2.0)
-    assert 2.0 == eud.get_weight()
-
-
-def test_EUD_compute_objective(get_cst_dij):
-    cst, dij = get_cst_dij
-    eud = EUD(cst, dij, 0, 3)
+def test_EUD_compute_objective():
+    eud = EUD(k=3, EUD_ref=0.0)
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    assert (
-        eud.compute_objective(dose, struct) - (1 / 3 * (1 + 2 ** (1 / 3) + 3 ** (1 / 3))) ** 6
-    ) < 1e-10
+    assert (eud.compute_objective(dose) - (1 / 3 * (1 + 2 ** (1 / 3) + 3 ** (1 / 3))) ** 6) < 1e-10
 
 
-def test_EUD_compute_gradient(get_cst_dij):
-    cst, dij = get_cst_dij
-    eud = EUD(cst, dij, 0, 3)
+def test_EUD_compute_gradient():
+    eud_obj = EUD(k=3, EUD_ref=0.0)
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    grad_expected = np.zeros(27)
-    dEUd = (1 + 2 ** (1 / 3) + 3 ** (1 / 3)) ** 2 * np.array([1, 2, 3]) ** (-2 / 3) * 1 / 3**3
-    EUd = (1 / 3 * (1 + 2 ** (1 / 3) + 3 ** (1 / 3))) ** 3
-    grad_expected[1:4] = 2 * (EUd - 0) * dEUd
-    assert np.all((eud.compute_gradient(dose, struct) - grad_expected) < 1e-10)
+    d_eud = (1 + 2 ** (1 / 3) + 3 ** (1 / 3)) ** 2 * np.array([1, 2, 3]) ** (-2 / 3) * 1 / 3**3
+    eud = (1 / 3 * (1 + 2 ** (1 / 3) + 3 ** (1 / 3))) ** 3
+    grad_expected = 2 * (eud - 0) * d_eud
+    assert np.all((eud_obj.compute_gradient(dose) - grad_expected) < 1e-10)
 
 
-def test_MeanDose_constructor(get_cst_dij):
-    cst, dij = get_cst_dij
-    meanDose = MeanDose(cst, dij, 2)
-    assert meanDose.name == "Mean Dose"
-    assert meanDose.parameter_names == ["d^{ref}"]
-    assert meanDose.parameter_types == ["dose"]
-    assert meanDose.parameters == 2.0
-    assert meanDose.weight == 1.0
-    assert meanDose.cst == cst
-    assert meanDose.dij == dij
+def test_MeanDose_constructor():
+    mean_dose = MeanDose(d_ref=2, priority=100)
+    assert mean_dose.name == "Mean Dose"
+    assert mean_dose.parameter_names == ["d_ref"]
+    assert mean_dose.parameter_types == ["reference"]
+    assert mean_dose.parameters == [2.0]
+    assert mean_dose.d_ref == 2.0
+    assert mean_dose.priority == 100.0
 
 
-def test_MeanDose_getters_setters(get_cst_dij):
-    cst, dij = get_cst_dij
-    meanDose = MeanDose(cst, dij, 2)
-    # check non computing functions
-    assert 2.0 == meanDose.get_parameters()
-    meanDose.set_parameters(3.0)
-    assert 3.0 == meanDose.get_parameters()
-    assert 1.0 == meanDose.get_weight()
-    meanDose.set_weight(2.0)
-    assert 2.0 == meanDose.get_weight()
-
-
-def test_MeanDose_compute_objective(get_cst_dij):
-    cst, dij = get_cst_dij
-    meanDose = MeanDose(cst, dij, 2)
+def test_MeanDose_compute_objective():
+    mean_dose = MeanDose(d_ref=2.0)
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    assert meanDose.compute_objective(dose, struct) == 0
+    assert mean_dose.compute_objective(dose) == 0
 
 
-def test_MeanDose_compute_gradient(get_cst_dij):
-    cst, dij = get_cst_dij
-    meanDose = MeanDose(cst, dij, 2)
+def test_MeanDose_compute_gradient():
+    mean_dose = MeanDose(d_ref=2.0)
     dose = np.array([1, 2, 3])
-    struct = "PTV"
-    grad_expected = np.zeros(27)
-    print(meanDose.compute_gradient(dose, struct))
-    assert np.all(meanDose.compute_gradient(dose, struct) == grad_expected)
+    grad_expected = np.zeros(3)
+    assert np.all(mean_dose.compute_gradient(dose) == grad_expected)
 
 
-def test_MinDVH_constructor(get_cst_dij):
-    cst, dij = get_cst_dij
-    minDVH = MinDVH(cst, dij, 2, 3)
-    assert minDVH.name == "Min DVH"
-    assert minDVH.parameter_names == ["d", "V^{min}"]
-    assert minDVH.parameter_types == ["dose", "numeric"]
-    assert minDVH.parameters == [2.0, 3.0]
-    assert minDVH.weight == 1.0
-    assert minDVH.cst == cst
-    assert minDVH.dij == dij
-
-
-def test_MinDVH_getters_setters(get_cst_dij):
-    cst, dij = get_cst_dij
-    minDVH = MinDVH(cst, dij, 2, 3)
-    # check non computing functions
-    assert [2.0, 3.0] == minDVH.get_parameters()
-    minDVH.set_parameters([3.0, 4.0])
-    assert [3.0, 4.0] == minDVH.get_parameters()
-    assert 1.0 == minDVH.get_weight()
-    minDVH.set_weight(2.0)
-    assert 2.0 == minDVH.get_weight()
+def test_MinDVH_constructor():
+    min_dvh = MinDVH(d=2, v_min=3, priority=100)
+    assert min_dvh.name == "Min DVH"
+    assert min_dvh.parameter_names == ["d", "v_min"]
+    assert min_dvh.parameter_types == ["reference", "relative_volume"]
+    assert min_dvh.d == 2.0
+    assert min_dvh.v_min == 3.0
+    assert min_dvh.priority == 100.0
+    assert min_dvh.parameters == [2.0, 3.0]
 
 
 def test_MinDVH_compute_objective():
-    cst = {"PTV": {"resized_indices": np.arange(0, 100, 1)}}
-    dij = {"numOfVoxels": 1000}
-    minDVH = MinDVH(cst, dij, 30, 0.95)
+    min_dvh = MinDVH(d=30.0, v_min=95)
     dose = np.ones(100)
     dose_2 = np.ones(100) * 50
-    struct = "PTV"
-    assert minDVH.compute_objective(dose, struct) == 841
-    assert minDVH.compute_objective(dose_2, struct) == 0
+    assert min_dvh.compute_objective(dose) == 841
+    assert min_dvh.compute_objective(dose_2) == 0
 
 
 def test_MinDVH_compute_gradient():
-    cst = {"PTV": {"resized_indices": np.arange(0, 100, 1)}}
-    dij = {"numOfVoxels": 1000}
-    minDVH = MinDVH(cst, dij, 30, 0.95)
+    min_dvh = MinDVH(d=30.0, v_min=95)
     dose = np.ones(100)
     dose_2 = np.ones(100) * 50
-    struct = "PTV"
-    grad_expected = np.zeros(1000)
-    grad_expected[0:100] = np.ones(100) * -0.58
-    grad_expected2 = np.zeros(1000)
-    assert np.all(minDVH.compute_gradient(dose, struct) == grad_expected)
-    assert np.all(minDVH.compute_gradient(dose_2, struct) == grad_expected2)
+    grad_expected = np.ones(100) * -0.58
+    grad_expected2 = np.zeros(100)
+    assert np.all(min_dvh.compute_gradient(dose) == grad_expected)
+    assert np.all(min_dvh.compute_gradient(dose_2) == grad_expected2)
 
 
 def test_MaxDVH_constructor():
-    cst = {"PTV": {"resized_indices": np.arange(0, 100, 1)}}
-    dij = {"numOfVoxels": 1000}
-    maxDVH = MaxDVH(cst, dij, 30, 0.95)
-    assert maxDVH.name == "Max DVH"
-    assert maxDVH.parameter_names == ["d", "V^{max}"]
-    assert maxDVH.parameter_types == ["dose", "numeric"]
-    assert maxDVH.parameters == [30.0, 0.95]
-    assert maxDVH.weight == 1.0
-    assert maxDVH.cst == cst
-    assert maxDVH.dij == dij
-
-
-def test_MaxDVH_getters_setters():
-    cst = {"PTV": {"resized_indices": np.arange(0, 100, 1)}}
-    dij = {"numOfVoxels": 1000}
-    maxDVH = MaxDVH(cst, dij, 30, 0.95)
-    # check non computing functions
-    assert [30.0, 0.95] == maxDVH.get_parameters()
-    maxDVH.set_parameters([3.0, 4.0])
-    assert [3.0, 4.0] == maxDVH.get_parameters()
-    assert 1.0 == maxDVH.get_weight()
-    maxDVH.set_weight(2.0)
-    assert 2.0 == maxDVH.get_weight()
+    max_dvh = MaxDVH(d=30.0, v_max=50, priority=100)
+    assert max_dvh.name == "Max DVH"
+    assert max_dvh.parameter_names == ["d", "v_max"]
+    assert max_dvh.parameter_types == ["reference", "relative_volume"]
+    assert max_dvh.d == 30.0
+    assert max_dvh.v_max == 50.0
+    assert max_dvh.priority == 100.0
+    assert max_dvh.parameters == [30.0, 50.0]
 
 
 def test_MaxDVH_compute_objective():
-    cst = {"PTV": {"resized_indices": np.arange(0, 100, 1)}}
-    dij = {"numOfVoxels": 1000}
-    maxDVH = MaxDVH(cst, dij, 30, 0.95)
+    max_dvh = MaxDVH(d=30.0, v_max=50)
     dose = np.ones(100)
     dose_2 = np.ones(100) * 50
-    struct = "PTV"
-    assert maxDVH.compute_objective(dose, struct) == 0
-    assert maxDVH.compute_objective(dose_2, struct) == 400
+    assert max_dvh.compute_objective(dose) == 0
+    assert max_dvh.compute_objective(dose_2) == 400
 
 
 def test_MaxDVH_compute_gradient():
-    cst = {"PTV": {"resized_indices": np.arange(0, 100, 1)}}
-    dij = {"numOfVoxels": 1000}
-    maxDVH = MaxDVH(cst, dij, 30, 0.95)
+    max_dvh = MaxDVH(d=30.0, v_max=50)
     dose = np.ones(100)
     dose_2 = np.ones(100) * 50
-    struct = "PTV"
-    grad_expected = np.zeros(1000)
-    grad_expected2 = np.zeros(1000)
-    grad_expected2[0:100] = np.ones(100) * 0.4
-    assert np.all(maxDVH.compute_gradient(dose, struct) == grad_expected)
-    assert np.all(maxDVH.compute_gradient(dose_2, struct) == grad_expected2)
+    grad_expected = np.zeros(100)
+    grad_expected2 = np.ones(100) * 0.4
+    assert np.all(max_dvh.compute_gradient(dose) == grad_expected)
+    assert np.all(max_dvh.compute_gradient(dose_2) == grad_expected2)

@@ -1,11 +1,12 @@
 """Squared Deviation."""
 
+from typing import Annotated
 from pydantic import Field
 
 from numba import njit
 from numpy import zeros
 
-from .._objective import Objective
+from .._objective import Objective, ParameterMetadata
 
 # %% Class definition
 
@@ -13,16 +14,14 @@ from .._objective import Objective
 class SquaredDeviation(Objective):
 
     name = "Squared Deviation"
-    parameter_names = ["d_ref"]
-    # parameter_types = ["dose"]
 
-    d_ref: float = Field(default=60.0, ge=0.0)
+    d_ref: Annotated[float, Field(default=60.0, ge=0.0), ParameterMetadata(kind="reference")]
 
-    def compute_objective(self, dose, struct):
-        return _compute_objective(dose, self.d_ref, self.priority)
+    def compute_objective(self, values):
+        return _compute_objective(values, self.d_ref, self.priority)
 
-    def compute_gradient(self, dose, struct):
-        return _compute_gradient(dose, self.d_ref, self.priority)
+    def compute_gradient(self, values):
+        return _compute_gradient(values, self.d_ref, self.priority)
 
 
 @njit

@@ -1,11 +1,11 @@
-from ._doseUniformity import DoseUniformity
-from ._EUD import EUD
-from ._maxDVH import MaxDVH
-from ._meanDose import MeanDose
-from ._minDVH import MinDVH
-from ._squaredDeviation import SquaredDeviation
-from ._squaredOverdosing import SquaredOverdosing
-from ._squaredUnderdosing import SquaredUnderdosing
+from ._std import DoseUniformity
+from ._eud import EUD
+from ._max_dvh import MaxDVH
+from ._mean import MeanDose
+from ._min_dvh import MinDVH
+from ._squared_dev import SquaredDeviation
+from ._squared_over import SquaredOverdosing
+from ._squared_under import SquaredUnderdosing
 
 __all__ = [
     "DoseUniformity",

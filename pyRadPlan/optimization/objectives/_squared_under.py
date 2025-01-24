@@ -1,11 +1,12 @@
 """Squared Underdosing."""
 
+from typing import Annotated
 from pydantic import Field
 
 from numba import njit
 from numpy import clip, zeros
 
-from .._objective import Objective
+from .._objective import Objective, ParameterMetadata
 
 # %% Class definition
 
@@ -13,16 +14,14 @@ from .._objective import Objective
 class SquaredUnderdosing(Objective):
 
     name = "Squared Underdosing"
-    # parameter_types = ["dose"]
-    parameter_names = ["d_min"]
 
-    d_min: float = Field(default=60.0, ge=0.0)
+    d_min: Annotated[float, Field(default=60.0, ge=0.0), ParameterMetadata(kind="reference")]
 
-    def compute_objective(self, dose, struct):
-        return _compute_objective(dose, self.d_min, self.priority)
+    def compute_objective(self, values):
+        return _compute_objective(values, self.d_min, self.priority)
 
-    def compute_gradient(self, dose, struct):
-        return _compute_gradient(dose, self.d_min, self.priority)
+    def compute_gradient(self, values):
+        return _compute_gradient(values, self.d_min, self.priority)
 
 
 @njit
