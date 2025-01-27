@@ -14,6 +14,8 @@ from pyRadPlan import (
     fluence_optimization,
 )
 
+from pyRadPlan.optimization.objectives import SquaredDeviation, SquaredOverdosing, MeanDose
+
 logging.basicConfig(level=logging.INFO)
 
 #  Read patient from provided TG119.mat file and validate data
@@ -31,7 +33,13 @@ stf = generate_stf(ct, cst, pln)
 # Calculate Dose Influence Matrix ("dij")
 dij = calc_dose_influence(ct, cst, stf, pln)
 
-# Optimize
+# Optimization
+cst.vois[1].objectives = [SquaredDeviation(priority=100.0, d_ref=3.0)]  # Target
+cst.vois[0].objectives = [SquaredOverdosing(priority=10.0, d_ref=1.0)]  # OAR
+cst.vois[2].objectives = [
+    MeanDose(priority=1.0, d_ref=0.0),
+    SquaredOverdosing(priority=10.0, d_ref=2.0),
+]  # BODY
 fluence = fluence_optimization(ct, cst, stf, dij, pln)
 
 # Result

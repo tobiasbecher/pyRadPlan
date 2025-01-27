@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, cast
 import numpy as np
 from numpy.typing import ArrayLike
 from scipy.optimize import minimize, Bounds
@@ -6,6 +6,7 @@ from scipy.optimize import minimize, Bounds
 from ...plan import Plan
 from .._optiprob import NonLinearPlanningProblem
 from ..solvers import NonLinearOptimizer
+from .._objective import Objective
 
 
 class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
@@ -21,13 +22,13 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
         self._grad_cache_intermediate = None
         self._grad_cache = None
+        self._result_cache = None
+        self._w_cache = None
 
         super().__init__(pln)
 
     def _initialize(self):
         super()._initialize()
-        self._target_voxels = self._cst.target_union_voxels(order="numpy")
-        self._patient_voxels = self._cst.patient_voxels(order="numpy")
 
         # Check if the solver is adequate to solve this problem
         # TODO: check that it can do constraints
@@ -45,44 +46,60 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
     def _objective_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the objective functions."""
-        dose = self._dij.get_result_arrays_from_intensity(x)
-        target_fun = (
-            np.sum((dose["physical_dose"][self._target_voxels] - self.target_prescription) ** 2)
-            / self._target_voxels.size
-        )
-        patient_fun = (
-            np.sum((dose["physical_dose"][self._patient_voxels]) ** 2) / self._patient_voxels.size
-        )
-        return np.array([target_fun, patient_fun])
+
+        # Check & get Caches
+        if not np.array_equal(x, self._w_cache):
+            self._result_cache = self._dij.get_result_arrays_from_intensity(x)
+            self._w_cache = x.copy()
+
+        dose = self._result_cache["physical_dose"]
+
+        # Loop over all objectives
+        f_vals = []
+
+        for obj_info in self._objective_list:
+            ix = obj_info[0]
+            tmp_obj_list = cast(list[Objective], obj_info[1])
+            f_vals += [obj.compute_objective(dose[ix]) for obj in tmp_obj_list]
+
+        # return as numpy array
+        return np.asarray(f_vals, dtype=np.float64)
 
     def _objective_function(self, x: np.ndarray) -> np.float64:
-        return np.dot(np.asarray(self.penalties), self._objective_functions(x))
+        return np.sum(self._objective_functions(x))
+        # return np.dot(np.asarray(self.penalties), self._objective_functions(x))
 
     def _objective_jacobian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective jacobian."""
 
-        d = self._dij.get_result_arrays_from_intensity(x)
+        # Check & get caaches
+        if not np.array_equal(x, self._w_cache):
+            self._result_cache = self._dij.get_result_arrays_from_intensity(x)
+            self._w_cache = x.copy()
+
+        dose = self._result_cache["physical_dose"]
 
         if self._grad_cache_intermediate is None:
-            self._grad_cache_intermediate = np.zeros((d["physical_dose"].size, 2))
+            num_objectives = sum([len(obj_info[1]) for obj_info in self._objective_list])
+            self._grad_cache_intermediate = np.zeros((num_objectives, dose.size), dtype=np.float32)
 
-        # We do no sanity checks here, i.e., the grids need to be the same
+        # Loop over objectives
+        cnt = 0
+        for obj_info in self._objective_list:
+            ix = obj_info[0]
+            tmp_obj_list = cast(list[Objective], obj_info[1])
+            for obj in tmp_obj_list:
+                self._grad_cache_intermediate[cnt, ix] = obj.compute_gradient(dose[ix])
+                cnt += 1
 
-        self._grad_cache_intermediate[self._target_voxels, 0] = (
-            2.0
-            / self._target_voxels.size
-            * (d["physical_dose"][self._target_voxels] - self.target_prescription)
-        )
-        self._grad_cache_intermediate[self._patient_voxels, 1] = (
-            2.0 / self._patient_voxels.size * (d["physical_dose"][self._patient_voxels])
-        )
-
-        self._grad_cache = self._dij.physical_dose.flat[0].T @ self._grad_cache_intermediate
+        # perform chain rule and store in cache
+        self._grad_cache = self._dij.physical_dose.flat[0].T @ self._grad_cache_intermediate.T
 
         return self._grad_cache
 
     def _objective_gradient(self, x: np.ndarray) -> np.ndarray:
-        return np.sum(self._objective_jacobian(x) * self.penalties, axis=1)
+        # return np.sum(self._objective_jacobian(x) * self.penalties, axis=1)
+        return np.sum(self._objective_jacobian(x), axis=1)
 
     def _objective_hessian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective hessian."""

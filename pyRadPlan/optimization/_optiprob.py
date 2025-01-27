@@ -34,6 +34,9 @@ class PlanningProblem(ABC):
     _dij: Dij
     _mult_scen: ScenarioModel
 
+    _objective_list: list
+    _constraint_list: list
+
     def __init__(self, pln: Union[Plan, dict] = None):
         self._scenario_model = None
 
@@ -129,6 +132,16 @@ class PlanningProblem(ABC):
             self._cst = self._cst.resample_on_new_ct(self._ct)
 
         # sanitize objectives and constraints
+        objectives = []
+        for voi in self._cst.vois:
+            if len(voi.objectives) > 0:
+                # get the index list
+                cube_ix = voi.indices_numpy
+                objs = voi.objectives
+
+                objectives.append((cube_ix, objs))
+
+        self._objective_list = objectives
 
         # set solver options
         self.solver = get_solver(self.solver)
