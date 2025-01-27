@@ -32,12 +32,11 @@ class OptimizationProblem(ABC):
         self._stf = None
         self._dij = None
 
+        self.optimizer = "scipy"
+
         if pln is not None:
             pln = validate_pln(pln)
             self.assign_properties_from_pln(pln)
-
-        if self.optimizer is None:
-            self.optimizer = "scipy"
 
         self.apply_overlap = True
 
@@ -106,13 +105,13 @@ class OptimizationProblem(ABC):
 
         # initial point
 
-    def _optimize(self) -> dict:
+    @abstractmethod
+    def _optimize(self):
         """Optimize the optimization problem."""
-        return {}
 
-    def _finalize(self) -> dict:
+    @abstractmethod
+    def _finalize(self) -> np.ndarray:
         """Finalize the optimization problem."""
-        return {}
 
     def assign_properties_from_pln(self, pln: Plan, warn_when_property_changed: bool = False):
         """

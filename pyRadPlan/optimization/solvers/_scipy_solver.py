@@ -80,7 +80,7 @@ class SciPySolver:
             "options": {"maxiter": max_iter, "disp": True},
         }
 
-    def __str__(self):
+    def __repr__(self):
         """
         Print the class attributes.
 

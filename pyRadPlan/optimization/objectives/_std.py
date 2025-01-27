@@ -4,7 +4,6 @@
 
 from math import sqrt
 from numba import njit
-from numpy import zeros
 
 from .._objective import Objective
 
