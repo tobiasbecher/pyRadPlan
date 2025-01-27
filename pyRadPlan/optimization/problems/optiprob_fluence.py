@@ -4,10 +4,11 @@ from numpy.typing import ArrayLike
 from scipy.optimize import minimize, Bounds
 
 from ...plan import Plan
-from .._optiprob import OptimizationProblem
+from .._optiprob import NonLinearPlanningProblem
+from ..solvers import NonLinearOptimizer
 
 
-class FluenceOptimizationProblem(OptimizationProblem):
+class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
     penalties: ArrayLike
     result: dict[str]
@@ -18,12 +19,29 @@ class FluenceOptimizationProblem(OptimizationProblem):
         self._target_voxels = None
         self._patient_voxels = None
 
+        self._grad_cache_intermediate = None
+        self._grad_cache = None
+
         super().__init__(pln)
 
     def _initialize(self):
         super()._initialize()
         self._target_voxels = self._cst.target_union_voxels(order="numpy")
         self._patient_voxels = self._cst.patient_voxels(order="numpy")
+
+        # Check if the solver is adequate to solve this problem
+        # TODO: check that it can do constraints
+        if not isinstance(self.solver, NonLinearOptimizer):
+            raise ValueError("Solver must be an instance of SolverBase")
+
+        self.solver.objective = self._objective_function
+        self.solver.gradient = self._objective_gradient
+        self.solver.bounds = (0.0, np.inf)
+        self.solver.max_iter = 500
+        self.solver.options = {
+            "disp": True,
+            "ftol": 1e-4,
+        }
 
     def _objective_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the objective functions."""
@@ -45,17 +63,23 @@ class FluenceOptimizationProblem(OptimizationProblem):
 
         d = self._dij.get_result_arrays_from_intensity(x)
 
-        dose_grad = np.zeros((d["physical_dose"].size, 2))
-        dose_grad[self._target_voxels, 0] = (
-            2
-            * (d["physical_dose"][self._target_voxels] - self.target_prescription)
+        if self._grad_cache_intermediate is None:
+            self._grad_cache_intermediate = np.zeros((d["physical_dose"].size, 2))
+
+        # We do no sanity checks here, i.e., the grids need to be the same
+
+        self._grad_cache_intermediate[self._target_voxels, 0] = (
+            2.0
             / self._target_voxels.size
+            * (d["physical_dose"][self._target_voxels] - self.target_prescription)
         )
-        dose_grad[self._patient_voxels, 1] = (
-            2 * (d["physical_dose"][self._patient_voxels]) / self._patient_voxels.size
+        self._grad_cache_intermediate[self._patient_voxels, 1] = (
+            2.0 / self._patient_voxels.size * (d["physical_dose"][self._patient_voxels])
         )
 
-        return self._dij.physical_dose.flat[0].T @ dose_grad
+        self._grad_cache = self._dij.physical_dose.flat[0].T @ self._grad_cache_intermediate
+
+        return self._grad_cache
 
     def _objective_gradient(self, x: np.ndarray) -> np.ndarray:
         return np.sum(self._objective_jacobian(x) * self.penalties, axis=1)
@@ -80,16 +104,8 @@ class FluenceOptimizationProblem(OptimizationProblem):
         """Define the variable bounds."""
         return {}
 
-    def _optimize(self):
-        self.result = minimize(
-            self._objective_function,
-            x0=np.ones((self._dij.total_num_of_bixels,), dtype=np.float32),
-            jac=self._objective_gradient,
-            method="L-BFGS-B",
-            options={"ftol": 1.0e-4, "maxiter": 500},
-            bounds=Bounds(0, np.inf),
-            # callback=callback,
-        )
+    def _solve(self) -> tuple[np.ndarray, dict]:
+        """Solve the problem."""
 
-    def _finalize(self) -> np.ndarray:
-        return self.result["x"]
+        x0 = np.zeros((self._dij.total_num_of_bixels,), dtype=np.float64)
+        return self.solver.solve(x0)

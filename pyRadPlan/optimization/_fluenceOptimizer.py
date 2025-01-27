@@ -16,7 +16,7 @@ from time import time
 
 from .projections import ConstantRBEProjection, DoseProjection
 from .components import OptimizationProblem
-from .solvers._scipy_solver import SciPySolver
+from .solvers._scipy_solver import OptimizerSciPy
 
 from pyRadPlan.plan import validate_pln
 from pyRadPlan.dij import Dij
@@ -110,7 +110,7 @@ class FluenceOptimizer:
         self.setUpperConstrBounds([])
 
         # Get solver attribute based on "solver" argument
-        SOLVER = {"scipy": SciPySolver}
+        SOLVER = {"scipy": OptimizerSciPy}
 
         self.wInit = self.wInit.reshape(-1)
         self.solver = SOLVER.get(solver, "scipy")(

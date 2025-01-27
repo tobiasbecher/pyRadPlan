@@ -2,10 +2,16 @@
 
 import cyipopt as ipopt
 
+from ._base_solvers import OptimizerBase
+
 #%% Class definition
 
 
-class Ipopt:
+class OptimizerIpopt(OptimizerBase):
+
+    name = "Interior Point Optimizer"
+    short_name = "ipopt"
+
     def __init__(
         self,
         n_vars,
