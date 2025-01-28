@@ -1,7 +1,7 @@
 from typing import Union, cast
 import numpy as np
 from numpy.typing import ArrayLike
-from scipy.optimize import minimize, Bounds
+
 
 from ...plan import Plan
 from .._optiprob import NonLinearPlanningProblem
@@ -22,8 +22,6 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
         self._grad_cache_intermediate = None
         self._grad_cache = None
-        self._result_cache = None
-        self._w_cache = None
 
         super().__init__(pln)
 
@@ -47,12 +45,13 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
     def _objective_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the objective functions."""
 
-        # Check & get Caches
-        if not np.array_equal(x, self._w_cache):
-            self._result_cache = self._dij.get_result_arrays_from_intensity(x)
-            self._w_cache = x.copy()
+        q_vectors = {}
+        q_scenarios = {}
 
-        dose = self._result_cache["physical_dose"]
+        # Check & get Caches
+        for q in self._quantities:
+            q_vectors[q.identifier] = q.compute(x)
+            q_scenarios[q.identifier] = q.scenarios
 
         # Loop over all objectives
         f_vals = []
@@ -60,7 +59,15 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         for obj_info in self._objective_list:
             ix = obj_info[0]
             tmp_obj_list = cast(list[Objective], obj_info[1])
-            f_vals += [obj.compute_objective(dose[ix]) for obj in tmp_obj_list]
+            for obj in tmp_obj_list:
+                f_vals.append(
+                    sum(
+                        [
+                            obj.compute_objective(q_vectors[obj.quantity].flat[scen_ix][ix])
+                            for scen_ix in q_scenarios[obj.quantity]
+                        ]
+                    )
+                )
 
         # return as numpy array
         return np.asarray(f_vals, dtype=np.float64)
@@ -72,34 +79,62 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
     def _objective_jacobian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective jacobian."""
 
-        # Check & get caaches
-        if not np.array_equal(x, self._w_cache):
-            self._result_cache = self._dij.get_result_arrays_from_intensity(x)
-            self._w_cache = x.copy()
-
-        dose = self._result_cache["physical_dose"]
-
+        q_vectors = {}
+        q_scenarios = {}
         if self._grad_cache_intermediate is None:
-            num_objectives = sum([len(obj_info[1]) for obj_info in self._objective_list])
-            self._grad_cache_intermediate = np.zeros((num_objectives, dose.size), dtype=np.float32)
+            initialize_cache = True
+            self._grad_cache_intermediate = {}
+        else:
+            initialize_cache = False
 
-        # Loop over objectives
+        # Check & get Caches
+        for q in self._quantities:
+            q_vectors[q.identifier] = q.compute(x)
+            q_scenarios[q.identifier] = q.scenarios
+            if initialize_cache:
+                self._grad_cache_intermediate[q.identifier] = np.zeros(
+                    (
+                        len(self._objectives_per_quantity[q.identifier]),
+                        self._dij.dose_grid.num_voxels,
+                    ),
+                    dtype=np.float32,
+                )
+            else:
+                self._grad_cache_intermediate[q.identifier].fill(0.0)
+
         cnt = 0
         for obj_info in self._objective_list:
             ix = obj_info[0]
             tmp_obj_list = cast(list[Objective], obj_info[1])
             for obj in tmp_obj_list:
-                self._grad_cache_intermediate[cnt, ix] = obj.compute_gradient(dose[ix])
+                q_cache_index = self._q_cache_index[cnt]
+                for scen_ix in q_scenarios[obj.quantity]:
+                    self._grad_cache_intermediate[obj.quantity][
+                        q_cache_index, ix
+                    ] += obj.compute_gradient(q_vectors[obj.quantity].flat[scen_ix][ix])
                 cnt += 1
 
         # perform chain rule and store in cache
-        self._grad_cache = self._dij.physical_dose.flat[0].T @ self._grad_cache_intermediate.T
+        if self._grad_cache is None:
+            self._grad_cache = np.zeros((cnt, self._dij.total_num_of_bixels), dtype=np.float64)
+        else:
+            self._grad_cache.fill(0.0)
+
+        for q in self._quantities:
+            for scen_ix in q_scenarios[q.identifier]:
+                self._grad_cache[
+                    self._objectives_per_quantity[q.identifier], :
+                ] += q.compute_chain_derivative(
+                    self._grad_cache_intermediate[q.identifier], x
+                ).flat[
+                    scen_ix
+                ]
 
         return self._grad_cache
 
     def _objective_gradient(self, x: np.ndarray) -> np.ndarray:
         # return np.sum(self._objective_jacobian(x) * self.penalties, axis=1)
-        return np.sum(self._objective_jacobian(x), axis=1)
+        return np.sum(self._objective_jacobian(x), axis=0)
 
     def _objective_hessian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective hessian."""

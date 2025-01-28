@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import Union, ClassVar, Optional
+from typing import Union, ClassVar, cast
 import warnings
 import logging
 
 import numpy as np
-from numpy.typing import ArrayLike
+
+# from numpy.typing import ArrayLike
 
 from pyRadPlan.plan import Plan, validate_pln
 from pyRadPlan.ct import CT, validate_ct
@@ -12,13 +13,17 @@ from pyRadPlan.cst import StructureSet, validate_cst
 from pyRadPlan.stf import SteeringInformation, validate_stf
 from pyRadPlan.dij import Dij, validate_dij
 from pyRadPlan.scenarios import ScenarioModel
+from pyRadPlan.quantities import FluenceDependentQuantity, get_quantity
 
+from . import Objective
 from .solvers import get_available_solvers, get_solver, SolverBase
+
 
 logger = logging.getLogger(__name__)
 
 
 class PlanningProblem(ABC):
+    """Abstrac class for all planning problems."""
 
     # Constant, Abstract properties are realized as ClassVars
     short_name: ClassVar[str]
@@ -36,6 +41,10 @@ class PlanningProblem(ABC):
 
     _objective_list: list
     _constraint_list: list
+
+    _quantities: list[FluenceDependentQuantity]
+    _q_cache_index: list[int]
+    _objectives_per_quantity: dict[str, int]
 
     def __init__(self, pln: Union[Plan, dict] = None):
         self._scenario_model = None
@@ -131,17 +140,61 @@ class PlanningProblem(ABC):
         else:
             self._cst = self._cst.resample_on_new_ct(self._ct)
 
-        # sanitize objectives and constraints
+        # sanitize objectives and constraints and manage required quantities
         objectives = []
+        quantity_ids = []
         for voi in self._cst.vois:
             if len(voi.objectives) > 0:
                 # get the index list
                 cube_ix = voi.indices_numpy
-                objs = voi.objectives
+                objs = cast(list[Objective], voi.objectives)
 
                 objectives.append((cube_ix, objs))
 
+                quantity_ids.extend([obj.quantity for obj in objs])
+
         self._objective_list = objectives
+
+        # unique quantities
+        quantity_ids = list(set(quantity_ids))
+        # get the quantities and check if they are fluence dependent
+        quantities = [get_quantity(qid) for qid in quantity_ids]
+        for q in quantities:
+            if not issubclass(q, FluenceDependentQuantity):
+                raise ValueError(
+                    f"Quantity {q} is not fluence dependent! Currently only fluence dependent "
+                    "quantities can be used in inverse planning!"
+                )
+
+        # TODO: manage scenarios
+        self._quantities = [q(self._dij) for q in quantities]
+
+        # obtain cache info to match quantities with objectives
+        self._q_cache_index = []
+        self._objectives_per_quantity = {q.identifier: [] for q in self._quantities}
+        obj_ix = 0
+        for obj_info in self._objective_list:
+            for obj in obj_info[1]:
+                for q in self._quantities:
+                    if q.identifier == obj.quantity:
+                        self._q_cache_index.append(
+                            len(self._objectives_per_quantity[q.identifier])
+                        )
+                        self._objectives_per_quantity[q.identifier].append(obj_ix)
+                    obj_ix += 1
+
+        # Alternative code idea when storing tuples
+        # quantity_obj_info = []
+        # for q in quantities:
+        #     q_instance = q(self._dij)
+
+        #     # find objective indices with quantity]
+        #     obj_ixs = []
+        #     for ix, obj in enumerate(self._objective_list):
+        #         if q_instance.identifier == obj.quantity:
+        #             obj_ixs.append(ix)
+        #     quantity_obj_info.append((q_instance, obj_ixs))
+        # self._quantities = quantity_obj_info
 
         # set solver options
         self.solver = get_solver(self.solver)

@@ -2,9 +2,10 @@
 from abc import abstractmethod
 from typing import ClassVar, get_type_hints, Any, Literal, Union, Optional
 
-from pydantic import computed_field, Field
+from pydantic import computed_field, Field, field_validator
 
 from pyRadPlan.core.datamodel import PyRadPlanBaseModel
+from pyRadPlan.quantities import get_available_quantities
 
 ParameterType = Union[Literal["reference", "numeric", "relative_volume"], list[str]]
 
@@ -46,6 +47,7 @@ class Objective(PyRadPlanBaseModel):
     name: ClassVar[str]
     has_hessian: ClassVar[bool] = False
     priority: float = Field(default=1.0, ge=0.0)
+    quantity: str = Field(default="physical_dose")
 
     @abstractmethod
     def compute_objective(self, values):
@@ -86,3 +88,12 @@ class Objective(PyRadPlanBaseModel):
             for meta in self.model_fields[name].metadata
             if isinstance(meta, ParameterMetadata)
         ]
+
+    @field_validator("quantity")
+    @classmethod
+    def _validate_quantity(cls, v):
+        if v not in get_available_quantities():
+            raise ValueError(
+                f"Quantity {v} not available. Choose from {get_available_quantities()}"
+            )
+        return v
