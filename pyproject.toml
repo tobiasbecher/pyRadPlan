@@ -59,6 +59,7 @@ dependencies = [
     "numpydantic==1.6.6",
     "SimpleITK==2.4.0",
     "tqdm>=4.0.0",
+    "pint>=0.24.0",
 #   "cudatoolkit",
 #   "Raytrace@git+https://github.com/ryanneph/raytrace.git@master#egg=raytrace"
 ]
