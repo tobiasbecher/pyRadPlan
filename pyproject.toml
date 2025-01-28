@@ -69,7 +69,7 @@ matlab = ["matlabengine"]
 octave = ["oct2py"]
 gui    = ["PyQt5"]
 
-dev = ["pytest","coverage","pytest-cov","pre-commit"]
+dev = ["pytest","coverage","pytest-cov","pre-commit","sphinx","numpydoc","pydata-sphinx-theme","sphinx-design","autodoc_pydantic","sphinx-autodoc-typehints"]
 
 [project.urls]
 "Homepage" = "https://git.dkfz.de"
