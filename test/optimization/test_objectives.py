@@ -9,7 +9,38 @@ from pyRadPlan.optimization.objectives import (
     MeanDose,
     MinDVH,
     MaxDVH,
+    get_available_objectives,
+    get_objective,
 )
+
+
+def test_objective_availability():
+    available_objectives = get_available_objectives()
+    assert "Dose Uniformity" in available_objectives
+    assert "Squared Deviation" in available_objectives
+    assert "Squared Overdosing" in available_objectives
+    assert "Squared Underdosing" in available_objectives
+    assert "EUD" in available_objectives
+    assert "Mean Dose" in available_objectives
+    assert "Min DVH" in available_objectives
+    assert "Max DVH" in available_objectives
+
+
+def test_get_objective_str():
+    dose_uni = get_objective("Dose Uniformity")
+    assert isinstance(dose_uni, DoseUniformity)
+
+
+def test_get_objective_dict():
+    dose_uni = get_objective({"name": "Dose Uniformity", "priority": 10.0})
+    assert isinstance(dose_uni, DoseUniformity)
+    assert dose_uni.priority == 10.0
+
+
+def test_get_objective_instance():
+    dose_uni = DoseUniformity(priority=10.0)
+    dose_uni2 = get_objective(dose_uni)
+    assert dose_uni == dose_uni2
 
 
 def test_DoseUniformity_constructor():

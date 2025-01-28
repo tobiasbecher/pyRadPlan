@@ -1,0 +1,74 @@
+import warnings
+import logging
+from typing import Union, Type
+from .._objective import Objective
+
+OBJECTIVES = {}
+
+logger = logging.getLogger(__name__)
+
+
+def register_objective(obj_cls: Type[Objective]) -> None:
+    """
+    Register a new objective.
+
+    Parameters
+    ----------
+    obj_cls : type
+        A Dose Solver class.
+    """
+    if not issubclass(obj_cls, Objective):
+        raise ValueError("Objective must be a subclass of Objective.")
+
+    if obj_cls.name is None:
+        raise ValueError("Objective must have a 'name' attribute.")
+
+    if obj_cls.name is None:
+        raise ValueError("Objective must have a 'name' attribute.")
+
+    obj_name = obj_cls.name
+    if obj_name in OBJECTIVES:
+        warnings.warn(f"Objective '{obj_name}' is already registered.")
+    else:
+        OBJECTIVES[obj_name] = obj_cls
+
+
+def get_available_objectives() -> dict[str, Type[Objective]]:
+    """
+    Get a list of available objectives.
+
+    Returns
+    -------
+    list
+        A list of available objectives.
+    """
+    return OBJECTIVES
+
+
+def get_objective(objective_desc: Union[str, dict, Objective]):
+    """
+    Returns a objective instance based on a descriptive parameter.
+
+    Parameters
+    ----------
+    objective_desc : Union[str, dict, Objective]
+        A string with the objective name, a dictionary with the objective configuration or a objective instance
+
+    Returns
+    -------
+    Objective
+        A objective instance
+    """
+    if isinstance(objective_desc, str):
+        objective = OBJECTIVES[objective_desc]()
+    elif isinstance(objective_desc, dict):
+        if "name" not in objective_desc:
+            raise ValueError("Objective configuration must have a 'name' key.")
+        objective_model = OBJECTIVES[objective_desc["name"]]
+        objective = objective_model.model_validate(objective_desc)
+    elif isinstance(objective_desc, Objective):
+        objective = objective_desc
+    else:
+        raise ValueError(f"Invalid objective description: {objective_desc}")
+
+    return objective
