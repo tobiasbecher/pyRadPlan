@@ -180,14 +180,10 @@ class StfGeneratorBase(ABC):
 
         # Now obtain the target voxel coordinates
         # TODO: 4D issues? And can this be done more
-        subscripts = np.array(np.unravel_index(self._target_voxels, self._ct.size))
-        self._target_voxel_coordinates = np.zeros(subscripts.shape)
 
-        # TODO: either numba jit or try to vectorize by using grids
-        for i in range(self._target_voxels.size):
-            self._target_voxel_coordinates[:, i] = self._cube_hu.TransformIndexToPhysicalPoint(
-                subscripts[:, i].tolist()
-            )
+        self._target_voxel_coordinates = np2sitk.linear_indices_to_grid_coordinates(
+            self._target_voxels, self._ct.grid, index_type="numpy"
+        ).T
 
         # Multiply with target mask to ignore densities outside of target
         apply_mask = sitk.MaskImageFilter()
