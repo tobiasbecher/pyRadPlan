@@ -229,19 +229,41 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         beam_info["kernel_xz"] = (kernel_x, kernel_z)
         beam_info["conv_mx_xz"] = (conv_mx_x, conv_mx_z)
 
-        raise NotImplementedError("You shall not pass!")
         # get index of central ray or closest to the central ray
-        # center = np.argmin(
-        # np.sum(np.array([ray["ray_pos_bev"] for ray in beam_info["beam"]["rays"]]) ** 2, axis=1)
-        # )
+        center = np.argmin(
+            np.sum(
+                np.array([ray["ray_pos_bev"] for ray in beam_info["beam"]["rays"]]) ** 2, axis=1
+            )
+        )
 
-        # get correct kernel for given SSD at central ray (nearest neighbor approximation)
-        # curr_ssd_ix = np.argmin(
-        #     np.abs([self.machine.data.kernel.SSD - beam_info["beam"]["rays"][center].SSD])
-        # )
+        center_ssd = beam_info["beam"]["rays"][center]["SSD"]
+
+        # get correct kernel for given SSD at central ray
+        kernels_at_ssd = kernel.get_kernels_at_ssd(center_ssd)
 
         # Display console message
-        # logger.info(f"\tSSD = {self.machine.data.kernel[curr_ssd_ix].SSD} mm ...")
+        logger.info(
+            "Kernel SSD = %g mm using %d components", center_ssd, kernel.num_kernel_components
+        )
+
+        # Get Interpolators
+        # TODO: need scipy interpolate here probably
+        kernel_mxs = np.apply_along_axis(
+            lambda x: np.interp(np.sqrt(kernel_x**2 + kernel_z**2), kernel.kernel_pos, x),
+            axis=1,
+            arr=kernels_at_ssd,
+        )
+
+        conv_mxs = np.zeros(
+            (kernel.num_kernel_components, kernel_conv_size, kernel_conv_size), dtype=np.float32
+        )
+        for c in range(kernel.num_kernel_components):
+            conv_mxs[c] = fft.ifft2(
+                fft.fft2(f_pre, (kernel_conv_size, kernel_conv_size))
+                * fft.fft2(kernel_mxs[c], (kernel_conv_size, kernel_conv_size))
+            )
+
+        raise NotImplementedError("You shall not pass!")
 
         return beam_info
 
