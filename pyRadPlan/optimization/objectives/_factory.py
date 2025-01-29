@@ -15,13 +15,10 @@ def register_objective(obj_cls: Type[Objective]) -> None:
     Parameters
     ----------
     obj_cls : type
-        A Dose Solver class.
+        An Objective class.
     """
     if not issubclass(obj_cls, Objective):
         raise ValueError("Objective must be a subclass of Objective.")
-
-    if obj_cls.name is None:
-        raise ValueError("Objective must have a 'name' attribute.")
 
     if obj_cls.name is None:
         raise ValueError("Objective must have a 'name' attribute.")
