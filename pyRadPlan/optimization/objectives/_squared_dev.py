@@ -4,7 +4,6 @@ from typing import Annotated
 from pydantic import Field
 
 from numba import njit
-from numpy import zeros
 
 from .._objective import Objective, ParameterMetadata
 
@@ -12,6 +11,14 @@ from .._objective import Objective, ParameterMetadata
 
 
 class SquaredDeviation(Objective):
+    """
+    Squared Deviation (least-squares) objective.
+
+    Parameters
+    ----------
+    d_ref : float
+        dose reference value
+    """
 
     name = "Squared Deviation"
 

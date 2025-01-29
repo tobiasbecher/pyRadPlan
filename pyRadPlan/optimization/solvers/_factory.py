@@ -57,7 +57,8 @@ def get_solver(solver_desc: Union[str, dict, SolverBase]):
     Parameters
     ----------
     solver_desc : Union[str, dict, SolverBase]
-        A string with the solver name, a dictionary with the solver configuration or a solver instance
+        A string with the solver name, a dictionary with the solver configuration or a solver
+        instance
 
     Returns
     -------

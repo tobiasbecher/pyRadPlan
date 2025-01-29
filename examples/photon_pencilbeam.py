@@ -14,6 +14,8 @@ from pyRadPlan import (
     fluence_optimization,
 )
 
+from pyRadPlan.optimization.objectives import SquaredDeviation, SquaredOverdosing, MeanDose
+
 logging.basicConfig(level=logging.INFO)
 
 #  Read patient from provided TG119.mat file and validate data
@@ -24,11 +26,12 @@ cst = validate_cst(tmp["cst"], ct=ct)
 
 # Create a plan object
 pln = PhotonPlan(machine="Generic")
-num_of_beams = 7
+num_of_beams = 5
 pln.prop_stf = {
-    "gantry_angles": np.linspace(0, 360, 7, endpoint=False),
-    "couch_angles": np.zeros((7,)),
+    "gantry_angles": np.linspace(0, 360, num_of_beams, endpoint=False),
+    "couch_angles": np.zeros((num_of_beams,)),
 }
+pln.prop_dose_calc["dose_grid"] = ct.grid
 
 # Generate Steering Geometry ("stf")
 stf = generate_stf(ct, cst, pln)
@@ -37,6 +40,12 @@ stf = generate_stf(ct, cst, pln)
 dij = calc_dose_influence(ct, cst, stf, pln)
 
 # Optimize
+cst.vois[1].objectives = [SquaredDeviation(priority=100.0, d_ref=3.0)]  # Target
+cst.vois[0].objectives = [SquaredOverdosing(priority=10.0, d_ref=1.0)]  # OAR
+cst.vois[2].objectives = [
+    MeanDose(priority=1.0, d_ref=0.0),
+    SquaredOverdosing(priority=10.0, d_ref=2.0),
+]  # BODY
 fluence = fluence_optimization(ct, cst, stf, dij, pln)
 
 # Result

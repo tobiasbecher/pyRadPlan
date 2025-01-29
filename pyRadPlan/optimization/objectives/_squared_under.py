@@ -4,7 +4,7 @@ from typing import Annotated
 from pydantic import Field
 
 from numba import njit
-from numpy import clip, zeros
+from numpy import clip
 
 from .._objective import Objective, ParameterMetadata
 
@@ -12,6 +12,14 @@ from .._objective import Objective, ParameterMetadata
 
 
 class SquaredUnderdosing(Objective):
+    """
+    Squared Underdosing (piece-wise negative least-squares) objective.
+
+    Parameters
+    ----------
+    d_min : float
+        minimum dose value (below which we penalize)
+    """
 
     name = "Squared Underdosing"
 

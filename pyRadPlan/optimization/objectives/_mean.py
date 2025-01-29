@@ -11,10 +11,22 @@ from .._objective import Objective, ParameterMetadata
 
 
 class MeanDose(Objective):
+    """
+    Mean Dose objective.
+
+    Parameters
+    ----------
+    d_ref : float
+        referene mean dose to achieve
+
+    Notes
+    -----
+    While we implement a reference value, we suggest to only use 0 as reference
+    """
 
     name = "Mean Dose"
 
-    d_ref: Annotated[float, Field(default=60.0, ge=0.0), ParameterMetadata(kind="reference")]
+    d_ref: Annotated[float, Field(default=0.0, ge=0.0), ParameterMetadata(kind="reference")]
 
     def compute_objective(self, values):
         return _compute_objective(values, self.d_ref, self.priority)

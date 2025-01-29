@@ -1,7 +1,6 @@
 from typing import Union
 import numpy as np
 from numpy.typing import ArrayLike
-from scipy.optimize import minimize, Bounds
 
 from ...plan import Plan
 from .._optiprob import NonLinearPlanningProblem

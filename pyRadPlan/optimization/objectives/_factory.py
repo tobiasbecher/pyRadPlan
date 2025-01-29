@@ -52,7 +52,8 @@ def get_objective(objective_desc: Union[str, dict, Objective]):
     Parameters
     ----------
     objective_desc : Union[str, dict, Objective]
-        A string with the objective name, a dictionary with the objective configuration or a objective instance
+        A string with the objective name, a dictionary with the objective configuration or a
+        objective instance
 
     Returns
     -------

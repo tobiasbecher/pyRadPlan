@@ -9,6 +9,16 @@ from .._objective import Objective, ParameterMetadata
 
 
 class MaxDVH(Objective):
+    """
+    Maximum DVH objective.
+
+    Parameters
+    ----------
+    d : float
+        dose point
+    v_max : float
+        max. relative volume [%]
+    """
 
     name = "Max DVH"
 

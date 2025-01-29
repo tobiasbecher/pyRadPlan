@@ -12,6 +12,14 @@ from .._objective import Objective, ParameterMetadata
 
 
 class SquaredOverdosing(Objective):
+    """
+    Squared Overdosing (piece-wise positive least-squares) objective.
+
+    Parameters
+    ----------
+    d_max : float
+        maximum dose value (above which we penalize)
+    """
 
     name = "Squared Overdosing"
 

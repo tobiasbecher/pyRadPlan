@@ -100,8 +100,8 @@ class PlanningProblem(ABC):
                 and prop_dict["opti_prob"] != self.short_name
             ):
                 raise ValueError(
-                    f"Inconsistent dose opti_probs given! pln asks for '{prop_dict['opti_prob']}', "
-                    f"but you are using '{self.short_name}'!"
+                    f"Inconsistent dose opti_probs given! pln asks for '{prop_dict['opti_prob']}'"
+                    f", but you are using '{self.short_name}'!"
                 )
             prop_dict.pop("opti_prob", None)
         else:

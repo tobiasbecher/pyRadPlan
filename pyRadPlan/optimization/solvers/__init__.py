@@ -1,13 +1,4 @@
-"""
-Solvers module.
-
-==================================================================
-
-The module aims to provide methods and classes for configuration of different \
-local and global solvers.
-"""
-
-# Author: Tim Ortkamp <tim.ortkamp@kit.edu>
+"""Solvers module providing different solvers for pyRadPlan."""
 
 from ._factory import register_solver, get_available_solvers, get_solver
 
@@ -31,5 +22,6 @@ __all__ = [
     "SolverBase",
     "NonLinearOptimizer",
     "register_solver",
-    "get_available_solvers" "get_solver",
+    "get_available_solvers",
+    "get_solver",
 ]

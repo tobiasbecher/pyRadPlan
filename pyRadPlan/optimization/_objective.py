@@ -1,6 +1,6 @@
 """Base Implementation for objective functions."""
 from abc import abstractmethod
-from typing import ClassVar, get_type_hints, Any, Literal, Union, Optional
+from typing import ClassVar, Any, Literal, Union, Optional
 
 from pydantic import computed_field, Field, field_validator
 
@@ -9,7 +9,7 @@ from pyRadPlan.quantities import get_available_quantities
 
 ParameterType = Union[Literal["reference", "numeric", "relative_volume"], list[str]]
 
-#%% Class definition
+
 class ParameterMetadata:
     """Parameter Metadata."""
 

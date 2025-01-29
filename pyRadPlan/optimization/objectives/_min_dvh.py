@@ -4,12 +4,22 @@ from typing import Annotated
 from pydantic import Field
 
 from numba import njit
-from numpy import logical_or, quantile, sort, zeros
+from numpy import logical_or, quantile, sort
 
 from .._objective import Objective, ParameterMetadata
 
 
 class MinDVH(Objective):
+    """
+    Minimum DVH objective.
+
+    Parameters
+    ----------
+    d : float
+        dose point
+    v_min : float
+        min. relative volume [%]
+    """
 
     name = "Min DVH"
 

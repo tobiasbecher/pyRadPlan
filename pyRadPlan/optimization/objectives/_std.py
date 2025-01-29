@@ -1,16 +1,13 @@
 """Dose uniformity."""
 
-# %% Imports
-
 from math import sqrt
 from numba import njit
 
 from .._objective import Objective
 
-# %% Class definition
-
 
 class DoseUniformity(Objective):
+    """Uniformity (minimize standard deviation) objective."""
 
     name = "Dose Uniformity"
 

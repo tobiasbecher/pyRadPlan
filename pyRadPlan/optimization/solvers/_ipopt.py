@@ -1,13 +1,16 @@
-#%% External package import
+"""
+Ipopt solver for non-linear optimization problems.
 
-import cyipopt as ipopt
+Notes
+-----
+Not installed by default. Uses ipyopt because it provides linux wheels
+"""
+import ipyopt as ipopt
 
-from ._base_solvers import OptimizerBase
-
-#%% Class definition
+from ._base_solvers import NonLinearOptimizer
 
 
-class OptimizerIpopt(OptimizerBase):
+class OptimizerIpopt(NonLinearOptimizer):
 
     name = "Interior Point Optimizer"
     short_name = "ipopt"

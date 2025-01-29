@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import ClassVar, Union, Optional
+from typing import ClassVar
 
 import numpy as np
 from numpy.typing import NDArray
