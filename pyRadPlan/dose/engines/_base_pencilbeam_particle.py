@@ -272,34 +272,34 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
         return kernel_interp
 
-    def _get_ray_geometry_from_beam(self, ray, curr_beam):
+    def _get_ray_geometry_from_beam(self, ray: dict[str], beam_info: dict[str]) -> dict[str]:
         lateral_ray_cutoff = self._get_lateral_distance_from_dose_cutoff_on_ray(ray)
 
         # Ray tracing for beam i and ray j
         ix, radial_dist_sq, _, _ = self.calc_geo_dists(
-            curr_beam["bev_coords"],
+            beam_info["bev_coords"],
             ray["source_point_bev"],
             ray["target_point_bev"],
             ray["sad"],
-            curr_beam["valid_coords_all"],
+            beam_info["valid_coords_all"],
             lateral_ray_cutoff,
         )
 
         # Subindex given the relevant indices from the geometric distance calculation
-        ray["valid_coords"] = [beam_ix & ix for beam_ix in curr_beam["valid_coords"]]
+        ray["valid_coords"] = [beam_ix & ix for beam_ix in beam_info["valid_coords"]]
         ray["ix"] = [self._vdose_grid[ix_in_grid] for ix_in_grid in ray["valid_coords"]]
 
         ray["radial_dist_sq"] = [
-            radial_dist_sq[beam_ix[ix]] for beam_ix in curr_beam["valid_coords"]
+            radial_dist_sq[beam_ix[ix]] for beam_ix in beam_info["valid_coords"]
         ]
 
         ray["valid_coords_all"] = np.any(np.vstack(ray["valid_coords"]), axis=1)
 
         ray["geo_depths"] = [
-            rD[ix] for rD, ix in zip(curr_beam["geo_depths"], ray["valid_coords"])
+            rD[ix] for rD, ix in zip(beam_info["geo_depths"], ray["valid_coords"])
         ]  # usually not needed for particle beams
         ray["rad_depths"] = [
-            rD[ix] for rD, ix in zip(curr_beam["rad_depths"], ray["valid_coords"])
+            rD[ix] for rD, ix in zip(beam_info["rad_depths"], ray["valid_coords"])
         ]
         return ray
 
@@ -470,14 +470,14 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
             for rD in beam_info["rad_depths"]
         ]
 
-        beam_info["valid_coords"] = [
-            np.array(
+        for scen in range(len(beam_info["valid_coords"])):
+            beam_info["valid_coords"][scen] = np.array(
                 [
                     True if ss & vc else False
-                    for ss, vc in zip(sub_select_ix[0], beam_info["valid_coords"])
+                    for ss, vc in zip(sub_select_ix[scen], beam_info["valid_coords"][scen])
                 ]
             )
-        ]  # list so that there are multiple scen
+
         beam_info["valid_coords_all"] = np.any(np.column_stack(beam_info["valid_coords"]), axis=1)
 
         # Precompute CutOff
@@ -802,8 +802,8 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
             self._machine.update_kernel_at_index(energy_ix, kernel)
 
-    def _init_ray(self, beam, j):
-        ray = super()._init_ray(beam, j)
+    def _init_ray(self, beam_info: dict[str], j: int) -> dict[str]:
+        ray = super()._init_ray(beam_info, j)
 
         self._machine = cast(IonAccelerator, self._machine)
 
