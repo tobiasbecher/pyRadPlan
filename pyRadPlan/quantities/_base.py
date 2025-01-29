@@ -18,7 +18,9 @@ class RTQuantity(ABC):
 
     scenarios: NDArray[np.int64]  # Scenarios the quantity is calculated / defined for
 
-    def __init__(self, scenarios=[0]):
+    def __init__(self, scenarios=None):
+        if scenarios is None:
+            scenarios = [0]
         self.scenarios = np.asarray(scenarios, dtype=np.int64)
 
 
