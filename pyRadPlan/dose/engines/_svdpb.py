@@ -9,7 +9,7 @@ import random
 
 import numpy as np
 import scipy.fft as fft
-from scipy.interpolate import LinearNDInterpolator
+from scipy.interpolate import RegularGridInterpolator
 
 from pyRadPlan.plan import PhotonPlan
 
@@ -70,7 +70,7 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
     def __init__(self, pln: PhotonPlan):
 
         self.use_custom_primary_photon_fluence = False
-        self.kernel_cutoff = 10.0
+        self.kernel_cutoff = np.inf
         self.random_seed = 0
         self.int_conv_resolution = 0.5
         self.enable_dij_sampling = True
@@ -83,26 +83,6 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         # Protected/Private attributes (equivalent to SetAccess = protected)
         self._is_field_based_dose_calc = None  # will be set
         self._field_width = None  # will be obtained during calculation
-
-        # Kernel Grid for convolution
-        self._kernel_conv_size = None  # size of the convolution kernel
-        self._kernel_x = None  # meshgrid in X
-        self._kernel_z = None  # meshgrid in Z
-        self._kernel_mxs = None  # list of kernel matrices
-
-        self._gauss_filter = None  # 2D gaussian filter to model penumbra
-        self._gauss_conv_size = None  # size of the gaussian convolution kernel
-
-        self._conv_mx_x = None  # convolution meshgrid in X
-        self._conv_mx_z = None  # convolution meshgrid in Z
-
-        self._f_x = None  # fluence meshgrid in X
-        self._f_z = None  # fluence meshgrid in Z
-
-        self._f_pre = None  # precomputed fluence if uniform fluence is used for calculation
-        self._interp_kernel_cache = (
-            None  # cached kernel interpolators (if precomputation per beam is possible)
-        )
 
         self._collimation = None  # collimation structure from DICOM import
 
@@ -185,6 +165,17 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
 
         kernel = cast(PhotonLINAC, self._machine).get_kernel_by_energy(energy)
 
+        if self.kernel_cutoff > kernel.kernel_pos[-1]:
+            logger.info(
+                "Kernel cutoff (%f mm) is larger than the beam's kernel range (%f mm)."
+                " Using kernel range.",
+                self.kernel_cutoff,
+                kernel.kernel_pos[-1],
+            )
+            kernel_cutoff = kernel.kernel_pos[-1]
+        else:
+            kernel_cutoff = self.kernel_cutoff
+
         sigma_gauss = kernel.penumbra / np.sqrt(8 * np.log(2))  # [mm]
 
         # use 5 times sigma as the limits for the gaussian convolution
@@ -204,7 +195,7 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         beam_info["gauss_filter"] = gauss_filter
 
         # get kernel size and distances
-        kernel_limit = np.ceil(self.kernel_cutoff / self.int_conv_resolution)
+        kernel_limit = np.ceil(kernel_cutoff / self.int_conv_resolution)
         kernel_grid = self.int_conv_resolution * np.arange(-kernel_limit, kernel_limit)
 
         kernel_x, kernel_z = np.meshgrid(kernel_grid, kernel_grid, indexing="xy")
@@ -252,7 +243,9 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         # Get Interpolators
         # TODO: need scipy interpolate here probably
         kernel_mxs = np.apply_along_axis(
-            lambda x: np.interp(np.sqrt(kernel_x**2 + kernel_z**2), kernel.kernel_pos, x),
+            lambda x: np.interp(
+                np.sqrt(kernel_x**2 + kernel_z**2), kernel.kernel_pos, x, left=0.0, right=0.0
+            ),
             axis=1,
             arr=kernels_at_ssd,
         )
@@ -261,7 +254,8 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         beam_info["kernel_mxs"] = kernel_mxs
         beam_info["f_pre"] = f_pre
         # beam_info["kernel_xz"] = (kernel_x.ravel(), kernel_z.ravel())
-        beam_info["conv_mx_xz"] = (conv_mx_x.ravel(), conv_mx_z.ravel())
+        # beam_info["conv_mx_xz"] = (conv_mx_x, conv_mx_z)
+        beam_info["kernel_conv_grid"] = kernel_conv_grid
         beam_info["kernel_conv_size"] = kernel_conv_size
 
         kernel_interpolators = self._get_kernel_interpolators(beam_info, f_pre)
@@ -269,7 +263,7 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
 
         return beam_info
 
-    def _compute_bixel(self, curr_ray, k):
+    def _compute_bixel(self, curr_ray: dict[str], k: int) -> dict[str, Any]:
         """
         PyRadPlan photon dose calculation for a single bixel.
 
@@ -278,34 +272,32 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         """
         bixel = {}
 
-        raise NotImplementedError("This method is not implemented yet.")
+        kernel = cast(PhotonSVDKernel, curr_ray["kernel"])
 
-        # if "physicalDose" in self._tmp_matrix_containers:
-        #     bixel["physicalDose"] = self.calc_single_bixel(
-        #         curr_ray.SAD,
-        #         self._machine.data.m,
-        #         self._machine.data.betas,
-        #         curr_ray.interp_kernels,
-        #         curr_ray.rad_depths,
-        #         curr_ray.geo_depths,
-        #         curr_ray.iso_lat_dists[:, 0],
-        #         curr_ray.iso_lat_dists[:, 1],
-        #     )
+        m = kernel.m
+        betas = kernel.kernel_betas.reshape((-1, 1))
+        rd = curr_ray["rad_depths"].reshape((1, -1))
+        interpolators = cast(list[RegularGridInterpolator], curr_ray["kernel_interpolators"])
+        iso_lat_dists = curr_ray["iso_lat_dists"]
+        geo_depths = curr_ray["geo_depths"]
+        sad = curr_ray["sad"]
 
-        #     # Sample dose only for bixel-based dose calculation
-        #     if self.enable_dij_sampling and not self._is_field_based_dose_calc:
-        #         bixel["ix"], bixel["physicalDose"] = self._sample_dij(
-        #             curr_ray.ix,
-        #             bixel["physicalDose"],
-        #             curr_ray.rad_depths,
-        #             curr_ray.radial_dist_sq,
-        #             curr_ray.bixel_width,
-        #         )
-        #     else:
-        #         bixel["ix"] = curr_ray.ix
-        # else:
-        #     bixel["ix"] = []
-        # return bixel
+        dose_component = betas / (betas - m) * (np.exp(-m * rd) - np.exp(-betas * rd))
+
+        interpolated_kernels = [interp(iso_lat_dists) for interp in interpolators]
+
+        for c, interp in enumerate(interpolated_kernels):
+            dose_component[c, :] *= interp
+
+        bixel_dose = np.sum(dose_component, axis=0)
+
+        bixel_dose *= ((sad) / geo_depths) ** 2
+
+        bixel["physical_dose"] = bixel_dose
+
+        bixel["ix"] = curr_ray["ix"]
+
+        return bixel
 
     def _get_kernel_interpolators(self, beam_info: dict[str], f: np.ndarray) -> list[Callable]:
         """Get kernel interpolator for photon dose calculation."""
@@ -313,7 +305,7 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         num_kernels = cast(PhotonSVDKernel, beam_info["kernel"]).num_kernel_components
         conv_size = beam_info["kernel_conv_size"]
         kernel_mxs = beam_info["kernel_mxs"]
-        conv_mx_xz = beam_info["conv_mx_xz"]
+        conv_grid = beam_info["kernel_conv_grid"]
 
         interpolators = [None] * num_kernels
         for c in range(num_kernels):
@@ -323,7 +315,7 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
                     * fft.fft2(kernel_mxs[c], (conv_size, conv_size))
                 )
             )
-            interpolators[c] = LinearNDInterpolator(conv_mx_xz, conv_mx.ravel())
+            interpolators[c] = RegularGridInterpolator((conv_grid, conv_grid), conv_mx)
 
         return interpolators
 
@@ -336,6 +328,8 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         """Initializes the current ray."""
 
         ray = super()._init_ray(beam_info, j)
+
+        ray["kernel"] = beam_info["kernel"]
 
         if self.use_custom_primary_photon_fluence or beam_info["field_based_dose_calc"]:
             if beam_info["field_based_dose_calc"]:
@@ -362,10 +356,3 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
             ray["kernel_interpolators"] = beam_info["kernel_interpolators"]
 
         return ray
-
-    @staticmethod
-    def calc_single_bixel(
-        sad, m, betas, interp_kernels, rad_depths, geo_dists, iso_lat_dists_x, iso_lat_dists_z
-    ):
-        """Performs a beamlet calculation."""
-        raise NotImplementedError("This method is not implemented yet.")
