@@ -37,10 +37,6 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         self.solver.gradient = self._objective_gradient
         self.solver.bounds = (0.0, np.inf)
         self.solver.max_iter = 500
-        self.solver.options = {
-            "disp": True,
-            "ftol": 1e-4,
-        }
 
     def _objective_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the objective functions."""

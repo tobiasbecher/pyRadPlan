@@ -13,6 +13,10 @@ class SolverBase(ABC):
     max_time: float
     bounds: ArrayLike
 
+    def __init__(self):
+        self.max_time = 3600
+        self.bounds = [0.0, np.inf]
+
     @abstractmethod
     def solve(self, x0: ArrayLike) -> tuple[np.ndarray, dict]:
         pass
@@ -41,6 +45,7 @@ class NonLinearOptimizer(SolverBase):
     constraints_jac: Callable
 
     def __init__(self):
+        super().__init__()
         self.max_iter = 500
         self.abs_obj_tol = 1e-6
 

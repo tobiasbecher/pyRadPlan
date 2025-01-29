@@ -49,7 +49,7 @@ class PlanningProblem(ABC):
     def __init__(self, pln: Union[Plan, dict] = None):
         self._scenario_model = None
 
-        self.solver = "scipy"
+        self.solver = "ipopt"
         self.apply_overlap = True
 
         if pln is not None:
@@ -58,7 +58,14 @@ class PlanningProblem(ABC):
 
         solvers = get_available_solvers()
         if self.solver not in solvers:
-            raise ValueError(f"Solver {self.solver} not available. Choose from {solvers}")
+            warnings.warn(f"Solver {self.solver} not available. Choose from {solvers}"
+                          ", and we will choose the first available one for you!")
+            solver_names = list(solvers.keys())
+            
+            if len(solver_names) == 0:
+                raise ValueError('No solver found!')
+            
+            self.solver = solver_names[0]
 
     def assign_properties_from_pln(self, pln: Plan, warn_when_property_changed: bool = False):
         """

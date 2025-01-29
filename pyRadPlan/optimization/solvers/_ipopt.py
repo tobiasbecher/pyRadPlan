@@ -5,7 +5,10 @@ Notes
 -----
 Not installed by default. Uses ipyopt because it provides linux wheels
 """
-import ipyopt as ipopt
+from ipyopt import Problem
+
+import numpy as np
+from numpy.typing import ArrayLike, NDArray
 
 from ._base_solvers import NonLinearOptimizer
 
@@ -15,84 +18,76 @@ class OptimizerIpopt(NonLinearOptimizer):
     name = "Interior Point Optimizer"
     short_name = "ipopt"
 
-    def __init__(
-        self,
-        n_vars,
-        n_constr,
-        problem_instance,
-        lb_var,
-        ub_var,
-        lb_constr,
-        ub_constr,
-        max_iter=500,
-        max_cpu_time=3000,
-    ):
+    options: dict[str]
+    
+    def __init__(self):
 
-        self.nlp = ipopt.problem(
-            n=n_vars,
-            m=n_constr,
-            problem_obj=problem_instance,
-            lb=lb_var,
-            ub=ub_var,
-            cl=lb_constr,
-            cu=ub_constr,
-        )
+        self.result = None
 
-        self.options = self.set_solver_options(max_iter, max_cpu_time)
+        super().__init__()
 
-    def __str__(self):
-        pass
+        self.options = {
+            'tol': 1e-10,
+            'dual_inf_tol': 1e-4,
+            'constr_viol_tol': 1e-4,
+            'compl_inf_tol': 1e-4,
+            'acceptable_iter': 5,
+            'acceptable_tol': self.abs_obj_tol,
+            'acceptable_constr_viol_tol': 1e-2,
+            'acceptable_dual_inf_tol': 1e10,
+            'acceptable_compl_inf_tol': 1e10,
+            'acceptable_obj_change_tol': 1e-6,
+            'max_iter': self.max_iter,
+            'max_cpu_time': float(self.max_time),
+            'mu_strategy': 'adaptive',
+            'hessian_approximation': 'limited-memory',
+            'limited_memory_max_history': 20,
+            'limited_memory_initialization': 'scalar2',
+            'linear_solver': 'mumps'
+        }
 
-    def set_solver_options(self, max_iter, max_cpu_time):
+    def solve(self, x0: ArrayLike) -> tuple[np.ndarray, dict]:
+        """
+        Solve a problem.
 
-        max_cpu_time = max_cpu_time if isinstance(max_cpu_time, float) else float(max_cpu_time)
+        Parameters
+        ----------
+        x0 : np.ndarray
+            Initial guess for the decision variables.
 
-        try:
-            options = {
-                "tol": 1e-10,
-                "dual_inf_tol": 1e-4,
-                "constr_viol_tol": 1e-4,
-                "compl_inf_tol": 1e-4,
-                "acceptable_iter": 5,
-                "acceptable_tol": 1e10,
-                "acceptable_constr_viol_tol": 1e-2,
-                "acceptable_dual_inf_tol": 1e10,
-                "acceptable_compl_inf_tol": 1e10,
-                "acceptable_obj_change_tol": 1e-4,
-                "max_iter": max_iter,
-                "max_cpu_time": max_cpu_time,
-                "mu_strategy": "adaptive",
-                "hessian_approximation": "limited-memory",
-                "limited_memory_max_history": 6,
-                "limited_memory_initialization": "scalar2",
-                "linear_solver": "ma57",
-            }
+        Returns
+        -------
+        result : dict
+        """
 
-            for key, val in options.items():
-                self.nlp.addOption(key, val)
+        self.options.update({"max_iter": self.max_iter, 'max_cpu_time': float(self.max_time), 'acceptable_tol': self.abs_obj_tol})
 
-        except TypeError:
-            options = {
-                "tol": 1e-8,
-                "dual_inf_tol": 1.0,
-                "constr_viol_tol": 1e-4,
-                "compl_inf_tol": 1e-4,
-                "acceptable_iter": 3,
-                "acceptable_tol": 1e10,
-                "acceptable_constr_viol_tol": 1e10,
-                "acceptable_dual_inf_tol": 1e10,
-                "acceptable_compl_inf_tol": 1e10,
-                "acceptable_obj_change_tol": 1e-3,
-                "max_iter": max_iter,
-                "max_cpu_time": max_cpu_time,
-                "mu_strategy": "adaptive",
-                "hessian_approximation": "limited-memory",
-                "limited_memory_max_history": 6,
-                "limited_memory_initialization": "scalar2",
-                "linear_solver": "ma27",
-            }
+        x0 = np.asarray(x0)
 
-            for key, val in options.items():
-                self.nlp.addOption(key, val)
+        eval_jac_g_sparsity_indices = (np.array([]), np.array([]))
+        eval_h_sparsity_indices = (np.array([]), np.array([]))
 
-        return options
+        def ipopt_derivative(x: NDArray[np.float64], out: NDArray[np.float64]):
+            out = self.gradient(x).astype(np.float64)
+            return out
+
+        # Set the optimization function
+        nlp = Problem(
+            n=x0.size,
+            x_l=np.zeros_like(x0),
+            x_u=np.inf * np.ones_like(x0),
+            m=0,
+            g_l=np.empty((0,)),
+            g_u=np.empty((0,)),
+            sparsity_indices_jac_g=eval_jac_g_sparsity_indices,
+            sparsity_indices_h=eval_h_sparsity_indices,
+            eval_f=self.objective,
+            eval_grad_f=ipopt_derivative,
+            eval_g=lambda _x,_out: None,
+            eval_jac_g=lambda _x,_out: None,
+            eval_h=None,
+            ipopt_options=self.options)
+
+        x, _, status = nlp.solve(x0=x0)
+
+        return x, status
