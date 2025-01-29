@@ -1,4 +1,3 @@
-from typing import cast
 import logging
 
 import numpy as np

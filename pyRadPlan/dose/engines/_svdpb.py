@@ -324,7 +324,7 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
 
         raise NotImplementedError("This method is not implemented yet.")
 
-    def _init_ray(self, beam_info, j):
+    def _init_ray(self, beam_info: dict[str], j: int) -> dict[str]:
         """Initializes the current ray."""
 
         ray = super()._init_ray(beam_info, j)

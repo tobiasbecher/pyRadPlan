@@ -404,13 +404,13 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                 )
 
         # Compute SSDs
-        curr_beam = self._compute_ssd(beam_info, ct, density_threshold=self.ssd_density_threshold)
+        beam_info = self._compute_ssd(beam_info, ct, density_threshold=self.ssd_density_threshold)
 
         logger.info("Done.")
 
-        return curr_beam
+        return beam_info
 
-    def _init_ray(self, curr_beam: dict, j: int) -> dict:
+    def _init_ray(self, beam_info: dict[str], j: int) -> dict[str]:
         """
         Initialize a ray for pencil beam dose calculation.
 
@@ -426,21 +426,21 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         dict
             The initialized ray.
         """
-        ray = curr_beam["beam"]["rays"][j]
-        ray["beam_index"] = curr_beam["beam_index"]
+        ray = beam_info["beam"]["rays"][j]
+        ray["beam_index"] = beam_info["beam_index"]
         ray["ray_index"] = j
-        ray["iso_center"] = curr_beam["beam"]["iso_center"]
+        ray["iso_center"] = beam_info["beam"]["iso_center"]
 
-        if "num_of_bixels_per_ray" not in curr_beam["beam"]:
+        if "num_of_bixels_per_ray" not in beam_info["beam"]:
             ray["num_of_bixels"] = 1
         else:
-            ray["num_of_bixels"] = curr_beam["beam"]["num_of_bixels_per_ray"][j]
+            ray["num_of_bixels"] = beam_info["beam"]["num_of_bixels_per_ray"][j]
 
-        ray["source_point_bev"] = curr_beam["beam"]["source_point_bev"]
-        ray["sad"] = curr_beam["beam"]["sad"]
-        ray["bixel_width"] = curr_beam["beam"]["bixel_width"]
+        ray["source_point_bev"] = beam_info["beam"]["source_point_bev"]
+        ray["sad"] = beam_info["beam"]["sad"]
+        ray["bixel_width"] = beam_info["beam"]["bixel_width"]
 
-        ray = self._get_ray_geometry_from_beam(ray, curr_beam)
+        ray = self._get_ray_geometry_from_beam(ray, beam_info)
 
         return ray
 

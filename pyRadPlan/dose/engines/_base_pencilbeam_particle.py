@@ -802,8 +802,8 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
             self._machine.update_kernel_at_index(energy_ix, kernel)
 
-    def _init_ray(self, beam, j):
-        ray = super()._init_ray(beam, j)
+    def _init_ray(self, beam_info: dict[str], j: int) -> dict[str]:
+        ray = super()._init_ray(beam_info, j)
 
         self._machine = cast(IonAccelerator, self._machine)
 
