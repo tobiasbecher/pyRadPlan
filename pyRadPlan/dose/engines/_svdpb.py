@@ -3,17 +3,18 @@ Implementation of a pencil beam dose calculation engine for photon beams
 based on the Singular-value
 decomposition (SVD) method by Bortfeld.
 """
-from typing import TypedDict, Literal, Any, cast
+from typing import TypedDict, Literal, Any, cast, Callable
 import logging
 import random
 
 import numpy as np
 import scipy.fft as fft
+from scipy.interpolate import LinearNDInterpolator
 
 from pyRadPlan.plan import PhotonPlan
 
 # from pyRadPlan.stf import Beam
-from pyRadPlan.machines import PhotonLINAC
+from pyRadPlan.machines import PhotonLINAC, PhotonSVDKernel
 from ._base_pencilbeam import PencilBeamEngineAbstract
 
 
@@ -163,6 +164,8 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
             logger.debug("Enabling bixel-based dose calculation for beam %d!", i)
             field_width = beam_info["beam"]["bixel_width"]
 
+        beam_info["field_based_dose_calc"] = field_based_dose_calc
+
         # TODO: obtain maximum field limits
 
         field_limit = np.ceil(field_width / (2 * self.int_conv_resolution))
@@ -197,6 +200,9 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
 
         gauss_conv_size = 2 * (field_limit + gauss_limit).astype(int)
 
+        beam_info["gauss_conv_size"] = gauss_conv_size
+        beam_info["gauss_filter"] = gauss_filter
+
         # get kernel size and distances
         kernel_limit = np.ceil(self.kernel_cutoff / self.int_conv_resolution)
         kernel_grid = self.int_conv_resolution * np.arange(-kernel_limit, kernel_limit)
@@ -213,6 +219,7 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         kernel_conv_size = 2 * kernel_conv_limit.astype(int)
 
         effective_lateral_cut_off = self.geometric_lateral_cutoff + field_width / np.sqrt(2)
+        beam_info["effective_lateral_cut_off"] = effective_lateral_cut_off
 
         if not field_based_dose_calc:
             n = np.floor(field_width / self.int_conv_resolution).astype(int)
@@ -224,10 +231,6 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
                     * fft.fft2(gauss_filter, (gauss_conv_size, gauss_conv_size))
                 )
                 f_pre = np.real(f_pre)
-
-        beam_info["f_pre"] = f_pre
-        beam_info["kernel_xz"] = (kernel_x, kernel_z)
-        beam_info["conv_mx_xz"] = (conv_mx_x, conv_mx_z)
 
         # get index of central ray or closest to the central ray
         center = np.argmin(
@@ -254,16 +257,15 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
             arr=kernels_at_ssd,
         )
 
-        conv_mxs = np.zeros(
-            (kernel.num_kernel_components, kernel_conv_size, kernel_conv_size), dtype=np.float32
-        )
-        for c in range(kernel.num_kernel_components):
-            conv_mxs[c] = fft.ifft2(
-                fft.fft2(f_pre, (kernel_conv_size, kernel_conv_size))
-                * fft.fft2(kernel_mxs[c], (kernel_conv_size, kernel_conv_size))
-            )
+        beam_info["kernel"] = kernel
+        beam_info["kernel_mxs"] = kernel_mxs
+        beam_info["f_pre"] = f_pre
+        # beam_info["kernel_xz"] = (kernel_x.ravel(), kernel_z.ravel())
+        beam_info["conv_mx_xz"] = (conv_mx_x.ravel(), conv_mx_z.ravel())
+        beam_info["kernel_conv_size"] = kernel_conv_size
 
-        raise NotImplementedError("You shall not pass!")
+        kernel_interpolators = self._get_kernel_interpolators(beam_info, f_pre)
+        beam_info["kernel_interpolators"] = kernel_interpolators
 
         return beam_info
 
@@ -305,46 +307,60 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         #     bixel["ix"] = []
         # return bixel
 
-    def _get_kernel_interpolators(self, _Fx):
+    def _get_kernel_interpolators(self, beam_info: dict[str], f: np.ndarray) -> list[Callable]:
         """Get kernel interpolator for photon dose calculation."""
 
-        raise NotImplementedError("This method is not implemented yet.")
+        num_kernels = cast(PhotonSVDKernel, beam_info["kernel"]).num_kernel_components
+        conv_size = beam_info["kernel_conv_size"]
+        kernel_mxs = beam_info["kernel_mxs"]
+        conv_mx_xz = beam_info["conv_mx_xz"]
 
-        # n_kernels = len(self._kernel_mxs)
-        # interp_kernels = [None] * n_kernels
-        # TODO: MATH and STUFF
+        interpolators = [None] * num_kernels
+        for c in range(num_kernels):
+            conv_mx = np.real(
+                fft.ifft2(
+                    fft.fft2(f, (conv_size, conv_size))
+                    * fft.fft2(kernel_mxs[c], (conv_size, conv_size))
+                )
+            )
+            interpolators[c] = LinearNDInterpolator(conv_mx_xz, conv_mx.ravel())
 
-        # # for ik in range(n_kernels):
-        # # 2D convolution of Fluence and Kernels in Fourier domain
-        # conv_mx = np.real(
-        #     np.fft.ifft2(
-        #         np.fft.fft2(
-        #             Fx, (self.kernel_conv_size, self.kernel_conv_size)
-        #         ) * np.fft.fft2(
-        #             self._kernel_mxs[ik], (self.kernel_conv_size, self.kernel_conv_size)
-        #         )
-        #     )
-        # )
-
-        # # Creates an interpolant for kernels from vectors position X and Z
-        # if pyRadPlan_cfg.is_matlab:
-        #     interp_kernels[ik] = RegularGridInterpolator(
-        #         (self.conv_mx_X, self.conv_mx_Z),
-        #         conv_mx, method='linear', bounds_error=False, fill_value=None
-        #     )
-
-        interpKernels = []
-        return interpKernels
+        return interpolators
 
     def _sample_dij(self, ix, bixel_dose, rad_depth_v, rad_distances_sq, bixel_width):
         """Performs lateral sampling of the beam."""
 
         raise NotImplementedError("This method is not implemented yet.")
 
-    def _init_ray(self, curr_beam, j):
+    def _init_ray(self, beam_info, j):
         """Initializes the current ray."""
 
-        ray = super()._init_ray(curr_beam, j)
+        ray = super()._init_ray(beam_info, j)
+
+        if self.use_custom_primary_photon_fluence or beam_info["field_based_dose_calc"]:
+            if beam_info["field_based_dose_calc"]:
+                f = ray["shape"]
+            else:
+                f = beam_info["f_pre"]
+
+            f = cast(np.ndarray, f)  # Typing
+
+            primary_fluence = cast(PhotonSVDKernel, beam_info["kernel"]).primary_fluence
+            r = np.sqrt(
+                (beam_info["f_x"] - ray["ray_pos_bev"][0]) ** 2
+                + (beam_info["f_x"] - ray["ray_pos_bev"][2]) ** 2
+            )
+            fx = f * np.interp(r, primary_fluence[:, 0], primary_fluence[:, 1])
+
+            n = beam_info["gauss_conv_size"]
+            gauss_filter = beam_info["gauss_filter"]
+
+            fx = np.real(fft.ifft2(fft.fft2(fx, (n, n)) * fft.fft2(gauss_filter, (n, n))))
+
+            ray["kernel_interpolators"] = self._get_kernel_interpolators(beam_info, fx)
+        else:
+            ray["kernel_interpolators"] = beam_info["kernel_interpolators"]
+
         return ray
 
     @staticmethod
