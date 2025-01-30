@@ -1,5 +1,11 @@
 """Base class for all dose engines."""
-import importlib_resources as resources
+import logging
+
+try:
+    import importlib.resources as resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
+
 import logging
 import warnings
 import time
