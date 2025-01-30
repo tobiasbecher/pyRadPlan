@@ -1,4 +1,7 @@
 from typing import Union, cast
+import time
+import logging
+
 import numpy as np
 from numpy.typing import ArrayLike
 
@@ -8,21 +11,29 @@ from ._optiprob import NonLinearPlanningProblem
 from ..solvers import NonLinearOptimizer
 from .._objective import Objective
 
+logger = logging.getLogger(__name__)
+
 
 class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
     """Non-linear fluence-based planning problem."""
 
     penalties: ArrayLike
     result: dict[str]
+    bypass_objective_jacobian: bool
 
     def __init__(self, pln: Union[Plan, dict] = None):
         self.penalties = np.asarray([1000, 1])
         self.target_prescription = 2.0
+        self.bypass_objective_jacobian = True
+
         self._target_voxels = None
         self._patient_voxels = None
 
         self._grad_cache_intermediate = None
         self._grad_cache = None
+        self._obj_times = []
+        self._deriv_times = []
+        self._solve_time = None
 
         super().__init__(pln)
 
@@ -70,7 +81,10 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         return np.asarray(f_vals, dtype=np.float64)
 
     def _objective_function(self, x: np.ndarray) -> np.float64:
-        return np.sum(self._objective_functions(x))
+        t = time.time()
+        f = np.sum(self._objective_functions(x))
+        self._obj_times.append(time.time() - t)
+        return f
         # return np.dot(np.asarray(self.penalties), self._objective_functions(x))
 
     def _objective_jacobian(self, x: np.ndarray) -> np.ndarray:
@@ -89,9 +103,13 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
             q_vectors[q.identifier] = q.compute(x)
             q_scenarios[q.identifier] = q.scenarios
             if initialize_cache:
+                if self.bypass_objective_jacobian:
+                    cache_rows = 1
+                else:
+                    cache_rows = len(self._objectives_per_quantity[q.identifier])
                 self._grad_cache_intermediate[q.identifier] = np.zeros(
                     (
-                        len(self._objectives_per_quantity[q.identifier]),
+                        cache_rows,
                         self._dij.dose_grid.num_voxels,
                     ),
                     dtype=np.float32,
@@ -104,7 +122,10 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
             ix = obj_info[0]
             tmp_obj_list = cast(list[Objective], obj_info[1])
             for obj in tmp_obj_list:
-                q_cache_index = self._q_cache_index[cnt]
+                if self.bypass_objective_jacobian:
+                    q_cache_index = 0
+                else:
+                    q_cache_index = self._q_cache_index[cnt]
                 for scen_ix in q_scenarios[obj.quantity]:
                     self._grad_cache_intermediate[obj.quantity][
                         q_cache_index, ix
@@ -113,25 +134,37 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
         # perform chain rule and store in cache
         if self._grad_cache is None:
-            self._grad_cache = np.zeros((cnt, self._dij.total_num_of_bixels), dtype=np.float64)
+            if self.bypass_objective_jacobian:
+                n_grad_caches = 1
+            else:
+                n_grad_caches = cnt
+
+            self._grad_cache = np.zeros(
+                (n_grad_caches, self._dij.total_num_of_bixels), dtype=np.float64
+            )
         else:
             self._grad_cache.fill(0.0)
 
         for q in self._quantities:
             for scen_ix in q_scenarios[q.identifier]:
-                self._grad_cache[
-                    self._objectives_per_quantity[q.identifier], :
-                ] += q.compute_chain_derivative(
-                    self._grad_cache_intermediate[q.identifier], x
-                ).flat[
-                    scen_ix
-                ]
+                if self.bypass_objective_jacobian:
+                    cache_ix = 0
+                else:
+                    cache_ix = self._objectives_per_quantity[q.identifier]
+
+                self._grad_cache[cache_ix, :] += (
+                    q.compute_chain_derivative(self._grad_cache_intermediate[q.identifier], x)
+                    .flat[scen_ix]
+                    .squeeze()
+                )
 
         return self._grad_cache
 
     def _objective_gradient(self, x: np.ndarray) -> np.ndarray:
-        # return np.sum(self._objective_jacobian(x) * self.penalties, axis=1)
-        return np.sum(self._objective_jacobian(x), axis=0)
+        t = time.time()
+        jac = np.sum(self._objective_jacobian(x), axis=0)
+        self._deriv_times.append(time.time() - t)
+        return jac
 
     def _objective_hessian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective hessian."""
@@ -156,5 +189,26 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
     def _solve(self) -> tuple[np.ndarray, dict]:
         """Solve the problem."""
 
+        self._deriv_times = []
+        self._obj_times = []
+
         x0 = np.zeros((self._dij.total_num_of_bixels,), dtype=np.float64)
-        return self.solver.solve(x0)
+        t = time.time()
+        result = self.solver.solve(x0)
+        self._solve_time = time.time() - t
+
+        logger.info(
+            "%d Objective function evaluations, avg. time: %g +/- %g s",
+            len(self._obj_times),
+            np.mean(self._obj_times),
+            np.std(self._obj_times),
+        )
+        logger.info(
+            "%d Derivative evaluations, avg. time: %g +/- %g s",
+            len(self._deriv_times),
+            np.mean(self._deriv_times),
+            np.std(self._deriv_times),
+        )
+        logger.info("Solver time: %g s", self._solve_time)
+
+        return result

@@ -19,7 +19,7 @@ class OptimizerIpopt(NonLinearOptimizer):
     short_name = "ipopt"
 
     options: dict[str]
-    
+
     def __init__(self):
 
         self.result = None
@@ -27,23 +27,24 @@ class OptimizerIpopt(NonLinearOptimizer):
         super().__init__()
 
         self.options = {
-            'tol': 1e-10,
-            'dual_inf_tol': 1e-4,
-            'constr_viol_tol': 1e-4,
-            'compl_inf_tol': 1e-4,
-            'acceptable_iter': 5,
-            'acceptable_tol': self.abs_obj_tol,
-            'acceptable_constr_viol_tol': 1e-2,
-            'acceptable_dual_inf_tol': 1e10,
-            'acceptable_compl_inf_tol': 1e10,
-            'acceptable_obj_change_tol': 1e-4,
-            'max_iter': self.max_iter,
-            'max_cpu_time': float(self.max_time),
-            'mu_strategy': 'adaptive',
-            'hessian_approximation': 'limited-memory',
-            'limited_memory_max_history': 20,
-            'limited_memory_initialization': 'scalar2',
-            'linear_solver': 'mumps',
+            "print_level": 5,
+            "tol": 1e-10,
+            "dual_inf_tol": 1e-4,
+            "constr_viol_tol": 1e-4,
+            "compl_inf_tol": 1e-4,
+            "acceptable_iter": 5,
+            "acceptable_tol": self.abs_obj_tol,
+            "acceptable_constr_viol_tol": 1e-2,
+            "acceptable_dual_inf_tol": 1e10,
+            "acceptable_compl_inf_tol": 1e10,
+            "acceptable_obj_change_tol": 1e-4,
+            "max_iter": self.max_iter,
+            "max_cpu_time": float(self.max_time),
+            "mu_strategy": "adaptive",
+            "hessian_approximation": "limited-memory",
+            "limited_memory_max_history": 20,
+            "limited_memory_initialization": "scalar2",
+            "linear_solver": "mumps",
         }
 
     def solve(self, x0: ArrayLike) -> tuple[np.ndarray, dict]:
@@ -60,7 +61,13 @@ class OptimizerIpopt(NonLinearOptimizer):
         result : dict
         """
 
-        self.options.update({"max_iter": self.max_iter, 'max_cpu_time': float(self.max_time), 'acceptable_tol': self.abs_obj_tol})
+        self.options.update(
+            {
+                "max_iter": self.max_iter,
+                "max_cpu_time": float(self.max_time),
+                "acceptable_tol": self.abs_obj_tol,
+            }
+        )
 
         x0 = np.asarray(x0)
 
@@ -83,10 +90,11 @@ class OptimizerIpopt(NonLinearOptimizer):
             sparsity_indices_h=eval_h_sparsity_indices,
             eval_f=self.objective,
             eval_grad_f=ipopt_derivative,
-            eval_g=lambda _x,_out: None,
-            eval_jac_g=lambda _x,_out: None,
+            eval_g=lambda _x, _out: None,
+            eval_jac_g=lambda _x, _out: None,
             eval_h=None,
-            ipopt_options=self.options)
+            ipopt_options=self.options,
+        )
 
         x, _, status = nlp.solve(x0=x0)
 
