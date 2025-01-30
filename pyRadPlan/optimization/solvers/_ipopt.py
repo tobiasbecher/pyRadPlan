@@ -36,14 +36,14 @@ class OptimizerIpopt(NonLinearOptimizer):
             'acceptable_constr_viol_tol': 1e-2,
             'acceptable_dual_inf_tol': 1e10,
             'acceptable_compl_inf_tol': 1e10,
-            'acceptable_obj_change_tol': 1e-6,
+            'acceptable_obj_change_tol': 1e-4,
             'max_iter': self.max_iter,
             'max_cpu_time': float(self.max_time),
             'mu_strategy': 'adaptive',
             'hessian_approximation': 'limited-memory',
             'limited_memory_max_history': 20,
             'limited_memory_initialization': 'scalar2',
-            'linear_solver': 'mumps'
+            'linear_solver': 'mumps',
         }
 
     def solve(self, x0: ArrayLike) -> tuple[np.ndarray, dict]:
@@ -68,7 +68,7 @@ class OptimizerIpopt(NonLinearOptimizer):
         eval_h_sparsity_indices = (np.array([]), np.array([]))
 
         def ipopt_derivative(x: NDArray[np.float64], out: NDArray[np.float64]):
-            out = self.gradient(x).astype(np.float64)
+            out[()] = self.gradient(x).astype(np.float64)
             return out
 
         # Set the optimization function
