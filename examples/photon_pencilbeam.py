@@ -30,6 +30,7 @@ num_of_beams = 5
 pln.prop_stf = {
     "gantry_angles": np.linspace(0, 360, num_of_beams, endpoint=False),
     "couch_angles": np.zeros((num_of_beams,)),
+    "iso_center": [0, 0, 0],
 }
 pln.prop_dose_calc["dose_grid"] = ct.grid
 
