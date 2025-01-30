@@ -58,13 +58,16 @@ class PlanningProblem(ABC):
 
         solvers = get_available_solvers()
         if self.solver not in solvers:
-            warnings.warn(f"Solver {self.solver} not available. Choose from {solvers}"
-                          ", and we will choose the first available one for you!")
             solver_names = list(solvers.keys())
-            
+
             if len(solver_names) == 0:
-                raise ValueError('No solver found!')
-            
+                raise ValueError("No solver found!")
+
+            warnings.warn(
+                f"Solver {self.solver} not available. Choose from {solver_names}"
+                ", and we will choose the first available one for you!"
+            )
+
             self.solver = solver_names[0]
 
     def assign_properties_from_pln(self, pln: Plan, warn_when_property_changed: bool = False):
