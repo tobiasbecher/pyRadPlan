@@ -3,11 +3,12 @@ import numpy as np
 from numpy.typing import ArrayLike
 
 from ...plan import Plan
-from .._optiprob import NonLinearPlanningProblem
+from ._optiprob import NonLinearPlanningProblem
 from ..solvers import NonLinearOptimizer
 
 
 class SimpleLeastSquaresFluenceOptimization(NonLinearPlanningProblem):
+    """Simple least squares fluence-based planning problem."""
 
     penalties: ArrayLike
     result: dict[str]
