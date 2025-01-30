@@ -1,6 +1,6 @@
 import os
 from typing import Union
-from importlib import resources
+import importlib_resources as resources
 from pymatreader import read_mat
 from pyRadPlan.machines import Machine, validate_machine
 

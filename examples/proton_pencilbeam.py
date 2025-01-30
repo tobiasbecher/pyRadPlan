@@ -1,4 +1,4 @@
-from importlib import resources
+import importlib_resources as resources
 import logging
 import numpy as np
 import SimpleITK as sitk

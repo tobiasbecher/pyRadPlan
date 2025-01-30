@@ -217,7 +217,7 @@ class VOI(PyRadPlanBaseModel, ABC):
         else:
             raise ValueError(f"Unknown order: {order}")
 
-    def scenario_indices(self, order_type="numpy") -> np.ndarray | list[np.ndarray]:
+    def scenario_indices(self, order_type="numpy") -> Union[np.ndarray, list[np.ndarray]]:
         """
         Returns the flattened indices of the individual scenarios.
 
@@ -249,7 +249,7 @@ class VOI(PyRadPlanBaseModel, ABC):
 
         raise ValueError("Sanity check failed - mask has invalid dimensions")
 
-    def masked_ct(self, order_type="numpy") -> sitk.Image | np.ndarray:
+    def masked_ct(self, order_type="numpy") -> Union[sitk.Image, np.ndarray]:
         """
         Returns the masked CT image, either as a numpy array or a SimpleITK
         image.

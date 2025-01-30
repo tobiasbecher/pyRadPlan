@@ -1,7 +1,7 @@
 import pytest
 from pyRadPlan.stf import SteeringInformation, create_stf, Beamlet
 import pymatreader
-from importlib import resources
+import importlib_resources as resources
 import numpy as np
 
 

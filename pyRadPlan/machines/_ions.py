@@ -137,8 +137,8 @@ class IonPencilBeamKernel(PyRadPlanBaseModel):
     @field_validator("idd", "sigma", "sigma_1", "sigma_2", "let", mode="after")
     @classmethod
     def validate_kernel_lengths(
-        cls, v: np.ndarray | None, info: ValidationInfo
-    ) -> np.ndarray | None:
+        cls, v: Union[np.ndarray, None], info: ValidationInfo
+    ) -> Union[np.ndarray, None]:
         """Validate the length of the kernel data."""
         if v is None:
             return v
@@ -151,8 +151,8 @@ class IonPencilBeamKernel(PyRadPlanBaseModel):
     @field_validator("sigma_multi", "weight_multi", mode="after")
     @classmethod
     def validate_multi_gaussian_kernel(
-        cls, v: np.ndarray | None, info: ValidationInfo
-    ) -> np.ndarray | None:
+        cls, v: Union[np.ndarray, None], info: ValidationInfo
+    ) -> Union[np.ndarray, None]:
         """Validate the length of the multi-gaussian kernel data."""
         if v is None:
             return v
@@ -165,8 +165,8 @@ class IonPencilBeamKernel(PyRadPlanBaseModel):
     @field_validator("alpha", "beta", mode="after")
     @classmethod
     def validate_alpha_beta(
-        cls, v: NDArray[Shape["1-*"], np.float64] | None, info: ValidationInfo
-    ) -> NDArray[Shape["1-*"], np.float64] | None:
+        cls, v: Union[NDArray[Shape["1-*"], np.float64], None], info: ValidationInfo
+    ) -> Union[NDArray[Shape["1-*"], np.float64], None]:
         """Validate the length of the alpha-beta kernel data."""
         if v is None:
             return v
@@ -192,7 +192,7 @@ class IonPencilBeamKernel(PyRadPlanBaseModel):
 
     @computed_field(return_type=NDArray[Shape["1-*"], np.float64], alias="alphaBetaRatio")
     @property
-    def alpha_beta_ratio(self) -> NDArray[Shape["1-*"], np.float64] | None:
+    def alpha_beta_ratio(self) -> Union[NDArray[Shape["1-*"], np.float64], None]:
         """Photon alpha-beta ratio for each alpha / beta kernel."""
         if self.alpha is None or self.beta is None:
             return None

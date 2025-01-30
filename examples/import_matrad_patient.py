@@ -7,7 +7,7 @@ calling the RayTracer.
 """
 
 # Standard Library Imports
-from importlib import resources
+import importlib_resources as resources
 import logging
 
 # Third Party Imports from pyRadPlan requirements

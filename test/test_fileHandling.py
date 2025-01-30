@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from importlib import resources
+import importlib_resources as resources
 from pathlib import Path
 from pyRadPlan.io.matLabFileHandler import MatLabFileHandler
 import pyRadPlan.matRad as matRad

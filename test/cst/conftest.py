@@ -1,5 +1,5 @@
 import pytest
-from importlib import resources
+import importlib_resources as resources
 import pymatreader
 import numpy as np
 import SimpleITK as sitk
