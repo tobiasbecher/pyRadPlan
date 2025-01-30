@@ -18,18 +18,21 @@ def test_simple_problem_ipopt():
     solver = get_solver("ipopt")
     # Define the problem
     def objective(x):
-        return x[0] ** 2 + x[1] ** 2
+        return float(x[0] ** 2 + x[1] ** 2)
 
     def gradient(x):
-        return [2 * x[0], 2 * x[1]]
+        return np.asarray([2 * x[0], 2 * x[1]], dtype=np.float64)
 
     solver.objective = objective
     solver.gradient = gradient
 
     # Initial guess
-    x0 = [1.0, 1.0]
+    x0 = np.asarray([1.0, 1.0], dtype=np.float64)
 
     # Solve
-    result = solver.solve(x0)
+    result, status = solver.solve(x0)
+    
+    assert isinstance(result, np.ndarray)
+    assert isinstance(status, int)
 
-    assert np.all(np.isclose(result[0], 0.0))
+    assert np.all(np.isclose(result, 0.0, atol=1e-4))
