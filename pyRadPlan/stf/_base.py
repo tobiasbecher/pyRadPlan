@@ -161,7 +161,7 @@ class StfGeneratorBase(ABC):
             ).astype(int)
 
             dilation = sitk.BinaryDilateImageFilter()
-            dilation.SetKernelType(sitk.sitkBall)
+            dilation.SetKernelType(sitk.sitkBox)
             dilation.SetKernelRadius(voxel_margin.astype(int).tolist())
 
             self._target_mask = dilation.Execute(self._target_mask)
