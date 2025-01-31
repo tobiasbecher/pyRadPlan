@@ -48,6 +48,9 @@ class StfGeneratorExternalBeamRayBixel(StfGeneratorExternalBeam):
 
         super().__init__(pln)
 
+    def _computed_target_margin(self) -> float:
+        return self.bixel_width
+
     def _create_rays(self, beam) -> list[dict]:
         """Get the rays on a beam / stf element."""
 
