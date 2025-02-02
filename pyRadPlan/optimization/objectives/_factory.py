@@ -1,7 +1,7 @@
 import warnings
 import logging
 from typing import Union, Type
-from .._objective import Objective
+from ._objective import Objective
 
 __matrad_name_map__ = {
     "DoseObjectives.matRad_SquaredDeviation": "Squared Deviation",

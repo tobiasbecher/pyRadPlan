@@ -1,3 +1,4 @@
+from ._objective import Objective
 from ._std import DoseUniformity
 from ._eud import EUD
 from ._max_dvh import MaxDVH
@@ -19,6 +20,7 @@ register_objective(MaxDVH)
 register_objective(DoseUniformity)
 
 __all__ = [
+    "Objective",
     "DoseUniformity",
     "EUD",
     "MaxDVH",

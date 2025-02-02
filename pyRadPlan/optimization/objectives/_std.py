@@ -3,7 +3,7 @@
 from math import sqrt
 from numba import njit
 
-from .._objective import Objective
+from ._objective import Objective
 
 
 class DoseUniformity(Objective):

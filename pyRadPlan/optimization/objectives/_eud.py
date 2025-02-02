@@ -5,7 +5,7 @@ from pydantic import Field
 from numba import njit
 from numpy import sum as npsum
 
-from .._objective import Objective, ParameterMetadata
+from ._objective import Objective, ParameterMetadata
 
 
 class EUD(Objective):

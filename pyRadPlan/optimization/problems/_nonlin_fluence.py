@@ -9,7 +9,7 @@ from numpy.typing import ArrayLike
 from ...plan import Plan
 from ._optiprob import NonLinearPlanningProblem
 from ..solvers import NonLinearOptimizer
-from .._objective import Objective
+from ..objectives import Objective
 
 logger = logging.getLogger(__name__)
 

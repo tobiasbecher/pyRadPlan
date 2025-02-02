@@ -6,7 +6,7 @@ backprojection classes.
 
 # Author: Tim Ortkamp <tim.ortkamp@kit.edu>, 2023
 
-from ._objective import Objective
+from .objectives import Objective
 from ._fluence_optimization import fluence_optimization
 
 __all__ = ["fluence_optimization", "Objective"]

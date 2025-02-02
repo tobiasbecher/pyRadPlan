@@ -6,7 +6,7 @@ from pydantic import Field
 from numba import njit
 from numpy import logical_or, quantile, sort
 
-from .._objective import Objective, ParameterMetadata
+from ._objective import Objective, ParameterMetadata
 
 
 class MinDVH(Objective):

@@ -15,7 +15,7 @@ from pyRadPlan.dij import Dij, validate_dij
 from pyRadPlan.scenarios import ScenarioModel
 from pyRadPlan.quantities import FluenceDependentQuantity, get_quantity
 
-from .. import Objective
+from ..objectives import Objective
 from ..solvers import get_available_solvers, get_solver, SolverBase
 
 

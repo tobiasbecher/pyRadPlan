@@ -5,7 +5,7 @@ from pydantic import Field
 from numba import njit
 from numpy import ones
 
-from .._objective import Objective, ParameterMetadata
+from ._objective import Objective, ParameterMetadata
 
 # %% Class definition
 
