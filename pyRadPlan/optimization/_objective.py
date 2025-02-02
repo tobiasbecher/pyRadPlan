@@ -68,7 +68,7 @@ class Objective(PyRadPlanBaseModel):
     @property
     def parameter_names(self) -> list[str]:
         """Parameter names."""
-        return self._parameter_names
+        return self._parameter_names()
 
     @classmethod
     def _parameter_names(cls) -> list[str]:
@@ -90,7 +90,7 @@ class Objective(PyRadPlanBaseModel):
         """Parameter types as classmethod."""
         return [
             meta.kind
-            for name in cls.parameter_names
+            for name in cls._parameter_names()
             for meta in cls.model_fields[name].metadata
             if isinstance(meta, ParameterMetadata)
         ]
