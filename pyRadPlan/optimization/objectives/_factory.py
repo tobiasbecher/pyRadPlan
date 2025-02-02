@@ -3,6 +3,16 @@ import logging
 from typing import Union, Type
 from .._objective import Objective
 
+__matrad_name_map__ = {
+    "DoseObjectives.matRad_SquaredDeviation": "Squared Deviation",
+    "DoseObjectives.matRad_SquaredUnderdosing": "Squared Underdosing",
+    "DoseObjectives.matRad_SquaredOverdosing": "Squared Overdosing",
+    "DoseObjectives.matRad_MeanDose": "Mean Dose",
+    "DoseObjectives.matRad_EUD": "EUD",
+    "DoseObjectives.matRad_MinDVH": "MinDVH",
+    "DoseObjectives.matRad_MaxDVH": "MaxDVH",
+}
+
 OBJECTIVES = {}
 
 logger = logging.getLogger(__name__)
@@ -61,8 +71,16 @@ def get_objective(objective_desc: Union[str, dict, Objective]):
         objective = OBJECTIVES[objective_desc]()
     elif isinstance(objective_desc, dict):
         if "name" not in objective_desc:
-            raise ValueError("Objective configuration must have a 'name' key.")
-        objective_model = OBJECTIVES[objective_desc["name"]]
+            logger.debug("Objective not found, trying matRad-like objective.")
+            if "className" not in objective_desc:
+                raise ValueError(f"Invalid objective description: {objective_desc}")
+            objective_name = __matrad_name_map__.get(objective_desc["className"], None)
+            if objective_name is None:
+                raise ValueError(f"Invalid objective description: {objective_desc}")
+        else:
+            objective_name = objective_desc["name"]
+
+        objective_model = OBJECTIVES[objective_name]
         objective = objective_model.model_validate(objective_desc)
     elif isinstance(objective_desc, Objective):
         objective = objective_desc

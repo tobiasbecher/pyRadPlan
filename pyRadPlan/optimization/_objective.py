@@ -1,13 +1,16 @@
 """Base Implementation for objective functions."""
 from abc import abstractmethod
 from typing import ClassVar, Any, Literal, Union, Optional
+import logging
 
-from pydantic import computed_field, Field, field_validator
+from pydantic import computed_field, Field, field_validator, model_validator
 
 from pyRadPlan.core.datamodel import PyRadPlanBaseModel
 from pyRadPlan.quantities import get_available_quantities
 
 ParameterType = Union[Literal["reference", "numeric", "relative_volume"], list[str]]
+
+logger = logging.getLogger(__name__)
 
 
 class ParameterMetadata:
@@ -46,7 +49,7 @@ class Objective(PyRadPlanBaseModel):
 
     name: ClassVar[str]
     has_hessian: ClassVar[bool] = False
-    priority: float = Field(default=1.0, ge=0.0)
+    priority: float = Field(default=1.0, ge=0.0, alias="penalty")
     quantity: str = Field(default="physical_dose")
 
     @abstractmethod
@@ -65,10 +68,31 @@ class Objective(PyRadPlanBaseModel):
     @property
     def parameter_names(self) -> list[str]:
         """Parameter names."""
+        return self._parameter_names
+
+    @classmethod
+    def _parameter_names(cls) -> list[str]:
+        """Parameter names as classmethod."""
         return [
             name
-            for name, info in self.model_fields.items()
+            for name, info in cls.model_fields.items()
             if any(isinstance(meta, ParameterMetadata) for meta in info.metadata)
+        ]
+
+    @computed_field
+    @property
+    def parameter_types(self) -> list[ParameterType]:
+        """Parameter types."""
+        return self._parameter_types()
+
+    @classmethod
+    def _parameter_types(cls) -> list[ParameterType]:
+        """Parameter types as classmethod."""
+        return [
+            meta.kind
+            for name in cls.parameter_names
+            for meta in cls.model_fields[name].metadata
+            if isinstance(meta, ParameterMetadata)
         ]
 
     @computed_field
@@ -76,18 +100,6 @@ class Objective(PyRadPlanBaseModel):
     def parameters(self) -> list[Any]:
         """Parameter values."""
         return [getattr(self, name) for name in self.parameter_names]
-
-    @computed_field
-    @property
-    def parameter_types(self) -> list[ParameterType]:
-        """Parameter types."""
-        # Find the ParameterMetadata instance in the metadata list
-        return [
-            meta.kind
-            for name in self.parameter_names
-            for meta in self.model_fields[name].metadata
-            if isinstance(meta, ParameterMetadata)
-        ]
 
     @field_validator("quantity")
     @classmethod
@@ -97,3 +109,40 @@ class Objective(PyRadPlanBaseModel):
                 f"Quantity {v} not available. Choose from {get_available_quantities()}"
             )
         return v
+
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_model(cls, data: Any) -> Any:
+        """Pre-validate the input and perform conversions if necessary."""
+
+        # Check if this is a matRad-like objective
+        if isinstance(data, dict) and "className" in data:
+            data = data.copy()
+
+            # Should we confirm once more we have the correct objective?
+            data.pop("className")
+
+            params = data.get("parameters", [])
+
+            # If there are not more than one parameter,
+            # it will usually not be in a list so we put it into one
+            if not isinstance(params, list):
+                params = [params]
+
+            # obtain the parameter names
+            param_names = cls._parameter_names()
+
+            if len(params) != len(param_names):
+                logger.warning(
+                    "Objective '%s' expects %d parameters, but %d were provided.",
+                    cls.name,
+                    len(param_names),
+                    len(params),
+                )
+
+            for param in param_names:
+                data[param] = params.pop(0)
+
+            data.pop("parameters", None)
+
+        return data

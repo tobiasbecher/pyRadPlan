@@ -43,6 +43,23 @@ def test_get_objective_instance():
     assert dose_uni == dose_uni2
 
 
+def test_get_objective_from_matrad_tg119(tg119_raw):
+    _, cst = tg119_raw
+
+    obj_mat_1 = cst[0][5]
+    obj = get_objective(obj_mat_1)
+    obj_mat_2 = cst[1][5]
+    obj2 = get_objective(obj_mat_2)
+
+    assert isinstance(obj, SquaredOverdosing)
+    assert obj.priority == obj_mat_1["penalty"]
+    assert obj.d_max == obj_mat_1["parameters"]
+
+    assert isinstance(obj2, SquaredDeviation)
+    assert obj2.priority == obj_mat_2["penalty"]
+    assert obj2.d_ref == obj_mat_2["parameters"]
+
+
 def test_DoseUniformity_constructor():
     doseUni = DoseUniformity()
     assert doseUni.name == "Dose Uniformity"
