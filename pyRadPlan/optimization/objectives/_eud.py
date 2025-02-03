@@ -1,4 +1,4 @@
-"""Equivalent (possibly) useless dose."""
+"""Equivalent uniform dose objective."""
 from typing import Annotated
 from pydantic import Field
 
@@ -12,7 +12,7 @@ class EUD(Objective):
     """
     Equivalent uniform dose (EUD) objective.
 
-    Parameters
+    Attributes
     ----------
     k : float
         exponent.

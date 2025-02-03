@@ -1,4 +1,4 @@
-"""Maximum DVH."""
+"""Maximum DVH objective."""
 from typing import Annotated
 from pydantic import Field
 
@@ -12,7 +12,7 @@ class MaxDVH(Objective):
     """
     Maximum DVH objective.
 
-    Parameters
+    Attributes
     ----------
     d : float
         dose point

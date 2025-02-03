@@ -23,7 +23,25 @@ logger = logging.getLogger(__name__)
 
 
 class PlanningProblem(ABC):
-    """Abstrac class for all planning problems."""
+    """
+    Abstrac class for all planning problems.
+
+    Parameters
+    ----------
+    pln : Union[Plan, dict], optional
+        Plan object or dictionary to initialize the problem with.
+
+    Attributes
+    ----------
+    short_name : ClassVar[str]
+        Short name of the optimization problem.
+    name : ClassVar[str]
+        Name of the optimization problem.
+    apply_overlap : bool, default=True
+        Whether to apply overlap priorities to the StructureSet
+    solver : Union[str, dict, SolverBase], default="ipopt"
+        The solver to use for optimization.
+    """
 
     # Constant, Abstract properties are realized as ClassVars
     short_name: ClassVar[str]

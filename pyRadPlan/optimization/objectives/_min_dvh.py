@@ -1,4 +1,4 @@
-"""Minimum DVH."""
+"""Minimum DVH objective."""
 
 from typing import Annotated
 from pydantic import Field
@@ -13,7 +13,7 @@ class MinDVH(Objective):
     """
     Minimum DVH objective.
 
-    Parameters
+    Attributes
     ----------
     d : float
         dose point

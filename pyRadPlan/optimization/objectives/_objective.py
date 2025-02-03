@@ -14,7 +14,35 @@ logger = logging.getLogger(__name__)
 
 
 class ParameterMetadata:
-    """Parameter Metadata."""
+    """
+    Parameter Metadata to attach to objective function parameters to
+    designate configurability and
+    type.
+
+    Parameters
+    ----------
+    configurable : bool, optional, default=True
+        Whether the parameter is intended to be configurable (e.g. a reference dose value for
+        optimization)
+    kind : str, optional, default='numeric'
+        Type/Meaning of the parameter. Options are 'reference' (relates to the input vector, e.g.
+        the dose when you optimize on dose. Used for normalization), 'numeric', 'relative_volume'.
+        The kind is used in case the parameter needs to pre transformed in context.
+
+    Attributes
+    ----------
+    configurable : bool, optional, default=True
+        Whether the parameter is intended to be configurable (e.g. a reference dose value for
+        optimization)
+    kind : str, optional, default='numeric'
+        Type/Meaning of the parameter. Options are 'reference' (relates to the input vector, e.g.
+        the dose when you optimize on dose. Used for normalization), 'numeric', 'relative_volume'.
+        The kind is used in case the parameter needs to pre transformed in context.
+
+    Note
+    ----
+    Intended for use with 'Annotated' when defining an objective attribute.
+    """
 
     configurable: bool
     kind: Optional[ParameterType]
@@ -35,16 +63,14 @@ class Objective(PyRadPlanBaseModel):
 
     Attributes
     ----------
-    name : str
+    name : ClassVar[str]
         Name of the objective function.
-    parameter_names : list of str
-        Names of the parameters of the objective function.
-    parameter_types : list of str
-        Types of the parameters of the objective function.
-    parameters : list of float
-        Parameters of the objective function.
-    weight : float
-        Weight of the objective function.
+    has_hessian : ClassVar[bool]
+        Whether the objective function has a Hessian implementation.
+    priority : float
+        Weight/Priority assigned to the objective function.
+    quantity : str
+        The quantity this objective is connected to (e.g. 'physical_dose', 'RBExDose').
     """
 
     name: ClassVar[str]
@@ -67,12 +93,12 @@ class Objective(PyRadPlanBaseModel):
     @computed_field
     @property
     def parameter_names(self) -> list[str]:
-        """Parameter names."""
+        """List[str]: Parameter names."""
         return self._parameter_names()
 
     @classmethod
     def _parameter_names(cls) -> list[str]:
-        """Parameter names as classmethod."""
+        """List[str]: Parameter names as classmethod."""
         return [
             name
             for name, info in cls.model_fields.items()
@@ -82,12 +108,12 @@ class Objective(PyRadPlanBaseModel):
     @computed_field
     @property
     def parameter_types(self) -> list[ParameterType]:
-        """Parameter types."""
+        """List[str]: Parameter types."""
         return self._parameter_types()
 
     @classmethod
     def _parameter_types(cls) -> list[ParameterType]:
-        """Parameter types as classmethod."""
+        """List[str]: Parameter types as classmethod."""
         return [
             meta.kind
             for name in cls._parameter_names()
@@ -98,12 +124,13 @@ class Objective(PyRadPlanBaseModel):
     @computed_field
     @property
     def parameters(self) -> list[Any]:
-        """Parameter values."""
+        """List[str]: Parameter values."""
         return [getattr(self, name) for name in self.parameter_names]
 
     @field_validator("quantity")
     @classmethod
     def _validate_quantity(cls, v):
+        """Validates the quantity attribute."""
         if v not in get_available_quantities():
             raise ValueError(
                 f"Quantity {v} not available. Choose from {get_available_quantities()}"

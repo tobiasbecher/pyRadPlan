@@ -1,3 +1,4 @@
+"""Factory methods to manage available objective implementations."""
 import warnings
 import logging
 from typing import Union, Type

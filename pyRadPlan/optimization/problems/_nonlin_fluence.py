@@ -15,14 +15,25 @@ logger = logging.getLogger(__name__)
 
 
 class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
-    """Non-linear fluence-based planning problem."""
+    """
+    Non-linear fluence-based planning problem.
 
-    penalties: ArrayLike
-    result: dict[str]
+    Parameters
+    ----------
+    pln : Union[Plan, dict], optional
+        Plan object or dictionary to initialize the problem with.
+
+    Attributes
+    ----------
+    bypass_objective_jacobian : bool, optional, default=True
+        Whether to bypass the objective jacobian calculation. This is usefull for scalarized
+        optimization (e.g. weighted sum of objectives) as it will minimize storage to only a single
+        gradient vector per quantity.
+    """
+
     bypass_objective_jacobian: bool
 
     def __init__(self, pln: Union[Plan, dict] = None):
-        self.penalties = np.asarray([1000, 1])
         self.target_prescription = 2.0
         self.bypass_objective_jacobian = True
 
@@ -85,7 +96,6 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         f = np.sum(self._objective_functions(x))
         self._obj_times.append(time.time() - t)
         return f
-        # return np.dot(np.asarray(self.penalties), self._objective_functions(x))
 
     def _objective_jacobian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective jacobian."""

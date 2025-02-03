@@ -1,4 +1,4 @@
-"""Squared Deviation."""
+"""Squared Deviation Objective."""
 
 from typing import Annotated
 from pydantic import Field
@@ -14,7 +14,7 @@ class SquaredDeviation(Objective):
     """
     Squared Deviation (least-squares) objective.
 
-    Parameters
+    Attributes
     ----------
     d_ref : float
         dose reference value

@@ -14,6 +14,14 @@ from ._base_solvers import NonLinearOptimizer
 
 
 class OptimizerIpopt(NonLinearOptimizer):
+    """
+    IPOPT solver interface.
+
+    Attributes
+    ----------
+    options : dict
+        Options for IPOPT
+    """
 
     name = "Interior Point Optimizer"
     short_name = "ipopt"
@@ -49,11 +57,11 @@ class OptimizerIpopt(NonLinearOptimizer):
 
     def solve(self, x0: ArrayLike) -> tuple[np.ndarray, dict]:
         """
-        Solve a problem.
+        Solve the problem.
 
         Parameters
         ----------
-        x0 : np.ndarray
+        x0 : ArrayLike
             Initial guess for the decision variables.
 
         Returns

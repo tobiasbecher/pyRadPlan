@@ -1,4 +1,4 @@
-"""Squared Overdosing."""
+"""Squared Overdosing Objective."""
 
 from typing import Annotated
 from pydantic import Field
@@ -15,7 +15,7 @@ class SquaredOverdosing(Objective):
     """
     Squared Overdosing (piece-wise positive least-squares) objective.
 
-    Parameters
+    Attributes
     ----------
     d_max : float
         maximum dose value (above which we penalize)

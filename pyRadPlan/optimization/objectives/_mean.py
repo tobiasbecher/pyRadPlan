@@ -1,4 +1,4 @@
-"""Mean dose."""
+"""Mean dose objective."""
 from typing import Annotated
 from pydantic import Field
 
@@ -14,7 +14,7 @@ class MeanDose(Objective):
     """
     Mean Dose objective.
 
-    Parameters
+    Attributes
     ----------
     d_ref : float
         referene mean dose to achieve

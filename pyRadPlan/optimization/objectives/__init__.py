@@ -1,3 +1,5 @@
+"""Module defining various objective functions for optimization."""
+
 from ._objective import Objective
 from ._std import DoseUniformity
 from ._eud import EUD

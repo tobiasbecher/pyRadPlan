@@ -1,4 +1,4 @@
-"""Squared Underdosing."""
+"""Squared Underdosing Objective."""
 
 from typing import Annotated
 from pydantic import Field
@@ -15,7 +15,7 @@ class SquaredUnderdosing(Objective):
     """
     Squared Underdosing (piece-wise negative least-squares) objective.
 
-    Parameters
+    Attributes
     ----------
     d_min : float
         minimum dose value (below which we penalize)

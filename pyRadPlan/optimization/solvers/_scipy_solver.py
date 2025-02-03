@@ -13,50 +13,13 @@ class OptimizerSciPy(NonLinearOptimizer):
     """
     SciPy solver configuration class.
 
-    This class provides methods to configure the SciPy solvers from the \
-    arguments set in the treatment plan. It generates a SciPy-compatible \
-    optimization problem and specifies the solver options.
-
-    Parameters
-    ----------
-    number_of_variables : int
-        Number of decision variables.
-
-    number_of_constraints : int
-        Number of constraints.
-
-    problem_instance : object of class 'WeightedSumOptimization', \
-    'LexicographicOptimization', or 'ParetoOptimization'
-        Instance of the optimization problem in user language.
-
-    lower_variable_bounds : ndarray
-        Lower bounds to the decision variables.
-
-    upper_variable_bounds : ndarray
-        Upper bounds to the decision variables.
-
-    lower_constraint_bounds : ndarray
-        Lower bounds to the constraints.
-
-    upper_constraint_bounds : ndarray
-        Upper bounds to the constraints.
-
-    linear_solver : string
-        Name of the linear solver to be used.
-
-    max_iter : int
-        Maximum number of iterations taken for the solver to converge.
-
-    max_cpu_time : float
-        Maximum CPU time taken for the solver to converge.
-
     Attributes
     ----------
-    fun : object of class 'function'
-        Function from the SciPy library to be called with ``arguments``.
 
-    arguments : dict
-        Dictionary with the arguments for ``fun``.
+    options : dict
+        Options for the solver
+    method : Union[str, Callable]
+        The solver method
     """
 
     name = "SciPy minimize"
@@ -64,7 +27,6 @@ class OptimizerSciPy(NonLinearOptimizer):
 
     options: dict[str]
     method: Union[str, Callable]
-    result: dict[str]
 
     def __init__(self):
 
@@ -75,13 +37,11 @@ class OptimizerSciPy(NonLinearOptimizer):
 
         self.method = "L-BFGS-B"
 
-        self.result = None
-
         super().__init__()
 
     def solve(self, x0: ArrayLike) -> tuple[np.ndarray, dict]:
         """
-        Solve a problem.
+        Solve the problem.
 
         Parameters
         ----------
