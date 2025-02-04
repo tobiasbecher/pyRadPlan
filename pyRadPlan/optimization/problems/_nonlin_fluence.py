@@ -3,7 +3,7 @@ import time
 import logging
 
 import numpy as np
-from numpy.typing import ArrayLike
+from numpy.typing import NDArray
 
 
 from ...plan import Plan
@@ -31,10 +31,12 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         gradient vector per quantity.
     """
 
+    name = "Non-Linear Fluence Planning Problem"
+    short_name = "nonlin_fluence"
+
     bypass_objective_jacobian: bool
 
     def __init__(self, pln: Union[Plan, dict] = None):
-        self.target_prescription = 2.0
         self.bypass_objective_jacobian = True
 
         self._target_voxels = None
@@ -49,6 +51,7 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         super().__init__(pln)
 
     def _initialize(self):
+        """Initialize this problem."""
         super()._initialize()
 
         # Check if the solver is adequate to solve this problem
@@ -61,7 +64,7 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         self.solver.bounds = (0.0, np.inf)
         self.solver.max_iter = 500
 
-    def _objective_functions(self, x: np.ndarray) -> np.ndarray:
+    def _objective_functions(self, x: NDArray) -> NDArray:
         """Define the objective functions."""
 
         q_vectors = {}
@@ -91,13 +94,13 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         # return as numpy array
         return np.asarray(f_vals, dtype=np.float64)
 
-    def _objective_function(self, x: np.ndarray) -> np.float64:
+    def _objective_function(self, x: NDArray) -> np.float64:
         t = time.time()
         f = np.sum(self._objective_functions(x))
         self._obj_times.append(time.time() - t)
         return f
 
-    def _objective_jacobian(self, x: np.ndarray) -> np.ndarray:
+    def _objective_jacobian(self, x: NDArray) -> NDArray:
         """Define the objective jacobian."""
 
         q_vectors = {}
@@ -170,33 +173,33 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
         return self._grad_cache
 
-    def _objective_gradient(self, x: np.ndarray) -> np.ndarray:
+    def _objective_gradient(self, x: NDArray) -> NDArray:
         t = time.time()
         jac = np.sum(self._objective_jacobian(x), axis=0)
         self._deriv_times.append(time.time() - t)
         return jac
 
-    def _objective_hessian(self, x: np.ndarray) -> np.ndarray:
+    def _objective_hessian(self, x: NDArray) -> NDArray:
         """Define the objective hessian."""
         return {}
 
-    def _constraint_functions(self, x: np.ndarray) -> np.ndarray:
+    def _constraint_functions(self, x: NDArray) -> NDArray:
         """Define the constraint functions."""
         return None
 
-    def _constraint_jacobian(self, x: np.ndarray) -> np.ndarray:
+    def _constraint_jacobian(self, x: NDArray) -> NDArray:
         """Define the constraint jacobian."""
         return None
 
-    def _constraint_jacobian_structure(self) -> np.ndarray:
+    def _constraint_jacobian_structure(self) -> NDArray:
         """Define the constraint jacobian structure."""
         return None
 
-    def _variable_bounds(self, x: np.ndarray) -> np.ndarray:
+    def _variable_bounds(self, x: NDArray) -> NDArray:
         """Define the variable bounds."""
         return {}
 
-    def _solve(self) -> tuple[np.ndarray, dict]:
+    def _solve(self) -> tuple[NDArray, dict]:
         """Solve the problem."""
 
         self._deriv_times = []

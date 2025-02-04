@@ -38,11 +38,6 @@ def get_available_solvers() -> dict[str, Type[SolverBase]]:
     """
     Get a list of available solvers based on the plan.
 
-    Parameters
-    ----------
-    pln : Plan
-        A Plan object.
-
     Returns
     -------
     list

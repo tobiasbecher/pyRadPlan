@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, ClassVar, cast
+from typing import Union, ClassVar, Literal, cast
 import warnings
 import logging
 
@@ -46,6 +46,7 @@ class PlanningProblem(ABC):
     # Constant, Abstract properties are realized as ClassVars
     short_name: ClassVar[str]
     name: ClassVar[str]
+    possible_radiation_modes: list[str] = ["photons", "protons", "helium", "carbon", "oxygen"]
 
     apply_overlap: bool
     solver: Union[str, dict, SolverBase]
