@@ -6,7 +6,6 @@ try:
 except ImportError:
     import importlib_resources as resources  # Backport for older versions
 
-import logging
 import warnings
 import time
 from typing import ClassVar, Union
