@@ -15,7 +15,7 @@ from pyRadPlan.dij import Dij, validate_dij
 from pyRadPlan.scenarios import ScenarioModel
 from pyRadPlan.quantities import FluenceDependentQuantity, get_quantity
 
-from ..objectives import Objective
+from ..objectives import Objective, get_objective
 from ..solvers import get_available_solvers, get_solver, SolverBase
 
 
@@ -172,7 +172,7 @@ class PlanningProblem(ABC):
             if len(voi.objectives) > 0:
                 # get the index list
                 cube_ix = voi.indices_numpy
-                objs = cast(list[Objective], voi.objectives)
+                objs = [get_objective(obj) for obj in voi.objectives]
 
                 objectives.append((cube_ix, objs))
 

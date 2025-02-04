@@ -307,7 +307,21 @@ def create_cst(
             else:
                 raise ValueError("Sanity Check failed -- unsupported CT dimensionality")
 
-            voi = validate_voi(name=str(vdata[1]), voi_type=str(vdata[2]), mask=masks, ct_image=ct)
+            # Check Objectives
+            if len(vdata) > 5:
+                objectives = vdata[5]
+                if not isinstance(objectives, list):
+                    objectives = [objectives]
+            else:
+                objectives = []
+
+            voi = validate_voi(
+                name=str(vdata[1]),
+                voi_type=str(vdata[2]),
+                mask=masks,
+                ct_image=ct,
+                objectives=objectives,
+            )
 
             voi_list.append(voi)
 
