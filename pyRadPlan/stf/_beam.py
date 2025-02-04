@@ -74,7 +74,7 @@ class Beam(PyRadPlanBaseModel):
     )  # alias needed for matRad import. Can also be done in the model_validator
 
     source_point_bev: NDArray[Shape["3"], np.float64] = Field(
-        alias="SourcePoint_bev", default=([0, -10000, 0]), validate_default=True
+        alias="sourcePoint_bev", default=([0, -10000, 0]), validate_default=True
     )
     source_point: NDArray[Shape["3"], np.float64] = Field(
         default=([0, 0, 0]), validate_default=True

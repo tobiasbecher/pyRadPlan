@@ -280,9 +280,8 @@ def create_cst(
             masks = []
             for idx in idx_list:
                 # TODO: Check index ordering
-                tmp_mask = sitk.GetArrayViewFromImage(ct.cube_hu).astype(np.uint8)
-                tmp_mask.fill(0)
-                tmp_mask[np.unravel_index(np.asarray(idx) - 1, tmp_mask.shape, order="C")] = 1
+                tmp_mask = np.zeros((ct.size[2], ct.size[0], ct.size[1]), dtype=np.uint8)
+                tmp_mask.flat[np.asarray(idx) - 1] = 1
                 tmp_mask = np.swapaxes(tmp_mask, 1, 2)
                 mask_image = sitk.GetImageFromArray(tmp_mask)
                 mask_image.CopyInformation(ct.cube_hu)

@@ -65,6 +65,8 @@ class Beamlet(PyRadPlanBaseModel):
         """
         context = info.context
         if context and context.get("matRad") == "mat-file":
+            if info.field_name == "focus_ix":
+                return np.float64(v + 1)  # Increment focus_ix by 1 for MATLAB/matRad
             return np.float64(v)  # Ensure double for MATLAB/matRad
 
         return handler(v, info)

@@ -31,7 +31,7 @@ def test_simple_problem_ipopt():
 
     # Solve
     result, status = solver.solve(x0)
-    
+
     assert isinstance(result, np.ndarray)
     assert isinstance(status, int)
 

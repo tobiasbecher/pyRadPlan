@@ -49,7 +49,7 @@ class Ray(PyRadPlanBaseModel):
     ray_pos_bev: NDArray[Shape["3"], np.float64] = Field(alias="rayPos_bev")
     ray_pos: NDArray[Shape["3"], np.float64]
 
-    target_point: Optional[NDArray[Shape["3"], np.float64]] = None
+    target_point: Optional[NDArray[Shape["3"], np.float64]] = Field(default=None)
     target_point_bev: Optional[NDArray[Shape["3"], np.float64]] = Field(
         alias="targetPoint_bev", default=None
     )
@@ -167,6 +167,28 @@ class Ray(PyRadPlanBaseModel):
             return beamlets_dump
         else:
             return handler(v, info)
+
+    # @field_serializer("target_point", mode="wrap")
+    # def custom_target_point_serializer(
+    #     self, v: np.ndarray, handler: SerializerFunctionWrapHandler, info: SerializationInfo
+    # ) -> Any:
+    #     context = info.context
+    #     if context and context.get("matRad") == "mat-file":
+    #         if v is None:
+    #             return np.array([])
+    #     else:
+    #         return v
+
+    # @field_serializer("target_point_bev", mode="wrap")
+    # def custom_target_point_bev_serializer(
+    #     self, v: np.ndarray, handler: SerializerFunctionWrapHandler, info: SerializationInfo
+    # ) -> Any:
+    #     context = info.context
+    #     if context and context.get("matRad") == "mat-file":
+    #         if v is None:
+    #             return np.array([])
+    #     else:
+    #         return v
 
     def to_matrad(self, context: Union[str, dict] = "mat-file") -> Any:
         """

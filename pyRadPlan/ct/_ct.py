@@ -378,13 +378,12 @@ class CT(PyRadPlanBaseModel, ABC):
         ct_dict = super().to_matrad(context=context)
         # as cubeHU for the matRad format
         sitk_image = ct_dict["cubeHU"]
-        # Flip axes for matRad format from (z, y, x) to (x, y, z)
-        numpy_array = np.transpose(sitk.GetArrayFromImage(sitk_image), (2, 1, 0))
-
+        # Flip axes for matRad format
+        numpy_array = np.transpose(sitk.GetArrayFromImage(sitk_image), (1, 2, 0))
         # We also need to put the image array into a ndarray of objects
         ct_dict["cubeHU"] = np.ndarray(shape=(1,), dtype=object)
         ct_dict["cubeHU"][0] = numpy_array
-
+        ct_dict["cubeDim"] = np.array(ct_dict["cubeDim"], dtype=float)
         return ct_dict
 
     def resample_to_grid(self, grid: Grid) -> Self:

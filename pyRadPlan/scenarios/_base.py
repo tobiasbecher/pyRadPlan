@@ -9,6 +9,7 @@ Classes
 from abc import ABC, abstractmethod
 from typing import List, Optional, Tuple, Dict
 import numpy as np
+from copy import deepcopy
 from pyRadPlan.ct import validate_ct
 
 
@@ -360,7 +361,7 @@ class ScenarioModel(ABC):
         Dict
             The scenario model properties for MatRad.
         """
-
+        self = deepcopy(self)
         if context != "mat-file":
             raise ValueError(f"Context {context} not supported")
 
@@ -370,5 +371,6 @@ class ScenarioModel(ABC):
             "rangeAbsSD": self.range_abs_sd,
             "shiftSD": self.shift_sd,
             "wcSigma": self.wc_sigma,
-            "ctScenProb": self.ct_scen_prob,
+            # adding (1.0, 0.0) to ctScenProb to match matRad indexing
+            "ctScenProb": [(a + 1, b) for (a, b) in self.ct_scen_prob],
         }

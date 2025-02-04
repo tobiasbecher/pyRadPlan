@@ -70,7 +70,15 @@ class StfGeneratorPhotonIMRT(StfGeneratorExternalBeamRayBixel):
         rays = super()._create_rays(beam)
 
         beamlet_template = {"energy": self.energy}
-        rays = [{**ray, "beamlets": [beamlet_template.copy()]} for ray in rays]
+        rays = [
+            {
+                **ray,
+                "beamlets": [beamlet_template.copy()],
+                "target_point": 2 * ray["ray_pos"] - beam["source_point"],
+                "target_point_bev": 2 * ray["ray_pos_bev"] - beam["source_point_bev"],
+            }
+            for ray in rays
+        ]
 
         return rays
 

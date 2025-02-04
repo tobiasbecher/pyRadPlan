@@ -6,6 +6,8 @@ PhotonPlan and IonPlan.
 
 from abc import ABC
 from typing import Dict, Any, List, Union, ClassVar
+from copy import deepcopy
+
 from pydantic import (
     Field,
     field_validator,
@@ -286,7 +288,7 @@ def create_pln(data: Union[Dict[str, Any], Plan, None] = None, **kwargs) -> Plan
     ValueError
         If the radiation mode is unknown or empty.
     """
-
+    data = deepcopy(data)
     if data:
         # If data is already a Plan object, return it directly
         if isinstance(data, Plan):
