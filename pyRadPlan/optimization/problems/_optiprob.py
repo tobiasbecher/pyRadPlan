@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, ClassVar, Literal, cast
+from typing import Union, ClassVar, cast
 import warnings
 import logging
 
@@ -91,13 +91,9 @@ class PlanningProblem(ABC):
 
     def assign_properties_from_pln(self, pln: Plan, warn_when_property_changed: bool = False):
         """
-        Assign properties from a Plan object to the Optimization Problem.
-        This includes the Scenario Model and the Biological Model, and any
-        other properties that
-        can be stored in the prop_opt dictionary within the Plan object.
-        This function will check if a property exists for the dose opti_prob
-        and,
-        if yes, set it.
+        Assign properties from a Plan object to the Planning Problem.
+        This function will check if a property exists for the PlanningProblem
+        and, if yes, set it.
 
         Parameters
         ----------
