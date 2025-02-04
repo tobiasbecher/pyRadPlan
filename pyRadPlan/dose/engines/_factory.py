@@ -37,13 +37,13 @@ def register_engine(engine_cls: Type[DoseEngineBase]) -> None:
         DOSE_ENGINES[engine_name] = engine_cls
 
 
-def get_available_engines(pln: Union[Plan, str]) -> dict[str, Type[DoseEngineBase]]:
+def get_available_engines(pln: Union[Plan, dict[str]]) -> dict[str, Type[DoseEngineBase]]:
     """
     Get a list of available engines based on the plan.
 
     Parameters
     ----------
-    pln : Plan
+    pln : Union[Plan,dict]
         A Plan object.
 
     Returns
@@ -52,14 +52,14 @@ def get_available_engines(pln: Union[Plan, str]) -> dict[str, Type[DoseEngineBas
         A list of available engines.
     """
     pln = validate_pln(pln)
-    available_engines = {}
-    for engine_name, engine_cls in DOSE_ENGINES.items():
-        if pln.radiation_mode in engine_cls.possible_radiation_modes:
-            available_engines[engine_name] = engine_cls
-    return available_engines
+    return {
+        name: cls
+        for name, cls in DOSE_ENGINES.items()
+        if pln.radiation_mode in cls.possible_radiation_modes
+    }
 
 
-def get_engine(pln: Union[Plan, str]) -> DoseEngineBase:
+def get_engine(pln: Union[Plan, dict]) -> DoseEngineBase:
     """
     Factory function to get the appropriate engine based on the plan.
 
@@ -101,7 +101,7 @@ def get_engine(pln: Union[Plan, str]) -> DoseEngineBase:
 
         # If no engine name was found, we choose the first as default
         logger.warning(
-            "No engine specified in Plan. " f"Using first available engine '{engine_names[0]}'."
+            "No engine specified in Plan. Using first available engine %s.", engine_names[0]
         )
         return engines[engine_names[0]](pln)
 
