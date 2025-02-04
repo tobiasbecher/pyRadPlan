@@ -26,24 +26,22 @@ class SquaredUnderdosing(Objective):
     d_min: Annotated[float, Field(default=60.0, ge=0.0), ParameterMetadata(kind="reference")]
 
     def compute_objective(self, values):
-        return _compute_objective(values, self.d_min, self.priority)
+        return _compute_objective(values, self.d_min)
 
     def compute_gradient(self, values):
-        return _compute_gradient(values, self.d_min, self.priority)
+        return _compute_gradient(values, self.d_min)
 
 
 @njit
-def _compute_objective(dose, d_min, priority):
+def _compute_objective(dose, d_min):
 
     underdose = clip(dose - d_min, a_min=None, a_max=0)
 
-    return priority * (underdose @ underdose) / len(dose)
+    return (underdose @ underdose) / len(dose)
 
 
-# @njit
-def _compute_gradient(dose, d_min, priority):
+@njit
+def _compute_gradient(dose, d_min):
 
     underdose = clip(dose - d_min, a_min=None, a_max=0)
-    grad = 2 * underdose / len(underdose)
-
-    return priority * grad
+    return 2.0 * underdose / len(underdose)

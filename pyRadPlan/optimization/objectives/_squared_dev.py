@@ -25,21 +25,21 @@ class SquaredDeviation(Objective):
     d_ref: Annotated[float, Field(default=60.0, ge=0.0), ParameterMetadata(kind="reference")]
 
     def compute_objective(self, values):
-        return _compute_objective(values, self.d_ref, self.priority)
+        return _compute_objective(values, self.d_ref)
 
     def compute_gradient(self, values):
-        return _compute_gradient(values, self.d_ref, self.priority)
+        return _compute_gradient(values, self.d_ref)
 
 
 @njit
-def _compute_objective(dose, d_ref, priority):
+def _compute_objective(dose, d_ref):
 
     deviation = dose - d_ref
 
-    return priority * (deviation @ deviation) / len(dose)
+    return (deviation @ deviation) / len(dose)
 
 
-# @njit
-def _compute_gradient(dose, d_ref, priority):
+@njit
+def _compute_gradient(dose, d_ref):
 
-    return 2 * priority * (dose - d_ref) / len(dose)
+    return 2.0 * (dose - d_ref) / len(dose)

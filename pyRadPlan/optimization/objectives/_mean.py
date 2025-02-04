@@ -29,23 +29,22 @@ class MeanDose(Objective):
     d_ref: Annotated[float, Field(default=0.0, ge=0.0), ParameterMetadata(kind="reference")]
 
     def compute_objective(self, values):
-        return _compute_objective(values, self.d_ref, self.priority)
+        return _compute_objective(values, self.d_ref)
 
     def compute_gradient(self, values):
         return _compute_gradient(
             values,
             self.d_ref,
-            self.priority,
         )
 
 
 @njit
-def _compute_objective(dose, d_ref, priority):
-    return priority * (dose.mean() - d_ref) ** 2
+def _compute_objective(dose, d_ref):
+    return (dose.mean() - d_ref) ** 2
 
 
-# @njit
-def _compute_gradient(dose, d_ref, priority):
+@njit
+def _compute_gradient(dose, d_ref):
 
-    grad = 2 * (dose.mean() - d_ref) * ones(dose.shape) / len(dose)
-    return priority * grad
+    grad = 2 * (dose.mean() - d_ref) * ones(dose.shape) / dose.size
+    return grad

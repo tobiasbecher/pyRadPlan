@@ -29,28 +29,28 @@ class MinDVH(Objective):
     ]
 
     def compute_objective(self, values):
-        return _compute_objective(values, self.d, self.v_min, self.priority)
+        return _compute_objective(values, self.d, self.v_min)
 
     def compute_gradient(self, values):
-        return _compute_gradient(values, self.d, self.v_min, self.priority)
+        return _compute_gradient(values, self.d, self.v_min)
 
 
 @njit
-def _compute_objective(dose, d, v_min, priority):
+def _compute_objective(dose, d, v_min):
 
     deviation = dose - d
     dose_quantile = quantile(sort(dose)[::-1], v_min / 100.0)
     mask = logical_or(dose > d, dose < dose_quantile)
     deviation[mask] = 0
 
-    return priority * (deviation @ deviation) / len(dose)
+    return (deviation @ deviation) / len(dose)
 
 
-# @njit
-def _compute_gradient(dose, d, v_min, priority):
+@njit
+def _compute_gradient(dose, d, v_min):
 
     deviation = dose - d
     dose_quantile = quantile(sort(dose)[::-1], v_min / 100.0)
     mask = logical_or(dose > d, dose < dose_quantile)
     deviation[mask] = 0
-    return 2 * priority * deviation / len(dose)
+    return 2.0 * deviation / len(dose)

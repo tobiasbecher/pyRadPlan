@@ -85,7 +85,8 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
                 f_vals.append(
                     sum(
                         [
-                            obj.compute_objective(q_vectors[obj.quantity].flat[scen_ix][ix])
+                            obj.priority
+                            * obj.compute_objective(q_vectors[obj.quantity].flat[scen_ix][ix])
                             for scen_ix in q_scenarios[obj.quantity]
                         ]
                     )
@@ -142,7 +143,9 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
                 for scen_ix in q_scenarios[obj.quantity]:
                     self._grad_cache_intermediate[obj.quantity][
                         q_cache_index, ix
-                    ] += obj.compute_gradient(q_vectors[obj.quantity].flat[scen_ix][ix])
+                    ] += obj.priority * obj.compute_gradient(
+                        q_vectors[obj.quantity].flat[scen_ix][ix]
+                    )
                 cnt += 1
 
         # perform chain rule and store in cache
