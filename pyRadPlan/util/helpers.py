@@ -230,8 +230,7 @@ def swap_orientation_sparse_matrix(
     sp.csc_matrix
         The sparse matrix with swapped axes.
     """
-    row_indices, col_indices = sparse_matrix.nonzero()
-    data = sparse_matrix.data
+    row_indices, _ = sparse_matrix.nonzero()
 
     if axes == (0, 1) or axes == (1, 0):
         j, i, k = np.unravel_index(row_indices, original_shape)

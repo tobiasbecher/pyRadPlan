@@ -104,11 +104,13 @@ def validate_scenario_model(
         if all(a > 0 for a, b in model_def["ctScenProb"]):
             model_def["ctScenProb"] = [(a - 1, b) for (a, b) in model_def["ctScenProb"]]
             logger.info(
-                "Assuming scenario model from matRad. Converting 1-based indexing to 0-based indexing..."
+                "Assuming scenario model from matRad. Converting 1-based indexing to 0-based "
+                "indexing..."
             )
         else:
             logger.info(
-                "CamelCase was used, but assuming 0-based indexing, since some values are less than 1. No index conversion applied"
+                "CamelCase was used, but assuming 0-based indexing, since some values are less "
+                "than 1. No index conversion applied"
             )
 
     return create_scenario_model(model_def, ct)

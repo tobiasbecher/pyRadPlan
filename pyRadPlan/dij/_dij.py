@@ -12,15 +12,15 @@ from pydantic import (
     field_serializer,
     SerializationInfo,
 )
-from pyRadPlan.util import swap_orientation_sparse_matrix
-from numpydantic import NDArray
 
 import numpy as np
+from numpydantic import NDArray
 import SimpleITK as sitk
 import scipy.sparse as sp
-import scipy.ndimage as ndi
+
 from pyRadPlan.core import Grid
 from pyRadPlan.core import PyRadPlanBaseModel
+from pyRadPlan.util import swap_orientation_sparse_matrix
 
 
 class Dij(PyRadPlanBaseModel):
