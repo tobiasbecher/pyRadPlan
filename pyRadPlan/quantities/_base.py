@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import ClassVar
 
 import numpy as np
-from numpy.typing import NDArray
+from numpy.typing import NDArray, ArrayLike
 import pint
 
 from pyRadPlan.dij import Dij, validate_dij
@@ -40,14 +40,14 @@ class FluenceDependentQuantity(RTQuantity, ABC):
         self._q_cache = np.empty_like(getattr(self._dij, self.identifier), dtype=object)
         self._qgrad_cache = np.empty_like(self._q_cache)
 
-    def compute(self, fluence: NDArray) -> NDArray:
+    def __call__(self, fluence: ArrayLike) -> NDArray:
         """
-        Forward calculation of the quantity from the fluence.
+        Makes the quantity callable by calling the compute method.
 
         Parameters
         ----------
-        fluence : NDArray
-            Fluence distribution.
+        fluence : ArrayLike
+            Fluence vector.
 
         Returns
         -------
@@ -55,13 +55,32 @@ class FluenceDependentQuantity(RTQuantity, ABC):
             Quantity vector.
         """
 
-        if not np.array_equal(self._w_cache, fluence):
-            self._w_cache = fluence.copy()
+        return self.compute(fluence)
+
+    def compute(self, fluence: ArrayLike) -> NDArray:
+        """
+        Forward calculation of the quantity from the fluence.
+
+        Parameters
+        ----------
+        fluence : ArrayLike
+            Fluence vector.
+
+        Returns
+        -------
+        NDArray
+            Quantity vector.
+        """
+
+        _fluence = np.asarray(fluence)
+
+        if not np.array_equal(self._w_cache, _fluence):
+            self._w_cache = _fluence.copy()
             self._compute_quantity_cache()
 
         return self._q_cache
 
-    def compute_chain_derivative(self, d_quantity: NDArray, fluence: NDArray) -> NDArray:
+    def compute_chain_derivative(self, d_quantity: ArrayLike, fluence: ArrayLike) -> NDArray:
         """
         Derivative of the quantity with respect to the fluence from the
         derivative
@@ -69,8 +88,10 @@ class FluenceDependentQuantity(RTQuantity, ABC):
 
         Parameters
         ----------
-        d_quantity : NDArray
+        d_quantity : ArrayLike
             Derivative of w.r.t. to the quantity.
+        fluence : ArrayLike
+            Fluence vector.
 
         Returns
         -------
@@ -78,9 +99,12 @@ class FluenceDependentQuantity(RTQuantity, ABC):
             Derivative of the quantity w.r.t. the fluence.
         """
 
-        if not np.array_equal(self._w_grad_cache, d_quantity):
-            self._w_grad_cache = fluence.copy()
-            self._compute_chain_derivative_cache(d_quantity)
+        _d_quantity = np.asarray(d_quantity)
+        _fluence = np.asarray(fluence)
+
+        if not np.array_equal(self._w_grad_cache, _d_quantity):
+            self._w_grad_cache = _fluence.copy()
+            self._compute_chain_derivative_cache(_d_quantity)
 
         return self._qgrad_cache
 

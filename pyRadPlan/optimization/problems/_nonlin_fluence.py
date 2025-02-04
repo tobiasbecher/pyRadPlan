@@ -72,7 +72,7 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
         # Check & get Caches
         for q in self._quantities:
-            q_vectors[q.identifier] = q.compute(x)
+            q_vectors[q.identifier] = q(x)
             q_scenarios[q.identifier] = q.scenarios
 
         # Loop over all objectives
@@ -114,7 +114,7 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
         # Check & get Caches
         for q in self._quantities:
-            q_vectors[q.identifier] = q.compute(x)
+            q_vectors[q.identifier] = q(x)
             q_scenarios[q.identifier] = q.scenarios
             if initialize_cache:
                 if self.bypass_objective_jacobian:

@@ -9,12 +9,12 @@ ureg = pint.UnitRegistry()
 class Dose(FluenceDependentQuantity):
     """Dose quantity depending on fluence."""
 
-    unit = ureg.Unit("Gy")
+    unit = ureg.gray
     dim = 1
     identifier = "physical_dose"
     name = "dose"
 
-    def __call__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         if self.identifier not in self._dij.model_fields:
