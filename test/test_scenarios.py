@@ -1,9 +1,26 @@
 import os
 import numpy as np
 import SimpleITK as sitk
-from pyRadPlan.scenarios import ScenarioModel, NominalScenario, create_scenario_model
+from pyRadPlan.scenarios import ScenarioModel, NominalScenario, validate_scenario_model
 from pyRadPlan.ct import CT
 import pytest
+from copy import deepcopy
+
+
+@pytest.fixture
+def sample_model_dict_matrad():
+    model_dict = {
+        "model": "nomScen",
+        "rangeRelSD": 5.0,
+        "rangeAbsSD": 2.5,
+        "shiftSD": [3.0, 3.0, 3.0],
+        # TODO!: MatRad export has e.g. (1, 0.5) as indexing.
+        # The Model does not yet respect that (converting 1 to 0)
+        # because it cant distinguish whether its from the user or matRad. (adding '1' or keeping '0')
+        "ctScenProb": [(1, 0.5)],
+        "wcSigma": 5.0,
+    }
+    return model_dict
 
 
 def helper_mvar_gauss(scenarioModel):
@@ -122,21 +139,21 @@ def test_nominal_scenario_list():
 
 
 def test_nominal_scenario_creation_by_name():
-    scenario = create_scenario_model("nomScen")
+    scenario = validate_scenario_model("nomScen")
     assert isinstance(scenario, ScenarioModel)
     assert isinstance(scenario, NominalScenario)
 
     with pytest.raises(ValueError):
-        create_scenario_model("unknown")
+        validate_scenario_model("unknown")
 
     with pytest.raises(NotImplementedError):
-        create_scenario_model("wcScen")
+        validate_scenario_model("wcScen")
 
     with pytest.raises(NotImplementedError):
-        create_scenario_model("impScen")
+        validate_scenario_model("impScen")
 
     with pytest.raises(NotImplementedError):
-        create_scenario_model("rndScen")
+        validate_scenario_model("rndScen")
 
 
 def test_nominal_scenario_creation_by_dict():
@@ -149,7 +166,7 @@ def test_nominal_scenario_creation_by_dict():
         "wc_sigma": 5.0,
     }
 
-    scenario = create_scenario_model(model_dict)
+    scenario = validate_scenario_model(model_dict)
 
     assert isinstance(scenario, ScenarioModel)
     assert isinstance(scenario, NominalScenario)
@@ -164,17 +181,8 @@ def test_nominal_scenario_creation_by_dict():
     assert return_dict == model_dict
 
 
-def test_nominal_scenario_creation_by_matrad_dict():
-    model_dict = {
-        "model": "nomScen",
-        "rangeRelSD": 5.0,
-        "rangeAbsSD": 2.5,
-        "shiftSD": [3.0, 3.0, 3.0],
-        "ctScenProb": [(0, 0.5)],
-        "wcSigma": 5.0,
-    }
-
-    scenario = create_scenario_model(model_dict)
+def test_nominal_scenario_creation_by_matrad_dict(sample_model_dict_matrad):
+    scenario = validate_scenario_model(sample_model_dict_matrad)
 
     assert isinstance(scenario, ScenarioModel)
     assert isinstance(scenario, NominalScenario)
@@ -186,7 +194,7 @@ def test_nominal_scenario_creation_by_matrad_dict():
 
     return_dict = scenario.to_matrad()
 
-    assert return_dict == model_dict
+    assert return_dict == sample_model_dict_matrad
 
 
 def test_nominal_scenario_extract_single_scenario():

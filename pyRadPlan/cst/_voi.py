@@ -46,7 +46,6 @@ class VOI(PyRadPlanBaseModel, ABC):
     mask: sitk.Image
     alpha_x: float = Field(default=0.1)
     beta_x: float = Field(default=0.05)
-
     voi_type: Annotated[str, StringConstraints(strip_whitespace=True, to_upper=True)]
 
     overlap_priority: int = Field(
@@ -327,7 +326,12 @@ class VOI(PyRadPlanBaseModel, ABC):
         voi_list.append(self.name)
         voi_list.append(self.voi_type)
         if self.num_of_scenarios == 1:
-            index_lists = [self.indices_numpy.astype(float)]
+            index_lists = np.ndarray(shape=(1,), dtype=object)
+            mask_array = sitk.GetArrayFromImage(self.mask)
+            mask_array = np.swapaxes(mask_array, 1, 2)
+            indices = np.argwhere(mask_array.ravel(order="C") > 0) + 1
+            index_lists[0] = np.array(indices, dtype=float)
+
         else:
             index_lists = self.scenario_indices(order_type="numpy")
             for i, index_list in enumerate(index_lists):
@@ -338,12 +342,13 @@ class VOI(PyRadPlanBaseModel, ABC):
         property_dict = {
             "alphaX": self.alpha_x,
             "betaX": self.beta_x,
+            "Priority": self.overlap_priority,
         }
         voi_list.append(property_dict)
 
         # Will not be populated in here but in cst if exported from there
         objective_dict = {}
-        voi_list.append(objective_dict)
+        voi_list.append([objective_dict])
 
         return voi_list
 

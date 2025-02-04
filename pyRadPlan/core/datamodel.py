@@ -8,6 +8,7 @@ from pydantic import (
     ConfigDict,
 )
 from pydantic.alias_generators import to_camel
+from copy import deepcopy
 
 
 class PyRadPlanBaseModel(BaseModel):
@@ -54,7 +55,7 @@ class PyRadPlanBaseModel(BaseModel):
         extended to support other contexts, such as direct calling via the matlab engine or
         oct2py.
         """
-
+        self_copy = deepcopy(self)
         if isinstance(context, dict):
             if "matRad" not in context:
                 context.update({"matRad": "mat-file"})
@@ -65,4 +66,4 @@ class PyRadPlanBaseModel(BaseModel):
             raise ValueError(f"Context {context} not supported")
 
         # Standard is a model_dump using above alias and context information
-        return self.model_dump(by_alias=True, context=context)
+        return self_copy.model_dump(by_alias=True, context=context)

@@ -12,12 +12,13 @@ from pydantic import (
     field_serializer,
     SerializationInfo,
 )
+from pyRadPlan.util import swap_orientation_sparse_matrix
 from numpydantic import NDArray
 
 import numpy as np
 import SimpleITK as sitk
 import scipy.sparse as sp
-
+import scipy.ndimage as ndi
 from pyRadPlan.core import Grid
 from pyRadPlan.core import PyRadPlanBaseModel
 
@@ -177,8 +178,19 @@ class Dij(PyRadPlanBaseModel):
         context = info.context
         if context and context.get("matRad") == "mat-file" and value is not None:
             for i in range(value.size):
+
+                shape = (
+                    int(self.dose_grid.dimensions[2]),
+                    int(self.dose_grid.dimensions[0]),
+                    int(self.dose_grid.dimensions[1]),
+                )
+                value.flat[i] = swap_orientation_sparse_matrix(
+                    value.flat[i], shape, (1, 2)  # (65, 100, 100) example
+                )
                 if value.flat[i] is not None and not isinstance(value.flat[i], sp.csc_matrix):
                     value.flat[i] = sp.csc_matrix(value.flat[i])
+        elif context and context.get("matRad") == "mat-file" and value is None:
+            value = np.array([0])
         return value
 
     @field_serializer("bixel_num", "ray_num", "beam_num")
@@ -195,7 +207,9 @@ class Dij(PyRadPlanBaseModel):
         Converts the Dij object to matRad-compatible dictionary with
         camelCase keys.
         """
+
         dij_dict = super().to_matrad(context=context)
+
         return dij_dict
 
     def get_result_arrays_from_intensity(

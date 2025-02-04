@@ -147,8 +147,14 @@ class StfGeneratorIMPT(StfGeneratorIonRayBixel):
         for i, ray in enumerate(rays):
             ray_pos_all[i, :] = ray["ray_pos"]
 
-        target_points = 2 * (ray_pos_all - beam["source_point"]) + beam["source_point"]
+        ray_pos_all_bev = np.zeros((len(rays), 3))
+        for i, ray in enumerate(rays):
+            ray_pos_all_bev[i, :] = ray["ray_pos_bev"]
 
+        target_points = 2 * (ray_pos_all - beam["source_point"]) + beam["source_point"]
+        target_points_bev = (
+            2 * (ray_pos_all_bev - beam["source_point_bev"]) + beam["source_point_bev"]
+        )
         # TODO: do we need to check scenarios here? Compare to matrad...
         _, lengths, rhos, _, _ = rt.trace_rays(
             beam["iso_center"],
@@ -172,6 +178,8 @@ class StfGeneratorIMPT(StfGeneratorIonRayBixel):
             ray_energies = np.array([])
 
             if ray_hit_target:
+                ray["target_point"] = target_points[r]
+                ray["target_point_bev"] = target_points_bev[r]
                 # ct_entry_point = alpha[0] * d12
 
                 # Obtain radiological depths / WET
