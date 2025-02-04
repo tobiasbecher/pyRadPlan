@@ -477,7 +477,7 @@ class DoseEngineBase(ABC):
         dij["num_of_scenarios"] = 1  # TODO: Add support for multiple scenarios
         dij["num_of_rays_per_beam"] = [stf.beams[i].num_of_rays for i in range(len(stf.beams))]
         dij["total_num_of_bixels"] = int(
-            sum([stf.beams[i].total_num_of_bixels for i in range(len(stf.beams))])
+            sum([stf.beams[i].total_number_of_bixels for i in range(len(stf.beams))])
         )
         dij["total_num_of_rays"] = int(sum(dij["num_of_rays_per_beam"]))
 
