@@ -1,6 +1,11 @@
 """Base class for all dose engines."""
-from importlib import resources
 import logging
+
+try:
+    import importlib.resources as resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
+
 import warnings
 import time
 from typing import ClassVar, Union
@@ -68,7 +73,7 @@ class DoseEngineBase(ABC):
     select_voxels_in_scenarios: bool
 
     # Public properties
-    def __init__(self, pln: Plan | dict = None):
+    def __init__(self, pln: Union[Plan, dict] = None):
 
         # Assign default parameters from Matrad_Config or manually
         self.dose_grid = None

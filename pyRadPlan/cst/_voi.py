@@ -53,6 +53,11 @@ class VOI(PyRadPlanBaseModel, ABC):
         alias="Priority", default_factory=lambda data: DEFAULT_OVERLAPS[data["voi_type"]]
     )
 
+    # TODO: it would be nicer if this was a list of optimization.Objective, but that would create a
+    # circular import. Forward type hinting does not work directly due to pydantic. If someone has
+    # a better idea how to solve this, please do so.
+    objectives: list[Any] = Field(default=[], description="List of objective function definitions")
+
     @field_validator("mask", mode="before")
     @classmethod
     def validate_mask_type(cls, v: Any) -> Any:
@@ -212,7 +217,7 @@ class VOI(PyRadPlanBaseModel, ABC):
         else:
             raise ValueError(f"Unknown order: {order}")
 
-    def scenario_indices(self, order_type="numpy") -> np.ndarray | list[np.ndarray]:
+    def scenario_indices(self, order_type="numpy") -> Union[np.ndarray, list[np.ndarray]]:
         """
         Returns the flattened indices of the individual scenarios.
 
@@ -244,7 +249,7 @@ class VOI(PyRadPlanBaseModel, ABC):
 
         raise ValueError("Sanity check failed - mask has invalid dimensions")
 
-    def masked_ct(self, order_type="numpy") -> sitk.Image | np.ndarray:
+    def masked_ct(self, order_type="numpy") -> Union[sitk.Image, np.ndarray]:
         """
         Returns the masked CT image, either as a numpy array or a SimpleITK
         image.

@@ -106,7 +106,7 @@ class CT(PyRadPlanBaseModel, ABC):
 
                     if permute:
                         ct_scenarios = [
-                            sitk.GetImageFromArray(np.permute_dims(cube_hu[i], (2, 0, 1)), False)
+                            sitk.GetImageFromArray(np.transpose(cube_hu[i], (2, 0, 1)), False)
                             for i in range(num_cubes)
                         ]
                     else:
@@ -117,9 +117,7 @@ class CT(PyRadPlanBaseModel, ABC):
                     cube_hu = sitk.JoinSeries(ct_scenarios)
                 else:
                     if permute:
-                        cube_hu = sitk.GetImageFromArray(
-                            np.permute_dims(cube_hu, (2, 0, 1)), False
-                        )
+                        cube_hu = sitk.GetImageFromArray(np.transpose(cube_hu, (2, 0, 1)), False)
                     else:
                         cube_hu = sitk.GetImageFromArray(cube_hu, False)
                     num_cubes = 1

@@ -7,8 +7,12 @@ calling the RayTracer.
 """
 
 # Standard Library Imports
-from importlib import resources
 import logging
+
+try:
+    import importlib.resources as resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
 
 # Third Party Imports from pyRadPlan requirements
 import pymatreader

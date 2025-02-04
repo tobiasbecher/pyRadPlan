@@ -52,8 +52,7 @@ class StfGeneratorBase(ABC):
                 f"Invalid radiation mode. Possible modes are: {self.possible_radiation_modes}"
             )
 
-    @property
-    def computed_target_margin(self) -> float:
+    def _computed_target_margin(self) -> float:
         """Margin to be applied to the union of targets for stf generation."""
         return 0.0
 
@@ -140,7 +139,7 @@ class StfGeneratorBase(ABC):
         if not self.add_margin:
             self._target_voxels = self._cst.target_union_voxels(order="numpy")
         if self.add_margin:
-            added_margin = self.computed_target_margin  # pbMargin in matRad
+            added_margin = self._computed_target_margin()  # pbMargin in matRad
 
             max_iso_shift = np.max(self._mult_scen.iso_shift, axis=0)
             range_margin = (
@@ -162,7 +161,7 @@ class StfGeneratorBase(ABC):
             ).astype(int)
 
             dilation = sitk.BinaryDilateImageFilter()
-            dilation.SetKernelType(sitk.sitkBall)
+            dilation.SetKernelType(sitk.sitkBox)
             dilation.SetKernelRadius(voxel_margin.astype(int).tolist())
 
             self._target_mask = dilation.Execute(self._target_mask)
