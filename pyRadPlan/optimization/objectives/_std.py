@@ -2,7 +2,6 @@
 
 from math import sqrt
 from numba import njit
-from numpy import zeros_like
 from numpy.typing import NDArray
 
 from ._objective import Objective

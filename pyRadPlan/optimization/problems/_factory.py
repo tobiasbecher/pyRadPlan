@@ -126,7 +126,8 @@ def get_problem_from_pln(pln: Union[Plan, dict]) -> Type[PlanningProblem]:
         return pln.prop_opt
 
     if isinstance(pln.prop_opt, dict):
-        # The user provided a dictionary with problem parameters, so we need to find the problem name
+        # The user provided a dictionary with problem parameters,
+        # so we need to find the problem name
         if "problem" in pln.prop_opt:
             if pln.prop_opt["problem"] in problems:
                 return problems[pln.prop_opt["problem"]](pln)

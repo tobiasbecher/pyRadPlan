@@ -43,6 +43,6 @@ def fluence_optimization(
 
     planning_prob = get_problem_from_pln(_pln)
 
-    x, _result_info = planning_prob.solve(ct, cst, stf, dij)
+    x, _result_info = planning_prob.solve(_ct, _cst, _stf, _dij)
 
     return x
