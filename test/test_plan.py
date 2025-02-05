@@ -100,7 +100,6 @@ def test_create_pln_dict_photons_snake():
 
 
 def test_create_pln_dict_photons_camel():
-
     scen = NominalScenario()
     scen_dict_camel = scen.to_matrad()
     scen_dict_snake = scen.to_dict()

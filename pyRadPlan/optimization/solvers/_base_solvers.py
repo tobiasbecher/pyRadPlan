@@ -1,4 +1,5 @@
 """Solver Base Classes for Planning Problems."""
+
 from typing import ClassVar, Callable
 from abc import ABC, abstractmethod
 

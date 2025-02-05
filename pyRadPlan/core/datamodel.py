@@ -1,6 +1,7 @@
 """Module datamodel.py
 Basic Model for all pyRadPlan Datastructures.
 """
+
 from typing import Any, Union
 from pydantic import (
     AliasGenerator,

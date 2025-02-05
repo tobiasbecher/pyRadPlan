@@ -29,7 +29,8 @@ class ScenarioModel(ABC):
     ct_scen_prob : List[Tuple[int,float]]
         The probability of each CT scenario.
 
-    Methods:
+    Methods
+    -------
         update_scenarios() -> np.ndarray[float]
             Abstract method to update scenarios.
         extract_single_scenario(scen_num: int) -> ScenarioModel
@@ -284,35 +285,38 @@ class ScenarioModel(ABC):
         print("#\tctScen\txShift\tyShift\tzShift\tabsRng\trelRng\tprob.")
         for s, row in enumerate(self.scen_for_prob):
             row_str = "\t".join([f"{int(row[0]):5d}"] + [f"{x:.3f}" for x in row[1:]])
-            print(f"{s+1}\t{row_str}\t{self.scen_prob[s]:.3f}")
+            print(f"{s + 1}\t{row_str}\t{self.scen_prob[s]:.3f}")
 
     def sub2scen_ix(self, ct_scen: int, shift_scen: int, range_shift_scen: int) -> int:
         """
         Convert a sub-scenario index to a scenario index.
 
-        Parameters:
+        Parameters
+        ----------
             ctScen (int): The sub-scenario index.
             shift_scen (int): The shift scenario value.
             range_shift_scen (int): The range shift scenario value.
 
-        Returns:
+        Returns
+        -------
             int: The corresponding scenario index.
 
-        Raises:
+        Raises
+        ------
             None
 
-        Examples:
+        Examples
+        --------
             # Example usage
             sub2scenIx(1, 2, 3)  # Returns: 1
         """
 
         if self._scen_mask.shape[0] == 1:
             return self._ct_scen_ix[ct_scen]
-        else:
-            linear_index = np.ravel_multi_index(
-                (ct_scen, shift_scen, range_shift_scen), self._scen_mask.shape
-            )
-            return linear_index
+        linear_index = np.ravel_multi_index(
+            (ct_scen, shift_scen, range_shift_scen), self._scen_mask.shape
+        )
+        return linear_index
 
     def scen_num(self, full_scen_ix: int) -> int:
         """

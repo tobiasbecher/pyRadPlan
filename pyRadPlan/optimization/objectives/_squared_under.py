@@ -34,7 +34,6 @@ class SquaredUnderdosing(Objective):
 
 @njit
 def _compute_objective(dose, d_min):
-
     underdose = clip(dose - d_min, a_min=None, a_max=0)
 
     return (underdose @ underdose) / len(dose)
@@ -42,6 +41,5 @@ def _compute_objective(dose, d_min):
 
 @njit
 def _compute_gradient(dose, d_min):
-
     underdose = clip(dose - d_min, a_min=None, a_max=0)
     return 2.0 * underdose / len(underdose)

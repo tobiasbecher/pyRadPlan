@@ -1,4 +1,5 @@
 """Maximum DVH objective."""
+
 from typing import Annotated
 from pydantic import Field
 
@@ -36,7 +37,6 @@ class MaxDVH(Objective):
 
 @njit
 def _compute_objective(dose, d, v_max):
-
     deviation = dose - d
     dose_quantile = quantile(sort(dose)[::-1], v_max / 100.0)
     mask = logical_or(dose < d, dose > dose_quantile)

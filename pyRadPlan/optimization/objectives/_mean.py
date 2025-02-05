@@ -1,4 +1,5 @@
 """Mean dose objective."""
+
 from typing import Annotated
 from pydantic import Field
 
@@ -45,6 +46,5 @@ def _compute_objective(dose, d_ref):
 
 @njit
 def _compute_gradient(dose, d_ref):
-
     grad = 2 * (dose.mean() - d_ref) * ones(dose.shape) / dose.size
     return grad

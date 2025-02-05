@@ -15,7 +15,6 @@ class OptimizerSciPy(NonLinearOptimizer):
 
     Attributes
     ----------
-
     options : dict
         Options for the solver
     method : Union[str, Callable]
@@ -29,7 +28,6 @@ class OptimizerSciPy(NonLinearOptimizer):
     method: Union[str, Callable]
 
     def __init__(self):
-
         self.options = {
             "disp": False,
             "ftol": 1e-4,

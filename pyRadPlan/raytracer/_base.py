@@ -1,4 +1,5 @@
 """Interface for voxel geometry ray tracers."""
+
 from abc import ABC, abstractmethod
 from typing import Union, Any
 import logging
@@ -87,7 +88,7 @@ class RayTracerBase(ABC):
                 f"Number of source points ({num_sources}) needs to be one "
                 f"or equal to number of target points ({num_rays})!"
             )
-        elif num_sources == 1:
+        if num_sources == 1:
             source_points = np.tile(source_points, (num_rays, 1))
             num_sources = num_rays
 

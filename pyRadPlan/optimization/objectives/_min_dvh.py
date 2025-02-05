@@ -37,7 +37,6 @@ class MinDVH(Objective):
 
 @njit
 def _compute_objective(dose, d, v_min):
-
     deviation = dose - d
     dose_quantile = quantile(sort(dose)[::-1], v_min / 100.0)
     mask = logical_or(dose > d, dose < dose_quantile)
@@ -48,7 +47,6 @@ def _compute_objective(dose, d, v_min):
 
 @njit
 def _compute_gradient(dose, d, v_min):
-
     deviation = dose - d
     dose_quantile = quantile(sort(dose)[::-1], v_min / 100.0)
     mask = logical_or(dose > d, dose < dose_quantile)

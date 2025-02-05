@@ -13,6 +13,7 @@ def test_get_solver_scipy():
 
 def test_simple_problem_scipy():
     solver = get_solver("scipy")
+
     # Define the problem
     def objective(x):
         return x[0] ** 2 + x[1] ** 2

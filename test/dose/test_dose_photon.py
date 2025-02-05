@@ -1,7 +1,5 @@
 # Test_file which calls pyRadPlan/dose/calcPhotonDose_test.py
 
-import pyRadPlan.dose as dose
-
 
 # ct, stf, pln, cst = [], [], {"radiationMode": "photons"}, []
 

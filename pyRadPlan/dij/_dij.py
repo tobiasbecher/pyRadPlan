@@ -11,6 +11,7 @@ from pydantic import (
     computed_field,
     field_serializer,
     SerializationInfo,
+    SerializerFunctionWrapHandler,
 )
 
 import numpy as np
@@ -28,8 +29,8 @@ class Dij(PyRadPlanBaseModel):
     Represents a Collection of Dose (or other quantity) Influence Matrices
     (DIJ) for a given plan.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     resolution : dict[str, Any]
         Voxel resolution in each dimension ('x', 'y', 'z').
     physical_dose : scipy.sparse.sparray
@@ -72,7 +73,8 @@ class Dij(PyRadPlanBaseModel):
         """
         Validates the physical dose matrix.
 
-        Raises:
+        Raises
+        ------
             ValueError: if physical dose is not a 2D numpy array.
         """
 
@@ -112,7 +114,8 @@ class Dij(PyRadPlanBaseModel):
         """
         Validates grid dictionaries.
 
-        Raises:
+        Raises
+        ------
             ValueError:
         """
         # Check if it is a dictionary and then try to create a Grid object
@@ -126,7 +129,8 @@ class Dij(PyRadPlanBaseModel):
         """
         Validates the numbering arrays.
 
-        Raises:
+        Raises
+        ------
             ValueError: inconsistent numbering arrays.
         """
         # Check if the numbering arrays have the correct shape
@@ -156,7 +160,8 @@ class Dij(PyRadPlanBaseModel):
         """
         Validates the number of unique indices in beam_num.
 
-        Raises:
+        Raises
+        ------
             ValueError: Number of unique indices does not match number of beams.
         """
         num_of_beams = info.data["num_of_beams"]
@@ -167,25 +172,30 @@ class Dij(PyRadPlanBaseModel):
         return v
 
     # Serialization
-    @field_serializer("dose_grid", "ct_grid")
-    def grid_serializer(self, value: Grid, info: SerializationInfo) -> dict:
+    @field_serializer("dose_grid", "ct_grid", mode="wrap")
+    def grid_serializer(
+        self, value: Grid, handler: SerializerFunctionWrapHandler, info: SerializationInfo
+    ) -> dict:
         context = info.context
         if context and context.get("matRad") == "mat-file":
             return value.to_matrad(context=context["matRad"])
+
+        return handler(value, info)
 
     @field_serializer("physical_dose", "let_dose", "alpha_dose", "sqrt_beta_dose")
     def physical_dose_serializer(self, value: np.ndarray, info: SerializationInfo) -> np.ndarray:
         context = info.context
         if context and context.get("matRad") == "mat-file" and value is not None:
             for i in range(value.size):
-
                 shape = (
                     int(self.dose_grid.dimensions[2]),
                     int(self.dose_grid.dimensions[0]),
                     int(self.dose_grid.dimensions[1]),
                 )
                 value.flat[i] = swap_orientation_sparse_matrix(
-                    value.flat[i], shape, (1, 2)  # (65, 100, 100) example
+                    value.flat[i],
+                    shape,
+                    (1, 2),  # (65, 100, 100) example
                 )
                 if value.flat[i] is not None and not isinstance(value.flat[i], sp.csc_matrix):
                     value.flat[i] = sp.csc_matrix(value.flat[i])

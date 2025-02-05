@@ -1,4 +1,3 @@
-import pytest
 import numpy as np
 from pyRadPlan.optimization.objectives import (
     DoseUniformity,

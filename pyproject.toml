@@ -8,15 +8,6 @@ exclude = ["matRad","build"]
 [tool.setuptools.package-data]
 pyRadPlan = ["data/**/*"]
 
-[tool.pylint.message_control]
-disable = ["import-error"]
-ignore-paths = [
-  "test/*",
-]
-
-[tool.pylint.BASIC]
-good-names-rgxs = "[_a-z][_a-z0-9]?$"
-
 [project]
 name = "pyRadPlan"
 version = "0.0.2"
@@ -74,6 +65,58 @@ dev = ["pytest","coverage","pytest-cov","pre-commit","sphinx","numpydoc","pydata
 [project.urls]
 "Homepage" = "https://git.dkfz.de"
 
+[tool.ruff]
+line-length = 99
+indent-width = 4
+extend-exclude = [
+  ".venv",
+  ".git",
+  "__pycache__",
+  "docs",
+  "matRad",
+]
+extend-include = [
+  "examples",
+]
+
+[tool.ruff.lint]
+extend-select = ["PL","D", "NPY"]
+extend-ignore = ["E203", "E701", "F722", "RET504", "C901", "D202", "PLR2004"]
+exclude = ["test/**/*.py"]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Configuration in case someone uses pylint, flake or Black
+[tool.pylint.message_control]
+disable = ["import-error"]
+ignore-paths = [
+  "test/*",
+]
+
+[tool.pylint.BASIC]
+good-names-rgxs = "[_a-z][_a-z0-9]?$"
+
 [tool.black]
 # For code, we use the relaxed 99 line limit
 line-length = 99
@@ -110,8 +153,6 @@ exclude = [
   ]
 style = ["numpydoc"]
 linewrap-full-docstring = true
-# PEP says that when using a higher line length limit, documentation should still have 79 max
-max-line-length = 79
 
 [tool.pylint.format]
 max-line-length = 99

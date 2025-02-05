@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, ClassVar, cast
+from typing import Union, ClassVar
 import warnings
 import logging
 
@@ -15,7 +15,7 @@ from pyRadPlan.dij import Dij, validate_dij
 from pyRadPlan.scenarios import ScenarioModel
 from pyRadPlan.quantities import FluenceDependentQuantity, get_quantity
 
-from ..objectives import Objective, get_objective
+from ..objectives import get_objective
 from ..solvers import get_available_solvers, get_solver, SolverBase
 
 
@@ -143,9 +143,8 @@ class PlanningProblem(ABC):
         for field in fields:
             if not hasattr(self, field):
                 warnings.warn(f"Property {field} not found in Problem!")
-            else:
-                if warn_when_property_changed and warning_msg:
-                    logger.warning(warning_msg + f": {field}")
+            elif warn_when_property_changed and warning_msg:
+                logger.warning(warning_msg + f": {field}")
 
             setattr(self, field, prop_dict[field])
 

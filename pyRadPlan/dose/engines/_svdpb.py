@@ -3,12 +3,13 @@ Implementation of a pencil beam dose calculation engine for photon beams
 based on the Singular-value
 decomposition (SVD) method by Bortfeld.
 """
+
 from typing import TypedDict, Literal, Any, cast, Callable
 import logging
 import random
 
 import numpy as np
-import scipy.fft as fft
+from scipy import fft
 from scipy.interpolate import RegularGridInterpolator
 
 from pyRadPlan.plan import PhotonPlan
@@ -68,7 +69,6 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
     dij_sampling: DijSamplingConfig
 
     def __init__(self, pln: PhotonPlan):
-
         self.use_custom_primary_photon_fluence = False
         self.kernel_cutoff = np.inf
         self.random_seed = 0
@@ -87,7 +87,6 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         self._collimation = None  # collimation structure from DICOM import
 
     def _init_dose_calc(self, ct, cst, stf) -> dict[str, Any]:
-
         # TODO: What is "s" here?
         # self._is_field_based_dose_calc = any(str(s['bixelWidth']) == 'field' for s in stf)
 

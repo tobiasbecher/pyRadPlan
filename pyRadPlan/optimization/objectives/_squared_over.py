@@ -34,7 +34,6 @@ class SquaredOverdosing(Objective):
 
 @njit
 def _compute_objective(dose, d_max):
-
     overdose = clip(dose - d_max, a_min=0, a_max=None)
 
     return (overdose @ overdose) / len(dose)
@@ -42,6 +41,5 @@ def _compute_objective(dose, d_max):
 
 @njit
 def _compute_gradient(dose, d_max):
-
     overdose = clip(dose - d_max, a_min=0, a_max=None)
     return 2.0 * overdose / len(overdose)

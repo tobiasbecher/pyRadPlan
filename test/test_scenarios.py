@@ -1,10 +1,8 @@
-import os
 import numpy as np
 import SimpleITK as sitk
 from pyRadPlan.scenarios import ScenarioModel, NominalScenario, validate_scenario_model
 from pyRadPlan.ct import CT
 import pytest
-from copy import deepcopy
 
 
 @pytest.fixture

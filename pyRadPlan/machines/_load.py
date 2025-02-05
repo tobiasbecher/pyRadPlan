@@ -2,7 +2,7 @@ import os
 from typing import Union
 
 try:
-    import importlib.resources as resources  # Standard from Python 3.9+
+    from importlib import resources  # Standard from Python 3.9+
 except ImportError:
     import importlib_resources as resources  # Backport for older versions
 
@@ -46,6 +46,8 @@ def load_from_name(radiation_mode: str, machine_name: str) -> Machine:
             filename = current_path.joinpath(composed_filename)
             if filename.exists():
                 return load_machine(filename.as_posix())
+
+    raise FileNotFoundError("Could not find the following machine file:", composed_filename)
 
 
 if __name__ == "__main__":

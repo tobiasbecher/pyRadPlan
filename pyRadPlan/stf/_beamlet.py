@@ -1,4 +1,5 @@
 """Beamlet datamodels for particle and photon beamlets."""
+
 from typing import Any
 from pydantic import Field, field_serializer, SerializerFunctionWrapHandler, FieldSerializationInfo
 import numpy as np

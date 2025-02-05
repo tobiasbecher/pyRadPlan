@@ -383,8 +383,7 @@ class IonAccelerator(ExternalBeamMachine):
         if self.pb_kernels is None:
             raise ValueError("No pencil beam kernels available for this machine.")
             # return None
-        else:
-            return self.pb_kernels[energy]
+        return self.pb_kernels[energy]
 
     def update_kernel_at_index(self, ix_energy: int, kernel: IonPencilBeamKernel):
         """Update the pencil beam kernel for a specific energy index.

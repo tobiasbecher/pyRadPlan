@@ -96,8 +96,7 @@ def get_engine(pln: Union[Plan, dict]) -> DoseEngineBase:
         if "engine" in pln.prop_dose_calc:
             if pln.prop_dose_calc["engine"] in engines:
                 return engines[pln.prop_dose_calc["engine"]](pln)
-            else:
-                warnings.warn(f"Engine '{pln.prop_dose_calc['engine']}' not available for Plan.")
+            warnings.warn(f"Engine '{pln.prop_dose_calc['engine']}' not available for Plan.")
 
         # If no engine name was found, we choose the first as default
         logger.warning(

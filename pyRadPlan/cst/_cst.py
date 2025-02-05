@@ -51,7 +51,7 @@ class StructureSet(PyRadPlanBaseModel):
     @property
     def voi_types(self) -> list:
         """Return the unique VOI types in the Structure Set."""
-        return list(set([voi.voi_type for voi in self.vois]))
+        return list({voi.voi_type for voi in self.vois})
 
     def target_union_voxels(self, order="sitk") -> np.ndarray:
         """Return the union of all target indices."""
@@ -251,7 +251,7 @@ def create_cst(
 
     if cst_data is None and ct is not None:  # If data is None
         return StructureSet(ct_image=ct, **kwargs)
-    elif cst_data is None and ct is None:
+    if cst_data is None and ct is None:
         return StructureSet(**kwargs)
 
     # Other methods need the CT
@@ -327,6 +327,8 @@ def create_cst(
 
         cst_dict = {"vois": voi_list, "ct_image": ct}
         return StructureSet.model_validate(cst_dict)
+
+    raise ValueError("Invalid input data for creating a StructureSet.")
 
 
 def validate_cst(

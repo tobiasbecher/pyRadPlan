@@ -22,7 +22,6 @@ from pyRadPlan.cst import (
 
 
 def test_cst_from_matrad_mat_file(matrad_import):
-
     ct = create_ct(matrad_import["ct"])
     cst = create_cst(matrad_import["cst"], ct=ct)
     assert isinstance(cst, StructureSet)
