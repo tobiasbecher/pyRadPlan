@@ -16,6 +16,7 @@ def test_get_solver_ipopt():
 
 def test_simple_problem_ipopt():
     solver = get_solver("ipopt")
+
     # Define the problem
     def objective(x):
         return float(x[0] ** 2 + x[1] ** 2)

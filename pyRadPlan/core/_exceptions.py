@@ -1,5 +1,5 @@
 """Module _exceptions.py
-    This module contains custom exceptions for the pyRadPlan package.
+This module contains custom exceptions for the pyRadPlan package.
 """
 
 

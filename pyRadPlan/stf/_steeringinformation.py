@@ -109,13 +109,12 @@ class SteeringInformation(PyRadPlanBaseModel):
                 v, override_types=override_types, serialization_context=context
             )
             return beams_recarray
-        else:
-            return [
-                beam.model_dump(
-                    by_alias=info.by_alias,
-                )
-                for beam in v
-            ]
+        return [
+            beam.model_dump(
+                by_alias=info.by_alias,
+            )
+            for beam in v
+        ]
 
     def to_matrad(self, context: str = "mat-file") -> Any:
         export = super().to_matrad(context=context)
@@ -161,16 +160,9 @@ def create_stf(
         # If data is already a Stf object, return it directly
         if isinstance(stf, SteeringInformation):
             return stf
+        return SteeringInformation.model_validate(stf)
 
-        elif hasattr(stf, "gantryAngle"):
-            for i in range(len(stf["gantryAngle"])):
-                stf[i]["gantry_angle"] = stf[i].pop("gantryAngle")
-
-        else:
-            return SteeringInformation.model_validate(stf)
-
-    else:
-        return SteeringInformation(**kwargs)  # not tested
+    return SteeringInformation(**kwargs)  # not tested
 
 
 def validate_stf(

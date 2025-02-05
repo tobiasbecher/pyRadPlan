@@ -5,6 +5,7 @@ Notes
 -----
 Not installed by default. Uses ipyopt because it provides linux wheels
 """
+
 from ipyopt import Problem
 
 import numpy as np
@@ -29,7 +30,6 @@ class OptimizerIpopt(NonLinearOptimizer):
     options: dict[str]
 
     def __init__(self):
-
         self.result = None
 
         super().__init__()

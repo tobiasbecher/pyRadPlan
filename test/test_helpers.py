@@ -3,6 +3,7 @@ from pyRadPlan.util import dl2ld, ld2dl, swap_orientation_sparse_matrix
 import scipy.sparse as sp
 import numpy as np
 
+
 ### Test dl2ld function
 def test_dl2ld_valid_input():
     dict_of_lists = {"a": [1, 2, 3], "b": [4, 5, 6]}

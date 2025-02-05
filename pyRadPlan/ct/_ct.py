@@ -240,8 +240,7 @@ class CT(PyRadPlanBaseModel, ABC):
         """
         if self.cube_hu.GetDimension() == 4:
             return self.cube_hu.GetSize()[3]
-        else:
-            return 1
+        return 1
 
     @computed_field
     @property
@@ -488,16 +487,14 @@ def create_ct(data: Union[dict[str, Any], CT, os.PathLike, str, None] = None, **
         if isinstance(data, CT):
             return data
         # If data is in a file get CT object from file
-        elif isinstance(data, str) or isinstance(data, os.PathLike):
+        if isinstance(data, str) or isinstance(data, os.PathLike):
             return ct_from_file(data)
-        else:
-            # If data is in a dictionary create an SimpleITK image and then
-            # the CT object
-            return CT.model_validate(data)
-    else:
-        # If neither CT object nor dictionary try to
-        # get model from keyword arguments
-        return CT(**kwargs)
+        # If data is in a dictionary create an SimpleITK image and then
+        # the CT object
+        return CT.model_validate(data)
+    # If neither CT object nor dictionary try to
+    # get model from keyword arguments
+    return CT(**kwargs)
 
 
 def validate_ct(ct: Union[dict[str, Any], CT, os.PathLike, None] = None, **kwargs) -> CT:

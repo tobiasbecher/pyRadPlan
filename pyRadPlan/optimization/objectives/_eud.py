@@ -1,4 +1,5 @@
 """Equivalent uniform dose objective."""
+
 from typing import Annotated
 from pydantic import Field
 
@@ -34,7 +35,6 @@ class EUD(Objective):
 
 @njit
 def _compute_objective(dose, eud_ref, eud_k):
-
     eud = (npsum(dose ** (1 / eud_k)) / len(dose)) ** eud_k
 
     return (eud - eud_ref) ** 2
@@ -42,7 +42,6 @@ def _compute_objective(dose, eud_ref, eud_k):
 
 @njit
 def _compute_gradient(dose, eud_ref, eud_k):
-
     eud = (npsum(dose ** (1 / eud_k)) / len(dose)) ** eud_k
     eud_gradient = (
         npsum(dose ** (1 / eud_k)) ** (eud_k - 1) * dose ** (1 / eud_k - 1) / (len(dose) ** eud_k)

@@ -1,6 +1,4 @@
 import pytest
-import os
-import sys
 
 try:
     import oct2py

@@ -1,6 +1,7 @@
 """A class representing a single ray pointing from the beam source to a
 position in the patient.
 """
+
 import functools
 from typing import Any, Union, Optional
 import numpy as np
@@ -165,8 +166,7 @@ class Ray(PyRadPlanBaseModel):
                         field_dump.values(), names=list(field_dump)
                     )
             return beamlets_dump
-        else:
-            return handler(v, info)
+        return handler(v, info)
 
     # @field_serializer("target_point", mode="wrap")
     # def custom_target_point_serializer(

@@ -1,7 +1,7 @@
 import os
 
 try:
-    import importlib.resources as resources  # Standard from Python 3.9+
+    from importlib import resources  # Standard from Python 3.9+
 except ImportError:
     import importlib_resources as resources  # Backport for older versions
 

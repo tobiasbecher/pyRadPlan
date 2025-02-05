@@ -141,10 +141,9 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
                 else:
                     q_cache_index = self._q_cache_index[cnt]
                 for scen_ix in q_scenarios[obj.quantity]:
-                    self._grad_cache_intermediate[obj.quantity][
-                        q_cache_index, ix
-                    ] += obj.priority * obj.compute_gradient(
-                        q_vectors[obj.quantity].flat[scen_ix][ix]
+                    self._grad_cache_intermediate[obj.quantity][q_cache_index, ix] += (
+                        obj.priority
+                        * obj.compute_gradient(q_vectors[obj.quantity].flat[scen_ix][ix])
                     )
                 cnt += 1
 

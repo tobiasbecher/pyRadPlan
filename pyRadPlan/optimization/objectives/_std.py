@@ -21,7 +21,6 @@ class DoseUniformity(Objective):
 
 @njit
 def _compute_objective(dose: NDArray):
-
     return sqrt(len(dose) / (len(dose) - 1)) * dose.std()
 
 

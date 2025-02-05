@@ -1,4 +1,5 @@
 """Base Implementation for objective functions."""
+
 from abc import abstractmethod
 from typing import ClassVar, Any, Literal, Union, Optional
 import logging
@@ -88,7 +89,7 @@ class Objective(PyRadPlanBaseModel):
 
     def compute_hessian(self, values):
         """Computes the objective Hessian."""
-        return None
+        return
 
     @computed_field
     @property

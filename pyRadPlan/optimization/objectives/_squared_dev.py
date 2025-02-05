@@ -33,7 +33,6 @@ class SquaredDeviation(Objective):
 
 @njit
 def _compute_objective(dose, d_ref):
-
     deviation = dose - d_ref
 
     return (deviation @ deviation) / len(dose)
@@ -41,5 +40,4 @@ def _compute_objective(dose, d_ref):
 
 @njit
 def _compute_gradient(dose, d_ref):
-
     return 2.0 * (dose - d_ref) / len(dose)

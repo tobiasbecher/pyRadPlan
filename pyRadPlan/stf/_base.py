@@ -58,7 +58,6 @@ class StfGeneratorBase(ABC):
 
     # Initialization method for non-constant properties
     def __init__(self, pln=None):
-
         # Defaults
         self.vis_mode: int = 0  # Visualization Options
         self.add_margin: bool = (

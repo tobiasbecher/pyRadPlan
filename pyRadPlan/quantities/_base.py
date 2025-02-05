@@ -142,10 +142,10 @@ class FluenceDependentQuantity(RTQuantity, ABC):
         """
 
         for scenario_index in self.scenarios:
-            self._qgrad_cache.flat[
-                scenario_index
-            ] = self._compute_chained_fluence_gradient_single_scenario_from_cache(
-                d_quantity, scenario_index
+            self._qgrad_cache.flat[scenario_index] = (
+                self._compute_chained_fluence_gradient_single_scenario_from_cache(
+                    d_quantity, scenario_index
+                )
             )
 
     @abstractmethod

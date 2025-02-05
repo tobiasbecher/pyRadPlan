@@ -88,7 +88,6 @@ def test_linear_indices_to_sitk_mask_invalid_order(ref_image: sitk.Image):
 
 
 def test_sitk_mask_to_linear_indices_sitk_order(ref_image: sitk.Image):
-
     indices = np.array([0, 4, 25])
 
     # Convert linear indices to SimpleITK mask
@@ -98,7 +97,6 @@ def test_sitk_mask_to_linear_indices_sitk_order(ref_image: sitk.Image):
 
 
 def test_sitk_mask_to_linear_indices_numpy_order(ref_image: sitk.Image):
-
     indices = np.array([0, 4, 25])
 
     # Convert linear indices to SimpleITK mask

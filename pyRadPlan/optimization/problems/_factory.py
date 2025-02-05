@@ -1,4 +1,5 @@
 """Factory methods to manage available Problems."""
+
 import warnings
 import logging
 from typing import Union, Type, Optional
@@ -37,7 +38,7 @@ def register_problem(prob_cls: Type[PlanningProblem]) -> None:
 
 
 def get_available_problems(
-    pln: Optional[Union[Plan, str]] = None
+    pln: Optional[Union[Plan, str]] = None,
 ) -> dict[str, Type[PlanningProblem]]:
     """
     Get a list of available planning problems based on the plan.
@@ -131,8 +132,7 @@ def get_problem_from_pln(pln: Union[Plan, dict]) -> Type[PlanningProblem]:
         if "problem" in pln.prop_opt:
             if pln.prop_opt["problem"] in problems:
                 return problems[pln.prop_opt["problem"]](pln)
-            else:
-                warnings.warn(f"Engine '{pln.prop_opt['problem']}' not available for Plan.")
+            warnings.warn(f"Engine '{pln.prop_opt['problem']}' not available for Plan.")
 
         # If no problem name was found, we choose the first as default
         logger.warning(

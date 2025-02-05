@@ -179,8 +179,7 @@ class Beam(PyRadPlanBaseModel):
             # override_types = get_type_hints(Beamlet)
             # rays_recarray = models2recarray(v, serialization_context=context)
             return rays_recarray
-        else:
-            return [ray.model_dump(by_alias=info.by_alias) for ray in v]
+        return [ray.model_dump(by_alias=info.by_alias) for ray in v]
 
 
 def create_beam():

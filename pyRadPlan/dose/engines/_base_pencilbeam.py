@@ -1,4 +1,5 @@
 """Base class for pencil beam dose calculation algorithms."""
+
 from abc import abstractmethod
 from typing import cast, Any, Literal
 import warnings
@@ -182,7 +183,6 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                         # TODO: incorporate scenarios correctly
                         for ct_scen in range(self.mult_scen.num_of_ct_scen):
                             for range_scen in range(self.mult_scen.tot_num_range_scen):
-
                                 # Obtain scenario index
                                 full_scen_idx = self.mult_scen.sub2scen_ix(
                                     ct_scen, shift_scen, range_scen
@@ -272,7 +272,6 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         return dij
 
     def _allocate_quantity_matrices(self, dij: dict[str, Any], names: list[str]):
-
         # Loop over all requested quantities
         for q_name in names:
             # Create dij list for each quantity

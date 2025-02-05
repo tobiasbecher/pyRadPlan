@@ -147,7 +147,7 @@ class Grid(PyRadPlanBaseModel):
             The Grid object created from the SimpleITK image.
         """
         keys = ["x", "y", "z"]
-        resolution = {key: value for key, value in zip(keys, sitk_image.GetSpacing())}
+        resolution = dict(zip(keys, sitk_image.GetSpacing()))
         dimensions = sitk_image.GetSize()
         origin = sitk_image.GetOrigin()
         direction = sitk_image.GetDirection()

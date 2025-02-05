@@ -1,4 +1,4 @@
-import scipy.io as io
+from scipy import io
 import pymatreader
 
 

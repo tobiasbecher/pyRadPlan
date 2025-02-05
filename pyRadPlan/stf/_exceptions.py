@@ -1,5 +1,5 @@
 """Module _exceptions.py
-    This module contains all custom exceptions for the stf module.
+This module contains all custom exceptions for the stf module.
 """
 
 from pyRadPlan.core import PyRadPlanException

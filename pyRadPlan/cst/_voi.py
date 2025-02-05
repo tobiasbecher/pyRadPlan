@@ -211,10 +211,9 @@ class VOI(PyRadPlanBaseModel, ABC):
         """
         if order == "numpy":
             return self.indices_numpy
-        elif order == "sitk":
+        if order == "sitk":
             return self.indices
-        else:
-            raise ValueError(f"Unknown order: {order}")
+        raise ValueError(f"Unknown order: {order}")
 
     def scenario_indices(self, order_type="numpy") -> Union[np.ndarray, list[np.ndarray]]:
         """
@@ -593,13 +592,12 @@ def create_voi(data: Union[dict[str, Any], VOI, None] = None, **kwargs) -> VOI:
 
         raise ValueError(f"Invalid VOI type: {voi_type}")
 
-    else:
-        voi_type = kwargs.get("voi_type", "")
+    voi_type = kwargs.get("voi_type", "")
 
-        if voi_type in __VOITYPES__:
-            return __VOITYPES__[voi_type](**kwargs)
+    if voi_type in __VOITYPES__:
+        return __VOITYPES__[voi_type](**kwargs)
 
-        raise ValueError(f"Invalid VOI type: {voi_type}")
+    raise ValueError(f"Invalid VOI type: {voi_type}")
 
 
 def validate_voi(data: Union[dict[str, Any], VOI, None] = None, **kwargs) -> VOI:

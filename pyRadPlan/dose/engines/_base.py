@@ -1,8 +1,9 @@
 """Base class for all dose engines."""
+
 import logging
 
 try:
-    import importlib.resources as resources  # Standard from Python 3.9+
+    from importlib import resources  # Standard from Python 3.9+
 except ImportError:
     import importlib_resources as resources  # Backport for older versions
 
@@ -74,7 +75,6 @@ class DoseEngineBase(ABC):
 
     # Public properties
     def __init__(self, pln: Union[Plan, dict] = None):
-
         # Assign default parameters from Matrad_Config or manually
         self.dose_grid = None
         self.mult_scen = "nomScen"
@@ -168,9 +168,8 @@ class DoseEngineBase(ABC):
         for field in fields:
             if not hasattr(self, field):
                 warnings.warn('Property "{}" not found in Dose Engine!'.format(field))
-            else:
-                if warn_when_property_changed and warning_msg:
-                    logger.warning(warning_msg + f": {field}")
+            elif warn_when_property_changed and warning_msg:
+                logger.warning(warning_msg + f": {field}")
 
             setattr(self, field, prop_dict[field])
 
@@ -372,17 +371,15 @@ class DoseEngineBase(ABC):
                                         f"Excluding cst structure {cst[i, 1]} even though this "
                                         "structure has robustness."
                                     )
-                    else:
-                        if i in selected_cst_structs:
-                            logger.info(
-                                f"Including cst structure {cst[i, 1]} even though this structure "
-                                "does not have any objective or constraint"
-                            )
+                    elif i in selected_cst_structs:
+                        logger.info(
+                            f"Including cst structure {cst[i, 1]} even though this structure "
+                            "does not have any objective or constraint"
+                        )
 
         return include_mask
 
     def resize_cst_to_grid(self, cst: StructureSet, dij, new_ct: CT) -> StructureSet:
-
         """Resize the CST to the dose cube resolution."""
 
         logger.info("Resampling structure set... ")
@@ -443,12 +440,12 @@ class DoseEngineBase(ABC):
             logger.info("Dose influence matrix calculation using '%s' Dose Engine...", self.name)
 
         # Check if machine and radiation_mode are consistent
-        machine = list(set(beam.machine for beam in stf.beams))
-        radiation_mode = list(set(beam.radiation_mode for beam in stf.beams))
+        machine = list({beam.machine for beam in stf.beams})
+        radiation_mode = list({beam.radiation_mode for beam in stf.beams})
 
-        assert (
-            len(machine) == 1 or len(radiation_mode) == 1
-        ), "machine and radiation mode need to be unique within supplied stf!"
+        assert len(machine) == 1 or len(radiation_mode) == 1, (
+            "machine and radiation mode need to be unique within supplied stf!"
+        )
 
         machine = machine[0]
         radiation_mode = radiation_mode[0]
@@ -506,15 +503,14 @@ class DoseEngineBase(ABC):
                 tmp_scen = [cst.vois[c].indices_numpy for c in range(0, len(cst.vois))]
                 tmp_vct_grid_scen[s] = np.unique(np.concatenate(tmp_scen))
 
-        else:  # TODO: this "else" has not yet been tested
-            if isinstance(self.voxel_sub_ix, list):
-                tmp_vct_grid_scen = [None] * ct.num_of_ct_scen
+        elif isinstance(self.voxel_sub_ix, list):
+            tmp_vct_grid_scen = [None] * ct.num_of_ct_scen
 
-                for s in range(ct.num_of_ct_scen):
-                    tmp_vct_grid_scen[s] = self.voxel_sub_ix
+            for s in range(ct.num_of_ct_scen):
+                tmp_vct_grid_scen[s] = self.voxel_sub_ix
 
-            else:
-                tmp_vct_grid_scen = self.voxel_sub_ix
+        else:
+            tmp_vct_grid_scen = self.voxel_sub_ix
 
         self._vct_grid = np.unique(np.concatenate(tmp_vct_grid_scen))
 

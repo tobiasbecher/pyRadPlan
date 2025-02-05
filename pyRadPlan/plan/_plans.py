@@ -303,16 +303,15 @@ def create_pln(data: Union[Dict[str, Any], Plan, None] = None, **kwargs) -> Plan
 
         if radiation_mode == "photons":
             return PhotonPlan.model_validate(data)
-        else:  # radiation_mode in ['protons', 'helium', 'carbon', 'oxygen']:
-            return IonPlan.model_validate(data)
+        # radiation_mode in ['protons', 'helium', 'carbon', 'oxygen']:
+        return IonPlan.model_validate(data)
         # raise ValueError(f"Unknown radiation mode: {radiation_mode}")
-    else:
-        radiation_mode = kwargs.get("radiation_mode", "")
-        if radiation_mode == "photons":
-            return PhotonPlan(**kwargs)
-        if radiation_mode in ["protons", "helium", "carbon", "oxygen"]:
-            return IonPlan(**kwargs)
-        raise ValueError(f"Unknown radiation mode: {radiation_mode}")
+    radiation_mode = kwargs.get("radiation_mode", "")
+    if radiation_mode == "photons":
+        return PhotonPlan(**kwargs)
+    if radiation_mode in ["protons", "helium", "carbon", "oxygen"]:
+        return IonPlan(**kwargs)
+    raise ValueError(f"Unknown radiation mode: {radiation_mode}")
 
 
 def validate_pln(plan: Union[Dict[str, Any], Plan, None] = None, **kwargs) -> Plan:

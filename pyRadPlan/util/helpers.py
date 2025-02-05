@@ -1,4 +1,5 @@
 """Test Helper functions for pyRadPlan."""
+
 from typing import Union, get_type_hints, get_origin, get_args
 import warnings
 import numpy as np
@@ -161,15 +162,15 @@ def models2recarray(
     # convert dtypes
     for field in model_field_types:
         # str -> 'U'
-        if model_field_types[field] == str:
+        if model_field_types[field] is str:
             model_field_types[field] = object
 
         # list management
-        if get_origin(model_field_types[field]) == list:
+        if get_origin(model_field_types[field]) is list:
             model_field_types[field] = np.ndarray
 
         # manage optional types
-        if get_origin(model_field_types[field]) == Union:
+        if get_origin(model_field_types[field]) is Union:
             t_args = get_args(model_field_types[field])
             if type(None) in t_args and len(t_args) == 2:
                 model_field_types[field] = t_args[0]

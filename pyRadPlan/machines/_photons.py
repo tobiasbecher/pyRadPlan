@@ -216,5 +216,4 @@ class PhotonLINAC(ExternalBeamMachine):
         if self.pb_kernels is None:
             raise ValueError("No pencil beam kernels available for this machine.")
             # return None
-        else:
-            return self.pb_kernels[energy]
+        return self.pb_kernels[energy]
