@@ -1,6 +1,11 @@
 import os
 from typing import Union
-from importlib import resources
+
+try:
+    from importlib import resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
+
 from pymatreader import read_mat
 from pyRadPlan.machines import Machine, validate_machine
 
@@ -41,6 +46,8 @@ def load_from_name(radiation_mode: str, machine_name: str) -> Machine:
             filename = current_path.joinpath(composed_filename)
             if filename.exists():
                 return load_machine(filename.as_posix())
+
+    raise FileNotFoundError("Could not find the following machine file:", composed_filename)
 
 
 if __name__ == "__main__":

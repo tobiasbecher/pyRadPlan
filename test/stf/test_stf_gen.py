@@ -1,5 +1,10 @@
-from importlib import resources
 import pytest
+
+try:
+    from importlib import resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
+
 import numpy as np
 import SimpleITK as sitk
 
@@ -33,7 +38,6 @@ def sample_ct():
 
 @pytest.fixture
 def sample_cst(sample_ct):
-
     organ_mask = np.zeros((5, 15, 25), dtype=np.uint8)
     organ_mask[1:3, 3:11, 5:20] = 1
     organ_mask = sitk.GetImageFromArray(organ_mask)
@@ -43,7 +47,7 @@ def sample_cst(sample_ct):
     target_mask = sitk.GetImageFromArray(target_mask)
 
     target1 = VOI(name="testtarget", voi_type="TARGET", mask=target_mask, ct_image=sample_ct)
-    organ1 = VOI(name="testorgan", voi_type="ORGAN", mask=organ_mask, ct_image=sample_ct)
+    organ1 = VOI(name="testorgan", voi_type="OAR", mask=organ_mask, ct_image=sample_ct)
 
     cst = StructureSet(vois=[target1, organ1], ct_image=sample_ct)
 
@@ -113,7 +117,6 @@ def test_basic_photon_imrt_construct(sample_photon_pln_dict, sample_photon_pln):
 
 
 def test_basic_photon_imrt(sample_ct, sample_cst, sample_photon_pln):
-
     stf_gen = StfGeneratorPhotonIMRT(sample_photon_pln)
 
     stf_gen.gantry_angles = [90.0, 270.0]
@@ -138,7 +141,6 @@ def test_basic_photon_imrt(sample_ct, sample_cst, sample_photon_pln):
 
 
 def test_basic_photon_collimated_field(sample_ct, sample_cst, sample_photon_pln):
-
     stf_gen = StfGeneratorPhotonCollimatedSquareFields(sample_photon_pln)
 
     stf_gen.gantry_angles = [0.0, 270.0]
@@ -191,7 +193,6 @@ def test_basic_photon_collimated_field(sample_ct, sample_cst, sample_photon_pln)
 
 
 def test_single_ion_spot(sample_ct, sample_cst, sample_proton_pln):
-
     stf_gen = StfGeneratorIonSingleSpot(sample_proton_pln)
 
     stf_gen.gantry_angles = [0.0, 270.0]
@@ -243,7 +244,6 @@ def test_single_ion_spot(sample_ct, sample_cst, sample_proton_pln):
 
 
 def test_impt(sample_ct, sample_cst, sample_proton_pln):
-
     stf_gen = StfGeneratorIMPT(sample_proton_pln)
 
     stf_gen.gantry_angles = [0.0, 270.0]

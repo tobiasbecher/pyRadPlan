@@ -59,7 +59,7 @@ def test_ct_to_matrad_dict(sample_image):
     matrad_dict = ct.to_matrad()
     assert "cubeHU" in matrad_dict
     assert "cubeDim" in matrad_dict
-    assert matrad_dict["cubeDim"] == (100, 100, 50)  # reverse order of axes
+    assert matrad_dict["cubeDim"].tolist() == [100.0, 100.0, 50.0]  # reverse order of axes
     assert matrad_dict["cubeHU"].shape == (1,)
     assert matrad_dict["cubeHU"][0].shape == (100, 100, 50)  # reverse order of axes
 

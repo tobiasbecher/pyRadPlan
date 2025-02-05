@@ -1,4 +1,5 @@
 """Siddon Ray Tracing Algorithm for Voxelized Geometry."""
+
 from typing import Union
 import numpy as np
 import SimpleITK as sitk
@@ -77,7 +78,7 @@ class RayTracerSiddon(RayTracerBase):
                 f"Number of source points ({num_sources}) needs to be one or equal to number of "
                 f"target points ({num_rays})!"
             )
-        elif num_sources == 1:
+        if num_sources == 1:
             source_points = np.tile(source_points, (num_rays, 1))
             num_sources = num_rays
 

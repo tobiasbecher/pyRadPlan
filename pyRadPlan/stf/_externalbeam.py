@@ -1,5 +1,7 @@
 import math
+from typing import Union
 import numpy as np
+from numpy.typing import ArrayLike
 from tqdm import tqdm
 
 from pyRadPlan.geometry import lps
@@ -8,6 +10,15 @@ from pyRadPlan.stf import StfGeneratorBase
 
 
 class StfGeneratorExternalBeam(StfGeneratorBase):
+    """
+    Base class for geometry steering information generated for external beam
+    therapy.
+    """
+
+    gantry_angles: list[float]
+    couch_angles: list[float]
+    iso_center: Union[ArrayLike, None]
+
     @property
     def num_of_beams(self) -> int:
         """Number of beams."""
@@ -17,9 +28,9 @@ class StfGeneratorExternalBeam(StfGeneratorBase):
         return len(self.gantry_angles)
 
     def __init__(self, pln: Plan = None):
-        self.gantry_angles: list[float] = [0.0]
-        self.couch_angles: list[float] = [0.0]
-        self.iso_center: np.ndarray = None
+        self.gantry_angles = [0.0]
+        self.couch_angles = [0.0]
+        self.iso_center = None
 
         super().__init__(pln)
 
@@ -30,10 +41,15 @@ class StfGeneratorExternalBeamRayBixel(StfGeneratorExternalBeam):
     external beam therapy.
     """
 
+    bixel_width: float
+
     def __init__(self, pln: Plan = None):
-        self.bixel_width: float = 5.0
+        self.bixel_width = 5.0
 
         super().__init__(pln)
+
+    def _computed_target_margin(self) -> float:
+        return self.bixel_width
 
     def _create_rays(self, beam) -> list[dict]:
         """Get the rays on a beam / stf element."""
@@ -118,8 +134,12 @@ class StfGeneratorExternalBeamRayBixel(StfGeneratorExternalBeam):
         # Validate iso center
         if self.iso_center is None:
             self.iso_center = self._cst.target_center_of_mass().reshape((1, 3))
+        else:
+            self.iso_center = np.asarray(self.iso_center, dtype=np.float64).reshape((-1, 3))
+
+        # Now check isocenter
         if (
-            self.iso_center.shape[0] != self.num_of_beams or self.iso_center.shape != 1
+            self.iso_center.shape[0] != self.num_of_beams or self.iso_center.shape[0] != 1
         ) and self.iso_center.shape[1] != 3:
             raise ValueError(
                 "Iso center needs to have three coordinates (1x3 array) ",

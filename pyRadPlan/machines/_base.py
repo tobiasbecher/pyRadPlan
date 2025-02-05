@@ -43,7 +43,6 @@ class Machine(PyRadPlanBaseModel):
     @field_validator("created_on", "last_modified", mode="before")
     @classmethod
     def validate_datetime_variants(cls, v):
-
         # If it is a string, we try some additional formats in addition to
         # pydantics accepted datetime values
         # For example, matRad macines use the format "%d-%b-%Y" for some dates

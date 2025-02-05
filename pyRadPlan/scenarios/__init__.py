@@ -10,6 +10,10 @@ from pydantic.alias_generators import to_snake
 from pyRadPlan.ct import CT, validate_ct
 from ._base import ScenarioModel
 from ._nominal import NominalScenario
+import logging
+from copy import deepcopy
+
+logger = logging.getLogger(__name__)
 
 
 def available_scenario_models() -> list[str]:
@@ -95,6 +99,19 @@ def validate_scenario_model(
     ScenarioModel
         The scenario model object.
     """
+    model_def = deepcopy(model_def)
+    if "ctScenProb" in model_def:
+        if all(a > 0 for a, b in model_def["ctScenProb"]):
+            model_def["ctScenProb"] = [(a - 1, b) for (a, b) in model_def["ctScenProb"]]
+            logger.info(
+                "Assuming scenario model from matRad. Converting 1-based indexing to 0-based "
+                "indexing..."
+            )
+        else:
+            logger.info(
+                "CamelCase was used, but assuming 0-based indexing, since some values are less "
+                "than 1. No index conversion applied"
+            )
 
     return create_scenario_model(model_def, ct)
 

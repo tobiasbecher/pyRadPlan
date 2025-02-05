@@ -100,7 +100,6 @@ def test_create_pln_dict_photons_snake():
 
 
 def test_create_pln_dict_photons_camel():
-
     scen = NominalScenario()
     scen_dict_camel = scen.to_matrad()
     scen_dict_snake = scen.to_dict()
@@ -144,7 +143,7 @@ def test_create_pln_dict_photons_camel():
     print(set(pln_dict_snake) ^ set(pln_to_dict))
     assert pln_dict_snake == pln_to_dict
 
-    pln_to_dict_camel = pln.model_dump(by_alias=True)
+    pln_to_dict_camel = pln.to_matrad()
     print(set(pln_dict_camel) ^ set(pln_to_dict_camel))
     assert pln_dict_camel == pln_to_dict_camel
 

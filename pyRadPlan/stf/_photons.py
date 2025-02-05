@@ -1,7 +1,12 @@
+import logging
+
 import numpy as np
+
 from pyRadPlan.ct import CT
 from pyRadPlan.stf._externalbeam import StfGeneratorExternalBeamRayBixel
 from pyRadPlan.machines import PhotonLINAC
+
+logger = logging.getLogger(__name__)
 
 
 class StfGeneratorPhotonIMRT(StfGeneratorExternalBeamRayBixel):
@@ -21,6 +26,8 @@ class StfGeneratorPhotonIMRT(StfGeneratorExternalBeamRayBixel):
     short_name = "photonIMRT"
     possible_radiation_modes = ["photons"]
 
+    energy: float = 6.0
+
     def __init__(self, pln=None):
         self.radiation_mode = "photons"  # Radiation mode must be photons
         super().__init__(pln)
@@ -31,10 +38,49 @@ class StfGeneratorPhotonIMRT(StfGeneratorExternalBeamRayBixel):
         if not isinstance(self.machine, PhotonLINAC):
             raise ValueError("Machine must be an instance of PhotonLINAC.")
 
+        energy_ix = self.machine.get_closest_energy_index(self.energy)
+
+        machine_energy = self.machine.energies[energy_ix]
+
+        if machine_energy != self.energy:
+            logger.warning(
+                "Selected energy not available in machine. Using closest available energy %g.",
+                machine_energy,
+            )
+            self.energy = machine_energy
+
     def _generate_source_geometry(self):
         """Generates the source geometry for the photon IMRT geometry."""
         stf = super()._generate_source_geometry()
         return stf
+
+    def _create_rays(self, beam: dict) -> list[dict]:
+        """Creates the rays for the photon IMRT geometry.
+
+        Parameters
+        ----------
+        beam : dict
+            The beam dictionary.
+
+        Returns
+        -------
+        list[dict]
+            A list of ray dictionaries
+        """
+        rays = super()._create_rays(beam)
+
+        beamlet_template = {"energy": self.energy}
+        rays = [
+            {
+                **ray,
+                "beamlets": [beamlet_template.copy()],
+                "target_point": 2 * ray["ray_pos"] - beam["source_point"],
+                "target_point_bev": 2 * ray["ray_pos_bev"] - beam["source_point_bev"],
+            }
+            for ray in rays
+        ]
+
+        return rays
 
 
 class StfGeneratorPhotonCollimatedSquareFields(StfGeneratorExternalBeamRayBixel):

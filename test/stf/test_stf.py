@@ -1,8 +1,14 @@
 import pytest
-from pyRadPlan.stf import SteeringInformation, create_stf, Beamlet
+
+try:
+    from importlib import resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
+
 import pymatreader
-from importlib import resources
 import numpy as np
+
+from pyRadPlan.stf import SteeringInformation, create_stf
 
 
 @pytest.fixture
@@ -165,8 +171,6 @@ def test_stfgen_to_stf():
 
 
 def test_from_and_to_matrad():
-    import pyRadPlan.io.matRad as matRadIO
-
     # from scipy.io import savemat
 
     files = resources.files("pyRadPlan.data.stf")

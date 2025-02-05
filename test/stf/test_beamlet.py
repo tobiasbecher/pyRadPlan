@@ -1,4 +1,4 @@
-from pyRadPlan.stf import Beamlet, IonSpot, PhotonBixel
+from pyRadPlan.stf import IonSpot, PhotonBixel
 from pyRadPlan.stf import RangeShifter
 
 

@@ -1,6 +1,10 @@
-from importlib import resources
 from typing import cast
 import pytest
+
+try:
+    from importlib import resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
 
 import SimpleITK as sitk
 import numpy as np

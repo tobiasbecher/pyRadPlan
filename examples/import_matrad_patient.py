@@ -7,8 +7,12 @@ calling the RayTracer.
 """
 
 # Standard Library Imports
-from importlib import resources
 import logging
+
+try:
+    from importlib import resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
 
 # Third Party Imports from pyRadPlan requirements
 import pymatreader
@@ -83,7 +87,7 @@ rd_np = sitk.GetArrayFromImage(rad_depth_cubes[0])
 rd_np.ravel()[np.isnan(rd_np.ravel())] = 0
 min_rad_depth = np.min(rd_np)
 max_rad_depth = np.nanmax(rd_np)
-print(f"Minimum rad depth: {min_rad_depth}" f"Maximum rad depth: {max_rad_depth}")
+print(f"Minimum rad depth: {min_rad_depth}Maximum rad depth: {max_rad_depth}")
 
 # Now we do visualization of the corresponding slice of our WEPL cube
 rad_depth_slice = rd_np[view_slice, :, :]

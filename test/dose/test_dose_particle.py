@@ -1,11 +1,8 @@
 # test for pyRadPlan.dose
 import numpy as np
 import pytest
-import pyRadPlan.dose as dose
-from pyRadPlan.plan import validate_pln
-from pyRadPlan.ct import CT, validate_ct
+from pyRadPlan.ct import CT
 import SimpleITK as sitk
-from pyRadPlan.scenarios import ScenarioModel
 from pyRadPlan.stf import SteeringInformation
 from pyRadPlan.dose.engines import ParticleHongPencilBeamEngine, get_available_engines, get_engine
 

@@ -1,4 +1,5 @@
 """Base class for pencil beam dose calculation algorithms."""
+
 from abc import abstractmethod
 from typing import cast, Any, Literal
 import warnings
@@ -99,7 +100,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
     cube_wed: sitk.Image
     hlut: np.ndarray
 
-    def __init__(self, pln):
+    def __init__(self, pln=None):
         self.keep_rad_depth_cubes = False
         self.geometric_lateral_cutoff: float = 50
         self.dosimetric_lateral_cutoff: float = 0.9950
@@ -155,7 +156,9 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                 beam.iso_center += self.mult_scen.iso_shift[ix_shift_scen, :].reshape(-1)
 
             if self.mult_scen.tot_num_shift_scen > 1:
-                print(f"Shift scenario {shift_scen} of {self.mult_scen.tot_num_shift_scen}: \n")
+                logger.info(
+                    f"Shift scenario {shift_scen} of {self.mult_scen.tot_num_shift_scen}: \n"
+                )
 
             bixel_counter = 0
 
@@ -163,7 +166,9 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             with logging_redirect_tqdm():
                 for i in tqdm(range(dij["num_of_beams"]), desc="Beam", unit="b", leave=False):
                     # Initialize Beam Geometry
+                    t = time.time()
                     curr_beam = self._init_beam(dij, ct, cst, scen_stf, i)
+                    logger.info("Beam %d initialized in %f seconds.", i + 1, time.time() - t)
 
                     # Keep tabs on bixels computed in this beam
                     bixel_beam_counter = 0
@@ -178,7 +183,6 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                         # TODO: incorporate scenarios correctly
                         for ct_scen in range(self.mult_scen.num_of_ct_scen):
                             for range_scen in range(self.mult_scen.tot_num_range_scen):
-
                                 # Obtain scenario index
                                 full_scen_idx = self.mult_scen.sub2scen_ix(
                                     ct_scen, shift_scen, range_scen
@@ -268,7 +272,6 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         return dij
 
     def _allocate_quantity_matrices(self, dij: dict[str, Any], names: list[str]):
-
         # Loop over all requested quantities
         for q_name in names:
             # Create dij list for each quantity
@@ -281,7 +284,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                 if self.mult_scen.scen_mask.flat[i]:
                     if self._calc_dose_direct:
                         dij[q_name].flat[i] = np.zeros(
-                            (self.dose_grid.num_voxels,), dtype=np.float32
+                            (self.dose_grid.num_voxels, dij["num_of_beams"]), dtype=np.float32
                         )
                     else:
                         # This could probably be optimized by using direct access to the
@@ -362,27 +365,33 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         elapsed_time = end_time - start_time
         logger.info("Elapsed time for rayTracing per Beam: %f seconds", elapsed_time)
 
-        resampled_rad_depth_cube = resample_image(
-            input_image=rad_depth_cubes[0],
-            interpolator=sitk.sitkLinear,
-            target_grid=self.dose_grid,
-        )
-        if self.keep_rad_depth_cubes:
-            self._rad_depth_cubes.append(resampled_rad_depth_cube)
+        beam_info["valid_coords"] = [None] * len(rad_depth_cubes)
+        beam_info["rad_depths"] = [None] * len(rad_depth_cubes)
 
-        rad_depth_cube_dosegrid = sitk.GetArrayViewFromImage(resampled_rad_depth_cube)
-        rad_depth_vdose_grid = rad_depth_cube_dosegrid.ravel()[self._vdose_grid]
+        for c, rad_depth_cube in enumerate(rad_depth_cubes):
+            resampled_rad_depth_cube = resample_image(
+                input_image=rad_depth_cube,
+                interpolator=sitk.sitkLinear,
+                target_grid=self.dose_grid,
+            )
+            if self.keep_rad_depth_cubes:
+                self._rad_depth_cubes.append(resampled_rad_depth_cube)
 
-        # Find valid coordinates
-        coord_is_valid = np.isfinite(rad_depth_vdose_grid)
+            rad_depth_cube_dosegrid = sitk.GetArrayViewFromImage(resampled_rad_depth_cube)
+            rad_depth_vdose_grid = rad_depth_cube_dosegrid.ravel()[self._vdose_grid]
 
-        beam_info["valid_coords"] = coord_is_valid
-        beam_info["valid_coords_all"] = coord_is_valid
+            # Find valid coordinates
+            coord_is_valid = np.isfinite(rad_depth_vdose_grid)
 
-        # TODO: !remove brakets once mutliscen is implemented
-        beam_info["rad_depths"] = [rad_depth_vdose_grid]
+            beam_info["valid_coords"][c] = coord_is_valid
+
+            # TODO: !remove brakets once mutliscen is implemented
+            beam_info["rad_depths"][c] = rad_depth_vdose_grid
+
         beam_info["geo_depths"] = geo_dist_vdose_grid
         beam_info["bev_coords"] = rot_coords_vdose_grid
+
+        beam_info["valid_coords_all"] = np.any(np.vstack(beam_info["valid_coords"]), axis=0)
 
         # Check existence of target_points
         if any(r["target_point"] is None for r in beam_info["beam"]["rays"]):
@@ -394,13 +403,13 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                 )
 
         # Compute SSDs
-        curr_beam = self._compute_ssd(beam_info, ct, density_threshold=self.ssd_density_threshold)
+        beam_info = self._compute_ssd(beam_info, ct, density_threshold=self.ssd_density_threshold)
 
         logger.info("Done.")
 
-        return curr_beam
+        return beam_info
 
-    def _init_ray(self, curr_beam: dict, j: int) -> dict:
+    def _init_ray(self, beam_info: dict[str], j: int) -> dict[str]:
         """
         Initialize a ray for pencil beam dose calculation.
 
@@ -416,21 +425,21 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         dict
             The initialized ray.
         """
-        ray = curr_beam["beam"]["rays"][j]
-        ray["beam_index"] = curr_beam["beam_index"]
+        ray = beam_info["beam"]["rays"][j]
+        ray["beam_index"] = beam_info["beam_index"]
         ray["ray_index"] = j
-        ray["iso_center"] = curr_beam["beam"]["iso_center"]
+        ray["iso_center"] = beam_info["beam"]["iso_center"]
 
-        if "num_of_bixels_per_ray" not in curr_beam["beam"]:
+        if "num_of_bixels_per_ray" not in beam_info["beam"]:
             ray["num_of_bixels"] = 1
         else:
-            ray["num_of_bixels"] = curr_beam["beam"]["num_of_bixels_per_ray"][j]
+            ray["num_of_bixels"] = beam_info["beam"]["num_of_bixels_per_ray"][j]
 
-        ray["source_point_bev"] = curr_beam["beam"]["source_point_bev"]
-        ray["sad"] = curr_beam["beam"]["sad"]
-        ray["bixel_width"] = curr_beam["beam"]["bixel_width"]
+        ray["source_point_bev"] = beam_info["beam"]["source_point_bev"]
+        ray["sad"] = beam_info["beam"]["sad"]
+        ray["bixel_width"] = beam_info["beam"]["bixel_width"]
 
-        ray = self._get_ray_geometry_from_beam(ray, curr_beam)
+        ray = self._get_ray_geometry_from_beam(ray, beam_info)
 
         return ray
 
@@ -589,12 +598,39 @@ class PencilBeamEngineAbstract(DoseEngineBase):
 
         return scen_ray
 
-    def _get_ray_geometry_from_beam(self, _ray: dict, _curr_beam: dict) -> dict:
-        raise NotImplementedError(
-            "Method _get_ray_geometry_from_beam must be implemented in derived class."
+    def _get_ray_geometry_from_beam(self, ray: dict[str], beam_info: dict[str]) -> dict[str]:
+        ray["effective_lateral_cut_off"] = beam_info["effective_lateral_cut_off"]
+        lateral_ray_cutoff = self._get_lateral_distance_from_dose_cutoff_on_ray(ray)
+
+        # Ray tracing for beam i and ray j
+        ix, radial_dist_sq, lat_dists, iso_lat_dists = self.calc_geo_dists(
+            beam_info["bev_coords"],
+            ray["source_point_bev"],
+            ray["target_point_bev"],
+            ray["sad"],
+            beam_info["valid_coords_all"],
+            lateral_ray_cutoff,
         )
 
-    def _get_lateral_distance_from_dose_cutoff_on_ray(self, _ray: dict) -> float:
+        # Subindex given the relevant indices from the geometric distance calculation
+        ray["valid_coords"] = [beam_ix & ix for beam_ix in beam_info["valid_coords"]]
+        ray["ix"] = [self._vdose_grid[ix_in_grid] for ix_in_grid in ray["valid_coords"]]
+
+        ray["radial_dist_sq"] = [radial_dist_sq[beam_ix[ix]] for beam_ix in ray["valid_coords"]]
+        ray["lat_dists"] = [lat_dists[beam_ix[ix]] for beam_ix in ray["valid_coords"]]
+        ray["iso_lat_dists"] = [iso_lat_dists[beam_ix[ix]] for beam_ix in ray["valid_coords"]]
+
+        ray["valid_coords_all"] = np.any(np.vstack(ray["valid_coords"]), axis=0)
+
+        ray["geo_depths"] = [
+            rD[ix] for rD, ix in zip(beam_info["geo_depths"], ray["valid_coords"])
+        ]  # usually not needed for particle beams
+        ray["rad_depths"] = [
+            rD[ix] for rD, ix in zip(beam_info["rad_depths"], ray["valid_coords"])
+        ]
+        return ray
+
+    def _get_lateral_distance_from_dose_cutoff_on_ray(self, ray: dict) -> float:
         """
         Obtain the maximum lateral cutoff distance given a dosimetric cutoff
         on a a ray.
@@ -610,8 +646,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             The lateral distance from the dose cutoff on the ray.
         """
 
-        lateral_ray_cutoff = self._effective_lateral_cutoff
-        return lateral_ray_cutoff
+        return ray.get("effective_lateral_cut_off", self._effective_lateral_cutoff)
 
     def _fill_dij(
         self,
@@ -663,7 +698,9 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             for q_name in self._computed_quantities:
                 if self._calc_dose_direct:
                     # We accumulate the current bixel to the container
-                    dij[q_name][sub_scen_idx][bixel["ix"]] += bixel[q_name]
+                    dij[q_name][sub_scen_idx][bixel["ix"], curr_beam_idx] += (
+                        bixel["weight"] * bixel[q_name]
+                    )
                 else:
                     # We insert into the lil sparse matrix
                     # This could probably be optimized by using direct access to the lil_matrix's
@@ -705,10 +742,11 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             if self.mult_scen.scen_mask.flat[i]:
                 # Loop over all used quantities
                 for q_name in self._computed_quantities:
-                    tmp_matrix = cast(sparse.lil_matrix, dij[q_name].flat[i])
-                    tmp_matrix = tmp_matrix.tocsr().T
-                    tmp_matrix.eliminate_zeros()
-                    dij[q_name].flat[i] = tmp_matrix
+                    if not self._calc_dose_direct:
+                        tmp_matrix = cast(sparse.lil_matrix, dij[q_name].flat[i])
+                        tmp_matrix = tmp_matrix.tocsr().T
+                        tmp_matrix.eliminate_zeros()
+                        dij[q_name].flat[i] = tmp_matrix
 
         if self.keep_rad_depth_cubes and self._rad_depth_cubes:
             dij["rad_depth_cubes"] = self._rad_depth_cubes

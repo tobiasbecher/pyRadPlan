@@ -1,4 +1,5 @@
 """Beamlet datamodels for particle and photon beamlets."""
+
 from typing import Any
 from pydantic import Field, field_serializer, SerializerFunctionWrapHandler, FieldSerializationInfo
 import numpy as np
@@ -26,6 +27,8 @@ class Beamlet(PyRadPlanBaseModel):
     relative_fluence : float
         The fluence of this beamlet relative to the central primary fluence.
         For example, due to a non-uniform primary fluence
+    weight : float
+        The applied fluence weight of the beamlet
     min_mu : float
         The minimum monitor unit
     max_mu : float
@@ -41,6 +44,7 @@ class Beamlet(PyRadPlanBaseModel):
     min_mu: float = Field(alias="minMU", default=0.0)
     max_mu: float = Field(alias="maxMU", default=float("inf"))
     relative_fluence: float = Field(default=1.0)
+    weight: float = Field(default=1.0)
     range_shifter: RangeShifter = Field(default_factory=RangeShifter)
     focus_ix: int = Field(default=0)
 
@@ -50,6 +54,7 @@ class Beamlet(PyRadPlanBaseModel):
         "min_mu",
         "max_mu",
         "relative_fluence",
+        "weight",
         "focus_ix",
         mode="wrap",
     )
@@ -61,6 +66,8 @@ class Beamlet(PyRadPlanBaseModel):
         """
         context = info.context
         if context and context.get("matRad") == "mat-file":
+            if info.field_name == "focus_ix":
+                return np.float64(v + 1)  # Increment focus_ix by 1 for MATLAB/matRad
             return np.float64(v)  # Ensure double for MATLAB/matRad
 
         return handler(v, info)

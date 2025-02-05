@@ -28,8 +28,8 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
     This class extends PencilBeamEngineAbstract by adding infrastructure for particles spots and
     quantities like LET and biological dose for variable RBE calculations.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     calc_let : bool
         Boolean which defines if LET should be calculated.
     calc_bio_dose : bool
@@ -90,13 +90,12 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
                     self.lateral_model,
                 )
                 self.lateral_model = "auto"
-        else:
-            if self.lateral_model not in ["auto", "fastest"]:
-                logger.warning(
-                    "Invalid lateral model %s. Using auto instead.",
-                    self.lateral_model,
-                )
-                self.lateral_model = "auto"
+        elif self.lateral_model not in ["auto", "fastest"]:
+            logger.warning(
+                "Invalid lateral model %s. Using auto instead.",
+                self.lateral_model,
+            )
+            self.lateral_model = "auto"
 
         # Now if auto, we choose the most accurate one (i.e. the last one in the dictionary that
         # is available)
@@ -156,7 +155,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
             The initialized bixel.
         """
 
-        bixel = {}
+        bixel = curr_ray["beamlets"][k]
         bixel["beam_index"] = curr_ray["beam_index"]
         bixel["ray_index"] = curr_ray["ray_index"]
         bixel["bixel_index"] = k
@@ -272,34 +271,34 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
         return kernel_interp
 
-    def _get_ray_geometry_from_beam(self, ray, curr_beam):
+    def _get_ray_geometry_from_beam(self, ray: dict[str], beam_info: dict[str]) -> dict[str]:
         lateral_ray_cutoff = self._get_lateral_distance_from_dose_cutoff_on_ray(ray)
 
         # Ray tracing for beam i and ray j
         ix, radial_dist_sq, _, _ = self.calc_geo_dists(
-            curr_beam["bev_coords"],
+            beam_info["bev_coords"],
             ray["source_point_bev"],
             ray["target_point_bev"],
             ray["sad"],
-            curr_beam["valid_coords_all"],
+            beam_info["valid_coords_all"],
             lateral_ray_cutoff,
         )
 
         # Subindex given the relevant indices from the geometric distance calculation
-        ray["valid_coords"] = [beam_ix & ix for beam_ix in curr_beam["valid_coords"]]
+        ray["valid_coords"] = [beam_ix & ix for beam_ix in beam_info["valid_coords"]]
         ray["ix"] = [self._vdose_grid[ix_in_grid] for ix_in_grid in ray["valid_coords"]]
 
         ray["radial_dist_sq"] = [
-            radial_dist_sq[beam_ix[ix]] for beam_ix in curr_beam["valid_coords"]
+            radial_dist_sq[beam_ix[ix]] for beam_ix in beam_info["valid_coords"]
         ]
 
         ray["valid_coords_all"] = np.any(np.vstack(ray["valid_coords"]), axis=1)
 
         ray["geo_depths"] = [
-            rD[ix] for rD, ix in zip(curr_beam["geo_depths"], ray["valid_coords"])
+            rD[ix] for rD, ix in zip(beam_info["geo_depths"], ray["valid_coords"])
         ]  # usually not needed for particle beams
         ray["rad_depths"] = [
-            rD[ix] for rD, ix in zip(curr_beam["rad_depths"], ray["valid_coords"])
+            rD[ix] for rD, ix in zip(beam_info["rad_depths"], ray["valid_coords"])
         ]
         return ray
 
@@ -386,7 +385,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         # Omit field checks of fit_air_offset and BAMStoIsoDist as validated through machine model
 
         # biology
-        if hasattr(self, "_constant_rbe") and not (self._constant_rbe is None):
+        if hasattr(self, "_constant_rbe") and self._constant_rbe is not None:
             dij["RBE"] = self._constant_rbe
 
         # TODO: (Comment from matlab): This is clumsy and needs to be changed with the biomodel
@@ -470,14 +469,14 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
             for rD in beam_info["rad_depths"]
         ]
 
-        beam_info["valid_coords"] = [
-            np.array(
+        for scen in range(len(beam_info["valid_coords"])):
+            beam_info["valid_coords"][scen] = np.array(
                 [
                     True if ss & vc else False
-                    for ss, vc in zip(sub_select_ix[0], beam_info["valid_coords"])
+                    for ss, vc in zip(sub_select_ix[scen], beam_info["valid_coords"][scen])
                 ]
             )
-        ]  # list so that there are multiple scen
+
         beam_info["valid_coords_all"] = np.any(np.column_stack(beam_info["valid_coords"]), axis=1)
 
         # Precompute CutOff
@@ -650,7 +649,6 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         # Find the largest initial beam width considering focus index, SSD and range shifter
         # for each individual energy
         for i in range(len(energy_sigma_lut)):
-
             # find index of maximum used energy (round to keV for numerical reasons)
             energy_ix = self._machine.get_energy_index(energy_sigma_lut[i, 0], 4)
             # Get the kernel entry
@@ -747,63 +745,59 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
                 # If there's no cut-off set, we do not need to find it. Set it to infinity
                 if cut_off_level == 1:
                     continue
+                # Create a dummy bixel calculating radial dose distribution for the current
+                # depth
+                bixel = {
+                    "energy_ix": energy_ix,
+                    "kernel": kernel,
+                    "radial_dist_sq": radial_dist_sq,
+                    "sigma_ini_sq": largest_sigma_sq4unique_energies[
+                        cnt - 1
+                    ],  # TODO: check if this result is correct (rounded but may be right)
+                    "rad_depths": (current_depth + kernel.offset) * np.ones_like(radial_dist_sq),
+                    "v_tissue_index": np.ones_like(radial_dist_sq),
+                    "v_alpha_x": 0.5 * np.ones_like(radial_dist_sq),
+                    "v_beta_x": 0.05 * np.ones_like(radial_dist_sq),
+                    "sub_ray_ix": np.ones_like(radial_dist_sq, dtype=bool),
+                    "ix": np.arange(len(radial_dist_sq)),
+                    "rad_depth_offset": 0,
+                    "add_sigma_sq": 0,
+                }
+
+                bixel = self._calc_particle_bixel(bixel)
+                dose_r = bixel["physical_dose"]
+
+                # Do an integration check that the radial dose integrates to the tabulated
+                # integrated depth dose
+                cum_area = np.cumsum(2 * np.pi * r_mid * dose_r * dr)
+                relative_tolerance = 0.5  # in [%]
+
+                if abs((cum_area[-1] / idd[j]) - 1) * 100 > relative_tolerance:
+                    warnings.warn("Shell integration in cut-off calculation is inconsistent!")
+
+                # obtain the cut-off compensation factor dending on the cut-off method
+                if self.cut_off_method == "integral":
+                    ix = (cum_area >= idd[j] * cut_off_level).argmax()
+                    kernel.lateral_cut_off.comp_fac = cut_off_level**-1
+                elif self.cut_off_method == "relative":
+                    ix = (dose_r <= (1 - cut_off_level) * np.max(dose_r)).argmax()
+                    rel_fac = cum_area[ix] / cum_area[-1]
+                    kernel.lateral_cut_off.comp_fac = rel_fac**-1
                 else:
-                    # Create a dummy bixel calculating radial dose distribution for the current
-                    # depth
-                    bixel = {
-                        "energy_ix": energy_ix,
-                        "kernel": kernel,
-                        "radial_dist_sq": radial_dist_sq,
-                        "sigma_ini_sq": largest_sigma_sq4unique_energies[
-                            cnt - 1
-                        ],  # TODO: check if this result is correct (rounded but may be right)
-                        "rad_depths": (current_depth + kernel.offset)
-                        * np.ones_like(radial_dist_sq),
-                        "v_tissue_index": np.ones_like(radial_dist_sq),
-                        "v_alpha_x": 0.5 * np.ones_like(radial_dist_sq),
-                        "v_beta_x": 0.05 * np.ones_like(radial_dist_sq),
-                        "sub_ray_ix": np.ones_like(radial_dist_sq, dtype=bool),
-                        "ix": np.arange(len(radial_dist_sq)),
-                        "rad_depth_offset": 0,
-                        "add_sigma_sq": 0,
-                    }
+                    raise ValueError("Invalid Cutoff Method. Must be 'integral' or 'relative'!")
+                # Nothing was cut-off -> warn the user
+                if ix == len(cum_area):
+                    depth_dose_cut_off = np.inf
+                    warnings.warn("Couldn't find lateral cut off!")
+                else:
+                    depth_dose_cut_off = r_mid[ix]
 
-                    bixel = self._calc_particle_bixel(bixel)
-                    dose_r = bixel["physical_dose"]
-
-                    # Do an integration check that the radial dose integrates to the tabulated
-                    # integrated depth dose
-                    cum_area = np.cumsum(2 * np.pi * r_mid * dose_r * dr)
-                    relative_tolerance = 0.5  # in [%]
-
-                    if abs((cum_area[-1] / idd[j]) - 1) * 100 > relative_tolerance:
-                        warnings.warn("Shell integration in cut-off calculation is inconsistent!")
-
-                    # obtain the cut-off compensation factor dending on the cut-off method
-                    if self.cut_off_method == "integral":
-                        ix = (cum_area >= idd[j] * cut_off_level).argmax()
-                        kernel.lateral_cut_off.comp_fac = cut_off_level**-1
-                    elif self.cut_off_method == "relative":
-                        ix = (dose_r <= (1 - cut_off_level) * np.max(dose_r)).argmax()
-                        rel_fac = cum_area[ix] / cum_area[-1]
-                        kernel.lateral_cut_off.comp_fac = rel_fac**-1
-                    else:
-                        raise ValueError(
-                            "Invalid Cutoff Method. Must be 'integral' or 'relative'!"
-                        )
-                    # Nothing was cut-off -> warn the user
-                    if ix == len(cum_area):
-                        depth_dose_cut_off = np.inf
-                        warnings.warn("Couldn't find lateral cut off!")
-                    else:
-                        depth_dose_cut_off = r_mid[ix]
-
-                    kernel.lateral_cut_off.cut_off[j] = depth_dose_cut_off
+                kernel.lateral_cut_off.cut_off[j] = depth_dose_cut_off
 
             self._machine.update_kernel_at_index(energy_ix, kernel)
 
-    def _init_ray(self, beam, j):
-        ray = super()._init_ray(beam, j)
+    def _init_ray(self, beam_info: dict[str], j: int) -> dict[str]:
+        ray = super()._init_ray(beam_info, j)
 
         self._machine = cast(IonAccelerator, self._machine)
 
@@ -970,10 +964,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         lr_pmma = 40.55  # rad. length [cm]
         rsp_pmma = 1.165  # rSP [rel. u.]
         prsf_pmma = np.sqrt(
-            rsp_pmma**3
-            * lr_water
-            / lr_pmma
-            * (1 + 2 * c2 * np.log(rsp_pmma * lr_water / lr_pmma))
+            rsp_pmma**3 * lr_water / lr_pmma * (1 + 2 * c2 * np.log(rsp_pmma * lr_water / lr_pmma))
         )
 
         # Calculate F1 and F2
@@ -983,7 +974,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         f1 = f1_part1 * f1_part2 * f1_part3
 
         f2_part1 = (c1**2 * alpha ** (2 / p)) / (4 * lr_pmma * (2 / p - 1))
-        f2_part2 = (((1 - s) ** (1 - 2 / p) - 1)) / 1
+        f2_part2 = ((1 - s) ** (1 - 2 / p) - 1) / 1
         f2_part3 = range_in_water ** (1 - 2 / p)
         f2 = f2_part1 * f2_part2 * f2_part3
 

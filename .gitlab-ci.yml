@@ -39,18 +39,18 @@ lint:
         policy: pull
     script:
         - source .venv/bin/activate
-        - pip install flake8-gl-codeclimate Flake8-pyproject black pylint
+        - pip install ruff
         - return_code=0
-        - flake8 --format gl-codeclimate --output-file gl-code-quality-report.json --toml-config ./pyproject.toml || return_code=$(($return_code + $?))
-        - black --check . 2> >(tee black-report.txt >&2) || return_code=$(($return_code + $?))
-        - pylint --output-format=json:pylint.txt,colorized pyRadPlan || return_code=$(($return_code + $?))
+        - ruff check --output-format grouped || return_code=$(($return_code + $?))
+        - ruff check --exit-zero --output-format grouped --output-file ruff.txt
+        - ruff check --exit-zero --output-format gitlab --output-file gl-code-quality-report.json
+        - ruff format --check || return_code=$(($return_code + $?))
         - exit $return_code
     artifacts:
         reports:
             codequality: gl-code-quality-report.json
         paths:
-            - black-report.txt
-            - pylint.txt
+            - ruff.txt
         when: always
 
     allow_failure: true

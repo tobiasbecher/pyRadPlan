@@ -51,7 +51,7 @@ class StructureSet(PyRadPlanBaseModel):
     @property
     def voi_types(self) -> list:
         """Return the unique VOI types in the Structure Set."""
-        return list(set([voi.voi_type for voi in self.vois]))
+        return list({voi.voi_type for voi in self.vois})
 
     def target_union_voxels(self, order="sitk") -> np.ndarray:
         """Return the union of all target indices."""
@@ -160,6 +160,44 @@ class StructureSet(PyRadPlanBaseModel):
             new_model["vois"] = [voi.resample_on_new_ct(new_ct) for voi in self.vois]
         return self.model_validate(new_model)
 
+    def apply_overlap_priorities(self) -> Self:
+        """
+        Apply overlaps to the StructureSet.
+
+        Returns
+        -------
+        StructureSet
+            The StructureSet with overlaps applied.
+        """
+
+        # gather overlaps
+        overlaps = [v.overlap_priority for v in self.vois]
+
+        # sort by overlap priority
+        ix_sorted = np.argsort(overlaps)
+
+        overlap_mask = self.vois[ix_sorted[0]].mask
+        new_vois = [None] * len(self.vois)
+        new_vois[ix_sorted[0]] = self.vois[ix_sorted[0]].copy()
+
+        for i, ix_voi in enumerate(ix_sorted[1:], 1):
+            curr_voi = self.vois[ix_voi].copy()
+            curr_mask = curr_voi.mask
+
+            # if the overlap prirority is higher than we need to apply overlap
+            if curr_voi.overlap_priority > new_vois[ix_sorted[i - 1]].overlap_priority:
+                curr_mask = sitk.MaskNegated(curr_mask, overlap_mask)
+
+            curr_voi.mask = curr_mask
+
+            overlap_mask = sitk.Or(overlap_mask, curr_mask)
+
+            # sitk.Show(overlap_mask, debugOn = True)
+
+            new_vois[ix_voi] = curr_voi
+
+        return self.model_copy(deep=True, update={"vois": new_vois})
+
 
 def create_cst(
     cst_data: Union[dict[str, Any], StructureSet, None] = None,
@@ -213,7 +251,7 @@ def create_cst(
 
     if cst_data is None and ct is not None:  # If data is None
         return StructureSet(ct_image=ct, **kwargs)
-    elif cst_data is None and ct is None:
+    if cst_data is None and ct is None:
         return StructureSet(**kwargs)
 
     # Other methods need the CT
@@ -242,9 +280,8 @@ def create_cst(
             masks = []
             for idx in idx_list:
                 # TODO: Check index ordering
-                tmp_mask = sitk.GetArrayViewFromImage(ct.cube_hu).astype(np.uint8)
-                tmp_mask.fill(0)
-                tmp_mask[np.unravel_index(np.asarray(idx) - 1, tmp_mask.shape, order="C")] = 1
+                tmp_mask = np.zeros((ct.size[2], ct.size[0], ct.size[1]), dtype=np.uint8)
+                tmp_mask.flat[np.asarray(idx) - 1] = 1
                 tmp_mask = np.swapaxes(tmp_mask, 1, 2)
                 mask_image = sitk.GetImageFromArray(tmp_mask)
                 mask_image.CopyInformation(ct.cube_hu)
@@ -270,12 +307,28 @@ def create_cst(
             else:
                 raise ValueError("Sanity Check failed -- unsupported CT dimensionality")
 
-            voi = validate_voi(name=str(vdata[1]), voi_type=str(vdata[2]), mask=masks, ct_image=ct)
+            # Check Objectives
+            if len(vdata) > 5:
+                objectives = vdata[5]
+                if not isinstance(objectives, list):
+                    objectives = [objectives]
+            else:
+                objectives = []
+
+            voi = validate_voi(
+                name=str(vdata[1]),
+                voi_type=str(vdata[2]),
+                mask=masks,
+                ct_image=ct,
+                objectives=objectives,
+            )
 
             voi_list.append(voi)
 
         cst_dict = {"vois": voi_list, "ct_image": ct}
         return StructureSet.model_validate(cst_dict)
+
+    raise ValueError("Invalid input data for creating a StructureSet.")
 
 
 def validate_cst(

@@ -106,7 +106,7 @@ class CT(PyRadPlanBaseModel, ABC):
 
                     if permute:
                         ct_scenarios = [
-                            sitk.GetImageFromArray(np.permute_dims(cube_hu[i], (2, 0, 1)), False)
+                            sitk.GetImageFromArray(np.transpose(cube_hu[i], (2, 0, 1)), False)
                             for i in range(num_cubes)
                         ]
                     else:
@@ -117,9 +117,7 @@ class CT(PyRadPlanBaseModel, ABC):
                     cube_hu = sitk.JoinSeries(ct_scenarios)
                 else:
                     if permute:
-                        cube_hu = sitk.GetImageFromArray(
-                            np.permute_dims(cube_hu, (2, 0, 1)), False
-                        )
+                        cube_hu = sitk.GetImageFromArray(np.transpose(cube_hu, (2, 0, 1)), False)
                     else:
                         cube_hu = sitk.GetImageFromArray(cube_hu, False)
                     num_cubes = 1
@@ -242,8 +240,7 @@ class CT(PyRadPlanBaseModel, ABC):
         """
         if self.cube_hu.GetDimension() == 4:
             return self.cube_hu.GetSize()[3]
-        else:
-            return 1
+        return 1
 
     @computed_field
     @property
@@ -380,13 +377,12 @@ class CT(PyRadPlanBaseModel, ABC):
         ct_dict = super().to_matrad(context=context)
         # as cubeHU for the matRad format
         sitk_image = ct_dict["cubeHU"]
-        # Flip axes for matRad format from (z, y, x) to (x, y, z)
-        numpy_array = np.transpose(sitk.GetArrayFromImage(sitk_image), (2, 1, 0))
-
+        # Flip axes for matRad format
+        numpy_array = np.transpose(sitk.GetArrayFromImage(sitk_image), (1, 2, 0))
         # We also need to put the image array into a ndarray of objects
         ct_dict["cubeHU"] = np.ndarray(shape=(1,), dtype=object)
         ct_dict["cubeHU"][0] = numpy_array
-
+        ct_dict["cubeDim"] = np.array(ct_dict["cubeDim"], dtype=float)
         return ct_dict
 
     def resample_to_grid(self, grid: Grid) -> Self:
@@ -491,16 +487,14 @@ def create_ct(data: Union[dict[str, Any], CT, os.PathLike, str, None] = None, **
         if isinstance(data, CT):
             return data
         # If data is in a file get CT object from file
-        elif isinstance(data, str) or isinstance(data, os.PathLike):
+        if isinstance(data, str) or isinstance(data, os.PathLike):
             return ct_from_file(data)
-        else:
-            # If data is in a dictionary create an SimpleITK image and then
-            # the CT object
-            return CT.model_validate(data)
-    else:
-        # If neither CT object nor dictionary try to
-        # get model from keyword arguments
-        return CT(**kwargs)
+        # If data is in a dictionary create an SimpleITK image and then
+        # the CT object
+        return CT.model_validate(data)
+    # If neither CT object nor dictionary try to
+    # get model from keyword arguments
+    return CT(**kwargs)
 
 
 def validate_ct(ct: Union[dict[str, Any], CT, os.PathLike, None] = None, **kwargs) -> CT:

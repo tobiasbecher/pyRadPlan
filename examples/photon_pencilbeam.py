@@ -1,66 +1,98 @@
-"""Running the photon pencil-beam dose calculation engine."""
-
-# Standard Library Imports
-from importlib import resources
 import logging
 
-# Third Party Imports from pyRadPlan requirements
-import pymatreader
+try:
+    from importlib import resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
+
 import numpy as np
 import SimpleITK as sitk
+import pymatreader
 import matplotlib.pyplot as plt
 
-# pyRadPlan Module Imports
-from pyRadPlan.ct import validate_ct
-from pyRadPlan.cst import validate_cst
-from pyRadPlan.plan import PhotonPlan
-from pyRadPlan.stf import StfGeneratorPhotonIMRT
-from pyRadPlan.dose import calc_dose_influence
+from pyRadPlan import (
+    PhotonPlan,
+    validate_ct,
+    validate_cst,
+    generate_stf,
+    calc_dose_influence,
+    fluence_optimization,
+)
 
-# Configure the Logger to show you debug information
+from pyRadPlan.optimization.objectives import SquaredDeviation, SquaredOverdosing, MeanDose
+
 logging.basicConfig(level=logging.INFO)
-logging.getLogger("pyRadPlan").setLevel(logging.DEBUG)
 
-# We use importlib resources to load the TG119.mat file from the pyRadPlan.data.phantoms package
-files = resources.files("pyRadPlan.data.phantoms")
-path = files.joinpath("TG119.mat")
+#  Read patient from provided TG119.mat file and validate data
+path = resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat")
 tmp = pymatreader.read_mat(path)
-
-# The validation functions for ct and cst allow us to create valid CTs and StructureSets
 ct = validate_ct(tmp["ct"])
 cst = validate_cst(tmp["cst"], ct=ct)
+
+# Create a plan object
+pln = PhotonPlan(machine="Generic")
+num_of_beams = 5
+pln.prop_stf = {
+    "gantry_angles": np.linspace(0, 360, num_of_beams, endpoint=False),
+    "couch_angles": np.zeros((num_of_beams,)),
+}
+# Generate Steering Geometry ("stf")
+stf = generate_stf(ct, cst, pln)
+
+# Calculate Dose Influence Matrix ("dij")
+dij = calc_dose_influence(ct, cst, stf, pln)
+
+# Optimize
+cst.vois[1].objectives = [SquaredDeviation(priority=1000.0, d_ref=3.0)]  # Target
+cst.vois[0].objectives = [SquaredOverdosing(priority=100.0, d_max=1.0)]  # OAR
+cst.vois[2].objectives = [
+    MeanDose(priority=1.0, d_ref=0.0),
+    SquaredOverdosing(priority=10.0, d_max=2.0),
+]  # BODY
+
+fluence = fluence_optimization(ct, cst, stf, dij, pln)
+
+# Result
+result = dij.compute_result_ct_grid(fluence)
 
 # Choose a slice to visualize
 view_slice = int(np.round(ct.size[2] / 2))
 
-# We store images as sitk.Image objects, but we can easily convert them to numpy arrays for
-# matplotlib. Taking a "view" here means we do not perform a deep copy of the image data.
+# Visualize
 cube_hu = sitk.GetArrayViewFromImage(ct.cube_hu)
 plt.imshow(cube_hu[view_slice, :, :], cmap="gray")
+
+plt.tick_params(
+    axis="both",
+    which="both",
+    bottom=False,
+    top=False,
+    labelbottom=False,
+    left=False,
+    right=False,
+    labelleft=False,
+)
 
 # Now let's visualize the VOIs from the StructureSet.
 for v, voi in enumerate(cst.vois):
     mask = sitk.GetArrayViewFromImage(voi.mask)
-    plt.imshow(
-        (v + 1) * mask[view_slice, :, :],
-        cmap="jet",
-        alpha=0.5 * (mask[view_slice, :, :] > 0),
-        vmin=1,
-        vmax=len(cst.vois),
+    cmap = plt.colormaps["cool"]
+    color = cmap(v / len(cst.vois))  # Select color based on colormap 'cool'
+    plt.contour(
+        mask[view_slice, :, :],
+        levels=[0.5],
+        colors=[color],
+        linewidths=1,
     )
-
-# Since we want to do planning, we create a plan object.
-# We choose protons as the radiation mode and a Generic machine included with pyRadPlan
-pln = PhotonPlan(machine="Generic")
-
-# We use the StfGeneratorIMPT to create a simple beam configuration
-# with a single beam at 0 degrees
-stfgen = StfGeneratorPhotonIMRT(pln)
-stfgen.bixel_width = 5.0
-stfgen.gantry_angles = [0.0]
-
-# We generate the beam geometry on the CT and CST
-stf = stfgen.generate(ct, cst)
-
-# Let's calculate the dose influence matrix
-dij = calc_dose_influence(ct, cst, stf, pln)
+dose_array = sitk.GetArrayViewFromImage(result["physical_dose"])
+plt.imshow(
+    dose_array[view_slice, :, :],
+    cmap="jet",
+    interpolation="nearest",
+    alpha=0.5 * (dose_array[view_slice, :, :] > 0.02),
+)
+plt.colorbar(label="dose [Gy]")
+plt.title(f"Photon Dose (Slice z={view_slice})")
+plt.show()
+plt.savefig(f"{pln.radiation_mode}_physical_dose.png")
+plt.clf()

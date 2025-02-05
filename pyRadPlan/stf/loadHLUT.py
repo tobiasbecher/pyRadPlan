@@ -4,7 +4,6 @@ from pyRadPlan.io.readHLUT import readHLUT
 
 
 def loadHLUT(ct, pln):
-
     hlutDir = os.path.dirname(os.path.realpath(__file__)) + "/hlutLibrary/"
 
     # If possible -> file standard out of dicom tags
@@ -51,7 +50,7 @@ def loadHLUT(ct, pln):
         else:
             hlutFileName = hlutFilePaths[exist]
 
-    except:
+    except FileNotFoundError:
         # Load default HLUT
         hlutFileName = hlutDir + "matRad_default.hlut"
 

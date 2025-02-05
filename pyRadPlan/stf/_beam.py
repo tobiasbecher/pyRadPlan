@@ -74,7 +74,7 @@ class Beam(PyRadPlanBaseModel):
     )  # alias needed for matRad import. Can also be done in the model_validator
 
     source_point_bev: NDArray[Shape["3"], np.float64] = Field(
-        alias="SourcePoint_bev", default=([0, -10000, 0]), validate_default=True
+        alias="sourcePoint_bev", default=([0, -10000, 0]), validate_default=True
     )
     source_point: NDArray[Shape["3"], np.float64] = Field(
         default=([0, 0, 0]), validate_default=True
@@ -160,10 +160,10 @@ class Beam(PyRadPlanBaseModel):
     def num_of_rays(self) -> int:
         return len(self.rays)
 
-    @computed_field
+    @computed_field(alias="totalNumOfBixels")
     @property
     def total_number_of_bixels(self) -> int:
-        return sum(self.num_of_bixels_per_ray)
+        return int(sum(self.num_of_bixels_per_ray))
 
     # serialization
     @field_serializer("rays")
@@ -179,8 +179,7 @@ class Beam(PyRadPlanBaseModel):
             # override_types = get_type_hints(Beamlet)
             # rays_recarray = models2recarray(v, serialization_context=context)
             return rays_recarray
-        else:
-            return [ray.model_dump(by_alias=info.by_alias) for ray in v]
+        return [ray.model_dump(by_alias=info.by_alias) for ray in v]
 
 
 def create_beam():

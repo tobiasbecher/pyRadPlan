@@ -1,9 +1,11 @@
 import os
-import numpy as np
-from importlib import resources
-from pathlib import Path
+
+try:
+    from importlib import resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
+
 from pyRadPlan.io.matLabFileHandler import MatLabFileHandler
-import pyRadPlan.matRad as matRad
 import pyRadPlan.io.matRad as matRadIO
 
 # Paths

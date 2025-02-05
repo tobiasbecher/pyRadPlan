@@ -1,57 +1,48 @@
-from pyRadPlan.ct import CT
-from pyRadPlan.cst import StructureSet
-from pyRadPlan.plan import Plan
-from pyRadPlan.dij import Dij
-from pyRadPlan.stf import SteeringInformation
-
 import numpy as np
-from scipy.optimize import minimize, Bounds
+
+from pyRadPlan.ct import CT, validate_ct
+from pyRadPlan.cst import StructureSet, validate_cst
+from pyRadPlan.plan import Plan, validate_pln
+from pyRadPlan.dij import Dij, validate_dij
+from pyRadPlan.stf import SteeringInformation, validate_stf
+
+from .problems import get_problem_from_pln
 
 
 def fluence_optimization(
     ct: CT, cst: StructureSet, stf: SteeringInformation, dij: Dij, pln: Plan
 ) -> np.ndarray:
-    resampled_ct = ct.resample_to_grid(dij.dose_grid)
-    resampled_cst = cst.resample_on_new_ct(resampled_ct)
+    """
+    Trigger fluence optimization using the configuration stored in the pln
+    object.
 
-    target_voxels = resampled_cst.target_union_voxels(order="numpy")
-    patient_voxels = resampled_cst.patient_voxels(order="numpy")
+    Parameters
+    ----------
+    ct : CT
+        CT object.
+    cst : StructureSet
+        StructureSet object.
+    stf : SteeringInformation
+        SteeringInformation object.
+    dij : Dij
+        Dij object.
+    pln : Plan
+        Plan object.
 
-    def objective_function(x: np.ndarray):
-        dose = dij.get_result_arrays_from_intensity(x)
-        target_dose = (
-            np.sum((dose["physical_dose"][target_voxels] - 2.0) ** 2) / target_voxels.size
-        )
-        patient_dose = np.sum((dose["physical_dose"][patient_voxels]) ** 2) / target_voxels.size
+    Returns
+    -------
+    np.ndarray
+        The optimized fluence map.
+    """
 
-        return 1000 * target_dose + patient_dose
+    _ct = validate_ct(ct)
+    _cst = validate_cst(cst)
+    _stf = validate_stf(stf)
+    _dij = validate_dij(dij)
+    _pln = validate_pln(pln)
 
-    def objective_gradient_dose(d: dict[str, np.ndarray]):
-        dose_grad = np.zeros_like(d["physical_dose"])
-        target_dose = 2 * (d["physical_dose"][target_voxels] - 2.0) / target_voxels.size
-        patient_dose = 2 * (d["physical_dose"][patient_voxels]) / target_voxels.size
-        dose_grad[target_voxels] += 1000 * target_dose
-        dose_grad[patient_voxels] += patient_dose
+    planning_prob = get_problem_from_pln(_pln)
 
-        return dose_grad
+    x, _result_info = planning_prob.solve(_ct, _cst, _stf, _dij)
 
-    def gradient_chainrule(x: np.ndarray):
-        dose = dij.get_result_arrays_from_intensity(x)
-        dose_grad = objective_gradient_dose(dose)
-        w_grad = dij.physical_dose.flat[0].T @ dose_grad
-        return w_grad
-
-    def callback(intermediate_result) -> None:
-        print(intermediate_result)
-
-    result = minimize(
-        objective_function,
-        x0=np.ones((dij.total_num_of_bixels,), dtype=np.float32),
-        jac=gradient_chainrule,
-        method="L-BFGS-B",
-        options={"ftol": 1.0e-4, "maxiter": 500},
-        bounds=Bounds(0, np.inf),
-        # callback=callback,
-    )
-
-    return result.x
+    return x

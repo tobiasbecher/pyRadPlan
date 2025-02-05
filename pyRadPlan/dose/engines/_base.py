@@ -1,7 +1,14 @@
 """Base class for all dose engines."""
-from importlib import resources
+
 import logging
+
+try:
+    from importlib import resources  # Standard from Python 3.9+
+except ImportError:
+    import importlib_resources as resources  # Backport for older versions
+
 import warnings
+import time
 from typing import ClassVar, Union
 from abc import ABC, abstractmethod
 
@@ -13,8 +20,8 @@ from pyRadPlan.core.np2sitk import linear_indices_to_grid_coordinates
 from pyRadPlan.core.resample import resample_numpy_array
 from pyRadPlan.ct import CT, resample_ct
 from pyRadPlan.cst import StructureSet
-from pyRadPlan.stf import SteeringInformation
-from pyRadPlan.plan import Plan
+from pyRadPlan.stf import SteeringInformation, validate_stf
+from pyRadPlan.plan import Plan, validate_pln
 from pyRadPlan.dij import Dij, validate_dij
 from pyRadPlan.scenarios import create_scenario_model, ScenarioModel
 from pyRadPlan.machines import load_machine_from_mat, validate_machine
@@ -67,19 +74,17 @@ class DoseEngineBase(ABC):
     select_voxels_in_scenarios: bool
 
     # Public properties
-    def __init__(self, pln: Plan):
-
+    def __init__(self, pln: Union[Plan, dict] = None):
         # Assign default parameters from Matrad_Config or manually
         self.dose_grid = None
         self.mult_scen = "nomScen"
         self.select_voxels_in_scenarios = None
         self.dose_grid = None
+        self.voxel_sub_ix = None  # selection of where to calculate / store dose, empty by default
 
         if pln is not None:
             self.assign_properties_from_pln(pln, True)
 
-        self.dose_grid = None
-        self.voxel_sub_ix = None  # selection of where to calculate / store dose, empty by default
         self._dose_grid = None
         self._ct_grid = None
 
@@ -122,6 +127,8 @@ class DoseEngineBase(ABC):
             Whether to warn when properties are changed.
         """
 
+        pln = validate_pln(pln)
+
         # Set Scenario Model
         if hasattr(pln, "mult_scen"):
             self.mult_scen = pln.mult_scen
@@ -135,9 +142,7 @@ class DoseEngineBase(ABC):
 
         # Overwrite default properties within the engine
         # with the ones given in the prop_dose_calc dict
-        if hasattr(pln, "prop_dose_calc") and isinstance(
-            pln.prop_dose_calc, dict
-        ):  # TODO: This is not tested yet
+        if pln.prop_dose_calc is not None:
             prop_dict = pln.prop_dose_calc
             if (
                 "engine" in prop_dict
@@ -163,15 +168,14 @@ class DoseEngineBase(ABC):
         for field in fields:
             if not hasattr(self, field):
                 warnings.warn('Property "{}" not found in Dose Engine!'.format(field))
-            else:
-                if warn_when_property_changed and warning_msg:
-                    logger.warning(warning_msg + f": {field}")
+            elif warn_when_property_changed and warning_msg:
+                logger.warning(warning_msg + f": {field}")
 
             setattr(self, field, prop_dict[field])
 
     def calc_dose_forward(
         self, ct: CT, cst: StructureSet, stf: SteeringInformation, w: np.ndarray
-    ):
+    ) -> dict:
         """
         Perform a forward dose calculation, i.e., compute a dose cube by
         directly applying
@@ -200,13 +204,32 @@ class DoseEngineBase(ABC):
         influence matrix calculations.
         """
 
-        raise NotImplementedError("This method is not implemented yet!")
         self._calc_dose_direct = True
+
+        stf = validate_stf(stf)
+
+        if w is None:
+            logger.info("No weights given. Using weights stored in stf.")
+        else:
+            logger.info("Using provided weights for forward dose calculation.")
+
+            if w.size != stf.total_number_of_bixels:
+                raise ValueError("Number of weights does not match the number of bixels in stf.")
+
+            # Assign the weights to the stf
+            bixel_num = 0
+            for beam in stf.beams:
+                for ray in beam.rays:
+                    for bixel in ray.beamlets:
+                        bixel.weight = w[bixel_num]
+                        bixel_num += 1
+
+        # Run dose calculation (direct flag is on)
         dij = self._calc_dose(ct, cst, stf)
 
         # TODO: now do the forward weighting with w
 
-        return dij
+        return dij.compute_result_ct_grid(np.ones(dij.total_num_of_bixels, dtype=np.float32))
 
     def calc_dose_influence(self, ct: CT, cst: StructureSet, stf: SteeringInformation) -> Dij:
         """
@@ -244,6 +267,7 @@ class DoseEngineBase(ABC):
         """Set overlap priorities for the structures in the CST."""
 
         logger.info("Adjusting structures for overlap... ")
+        t_start = time.time()
 
         num_of_ct_scenarios = np.unique([x.num_of_scenarios for x in cst.vois])
 
@@ -251,16 +275,13 @@ class DoseEngineBase(ABC):
         if len(num_of_ct_scenarios) > 1:
             raise ValueError("Inconsistent number of scenarios in cst struct.")
 
-        # TODO: This is not yet implemented
-        # for i in range(num_of_ct_scenarios[0]):
-        #     # consider VOI priorities
-        #     for j in range(len(cst.vois)):
-        #         idx = cst.vois[j].indices[i]
+        new_cst = cst.apply_overlap_priorities()
 
-        #         for k in range(len(cst.vois)):
-        #             pass
+        t_end = time.time()
 
-        return cst
+        logger.info("Done in %.2f seconds.", t_end - t_start)
+
+        return new_cst
 
     def select_voxels_from_cst(self, cst, dose_grid, selection_mode):
         """
@@ -350,24 +371,26 @@ class DoseEngineBase(ABC):
                                         f"Excluding cst structure {cst[i, 1]} even though this "
                                         "structure has robustness."
                                     )
-                    else:
-                        if i in selected_cst_structs:
-                            logger.info(
-                                f"Including cst structure {cst[i, 1]} even though this structure "
-                                "does not have any objective or constraint"
-                            )
+                    elif i in selected_cst_structs:
+                        logger.info(
+                            f"Including cst structure {cst[i, 1]} even though this structure "
+                            "does not have any objective or constraint"
+                        )
 
         return include_mask
 
     def resize_cst_to_grid(self, cst: StructureSet, dij, new_ct: CT) -> StructureSet:
-
         """Resize the CST to the dose cube resolution."""
 
         logger.info("Resampling structure set... ")
 
+        t_start = time.time()
+
         cst.resample_on_new_ct(new_ct)
 
-        logger.info("Done!")
+        t_end = time.time()
+
+        logger.info("Done in  %.2f seconds.", t_end - t_start)
         return cst
 
     # private methods
@@ -417,12 +440,12 @@ class DoseEngineBase(ABC):
             logger.info("Dose influence matrix calculation using '%s' Dose Engine...", self.name)
 
         # Check if machine and radiation_mode are consistent
-        machine = list(set(beam.machine for beam in stf.beams))
-        radiation_mode = list(set(beam.radiation_mode for beam in stf.beams))
+        machine = list({beam.machine for beam in stf.beams})
+        radiation_mode = list({beam.radiation_mode for beam in stf.beams})
 
-        assert (
-            len(machine) == 1 or len(radiation_mode) == 1
-        ), "machine and radiation mode need to be unique within supplied stf!"
+        assert len(machine) == 1 or len(radiation_mode) == 1, (
+            "machine and radiation mode need to be unique within supplied stf!"
+        )
 
         machine = machine[0]
         radiation_mode = radiation_mode[0]
@@ -480,15 +503,14 @@ class DoseEngineBase(ABC):
                 tmp_scen = [cst.vois[c].indices_numpy for c in range(0, len(cst.vois))]
                 tmp_vct_grid_scen[s] = np.unique(np.concatenate(tmp_scen))
 
-        else:  # TODO: this "else" has not yet been tested
-            if isinstance(self.voxel_sub_ix, list):
-                tmp_vct_grid_scen = [None] * ct.num_of_ct_scen
+        elif isinstance(self.voxel_sub_ix, list):
+            tmp_vct_grid_scen = [None] * ct.num_of_ct_scen
 
-                for s in range(ct.num_of_ct_scen):
-                    tmp_vct_grid_scen[s] = self.voxel_sub_ix
+            for s in range(ct.num_of_ct_scen):
+                tmp_vct_grid_scen[s] = self.voxel_sub_ix
 
-            else:
-                tmp_vct_grid_scen = self.voxel_sub_ix
+        else:
+            tmp_vct_grid_scen = self.voxel_sub_ix
 
         self._vct_grid = np.unique(np.concatenate(tmp_vct_grid_scen))
 

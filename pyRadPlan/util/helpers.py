@@ -1,10 +1,12 @@
 """Test Helper functions for pyRadPlan."""
+
 from typing import Union, get_type_hints, get_origin, get_args
 import warnings
 import numpy as np
 from pydantic import BaseModel
 from pydantic.fields import FieldInfo, ComputedFieldInfo
 from pyRadPlan.core import PyRadPlanBaseModel
+import scipy.sparse as sp
 
 
 def dl2ld(dict_of_lists: dict[str, list], type_check: bool = True) -> list[dict]:
@@ -160,15 +162,15 @@ def models2recarray(
     # convert dtypes
     for field in model_field_types:
         # str -> 'U'
-        if model_field_types[field] == str:
+        if model_field_types[field] is str:
             model_field_types[field] = object
 
         # list management
-        if get_origin(model_field_types[field]) == list:
+        if get_origin(model_field_types[field]) is list:
             model_field_types[field] = np.ndarray
 
         # manage optional types
-        if get_origin(model_field_types[field]) == Union:
+        if get_origin(model_field_types[field]) is Union:
             t_args = get_args(model_field_types[field])
             if type(None) in t_args and len(t_args) == 2:
                 model_field_types[field] = t_args[0]
@@ -207,3 +209,49 @@ def models2recarray(
             models_recarray[fname][i] = value
 
     return models_recarray
+
+
+def swap_orientation_sparse_matrix(
+    sparse_matrix: sp.csc_matrix, original_shape, axes
+) -> sp.csc_matrix:
+    """
+    Swaps the specified axes of a sparse matrix.
+
+    Parameters
+    ----------
+    sparse_matrix : sp.csc_matrix
+        The sparse matrix to swap axes.
+    original_shape : tuple
+        The original shape of the matrix.
+    axes : tuple
+        The axes to swap.
+
+    Returns
+    -------
+    sp.csc_matrix
+        The sparse matrix with swapped axes.
+    """
+    row_indices, _ = sparse_matrix.nonzero()
+
+    if axes == (0, 1) or axes == (1, 0):
+        j, i, k = np.unravel_index(row_indices, original_shape)
+        new_shape = (original_shape[1], original_shape[0], original_shape[2])
+    elif axes == (0, 2) or axes == (2, 0):
+        k, j, i = np.unravel_index(row_indices, original_shape)
+        new_shape = (original_shape[2], original_shape[1], original_shape[0])
+    elif axes == (1, 2) or axes == (2, 1):
+        i, k, j = np.unravel_index(row_indices, original_shape)
+        new_shape = (original_shape[0], original_shape[2], original_shape[1])
+    else:
+        raise ValueError("Invalid axes for swapping")
+
+    new_indices = np.ravel_multi_index((i, j, k), new_shape)
+    num_rows = np.prod(original_shape)
+    permutation = sp.csc_matrix(
+        (np.ones_like(row_indices), (new_indices, row_indices)),
+        shape=(num_rows, num_rows),
+        dtype=bool,
+    )
+
+    reordered_sparse_matrix = permutation @ sparse_matrix
+    return reordered_sparse_matrix

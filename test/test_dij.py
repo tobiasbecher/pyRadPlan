@@ -19,7 +19,7 @@ def sample_dij_dict():
             "dimensions": (167, 167, 107),
             "num_of_voxels": 167 * 167 * 107,
         },
-        "physical_dose": sp.csr_matrix((167 * 167 * 107, 6506), dtype=float),
+        "physical_dose": [[[sp.csc_matrix((167 * 167 * 107, 6506), dtype=float)]]],
         "num_of_beams": 1,
         "total_num_of_bixels": 6506,
         "bixel_num": np.ones(6506),
@@ -42,7 +42,7 @@ def sample_dij_dict_camel():
             "dimensions": (167, 167, 107),
             "numOfVoxels": 167 * 167 * 107,
         },
-        "physicalDose": sp.csr_matrix((167 * 167 * 107, 6506), dtype=float),
+        "physicalDose": [[[sp.csc_matrix((167 * 167 * 107, 6506), dtype=float)]]],
         "numOfBeams": 1,
         "totalNumOfBixels": 6506,
         "bixelNum": np.ones(6506),
@@ -58,7 +58,7 @@ def test_dij_creation_from_dict(sample_dij_dict):
     assert isinstance(dij.dose_grid, Grid)
     assert isinstance(dij.ct_grid, Grid)
     assert isinstance(dij.physical_dose, np.ndarray)
-    assert isinstance(dij.physical_dose[0], sp.csr_matrix)
+    assert isinstance(dij.physical_dose.flat[0], sp.csc_matrix)
     assert dij.total_num_of_bixels == 6506
     assert dij.num_of_voxels == 167 * 167 * 107
     assert dij.bixel_num.shape == (6506,)
@@ -72,7 +72,7 @@ def test_dij_creation_from_camel_dict(sample_dij_dict_camel):
     assert isinstance(dij.dose_grid, Grid)
     assert isinstance(dij.ct_grid, Grid)
     assert isinstance(dij.physical_dose, np.ndarray)
-    assert isinstance(dij.physical_dose[0], sp.csr_matrix)
+    assert isinstance(dij.physical_dose.flat[0], sp.csc_matrix)
     assert dij.total_num_of_bixels == 6506
     assert dij.num_of_voxels == 167 * 167 * 107
 
@@ -129,27 +129,30 @@ def test_dij_to_matrad(sample_dij_dict):
 
 
 def test_dij_to_matrad_from_csc_matrix(sample_dij_dict):
-    sample_dij_dict["physical_dose"] = sp.csc_matrix((167 * 167 * 107, 6506), dtype=float)
-    dij = create_dij(**sample_dij_dict)
+    sample_dij_dict2 = sample_dij_dict
+    sample_dij_dict2["physical_dose"][0][0][0] = sp.csc_matrix(
+        (167 * 167 * 107, 6506), dtype=float
+    )
+    dij = create_dij(**sample_dij_dict2)
     matrad_dict = dij.to_matrad()
     assert isinstance(matrad_dict, dict)
-    assert isinstance(matrad_dict["physicalDose"][0], sp.csc_matrix)
+    assert isinstance(matrad_dict["physicalDose"].flat[0], sp.csc_matrix)
 
 
 def test_dij_to_matrad_from_csc_array(sample_dij_dict):
-    sample_dij_dict["physical_dose"] = sp.csc_array((167 * 167 * 107, 6506), dtype=float)
+    sample_dij_dict["physical_dose"][0][0][0] = sp.csc_array((167 * 167 * 107, 6506), dtype=float)
     dij = create_dij(**sample_dij_dict)
     matrad_dict = dij.to_matrad()
     assert isinstance(matrad_dict, dict)
-    assert isinstance(matrad_dict["physicalDose"][0], sp.csc_matrix)
+    assert isinstance(matrad_dict["physicalDose"].flat[0], sp.csc_matrix)
 
 
 def test_dij_to_matrad_from_csr_array(sample_dij_dict):
-    sample_dij_dict["physical_dose"] = sp.csr_array((167 * 167 * 107, 6506), dtype=float)
+    sample_dij_dict["physical_dose"][0][0][0] = sp.csr_array((167 * 167 * 107, 6506), dtype=float)
     dij = create_dij(**sample_dij_dict)
     matrad_dict = dij.to_matrad()
     assert isinstance(matrad_dict, dict)
-    assert isinstance(matrad_dict["physicalDose"][0], sp.csc_matrix)
+    assert isinstance(matrad_dict["physicalDose"].flat[0], sp.csc_matrix)
 
 
 def test_create_dij_from_grids():

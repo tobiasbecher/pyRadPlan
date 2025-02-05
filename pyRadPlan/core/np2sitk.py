@@ -34,10 +34,9 @@ def sitk_mask_to_linear_indices(mask: sitk.Image, order="sitk") -> np.ndarray:
     arr = sitk.GetArrayViewFromImage(mask)
     if order == "sitk":
         return np.nonzero(arr.ravel(order="F"))[0]
-    elif order == "numpy":
+    if order == "numpy":
         return np.flatnonzero(arr)
-    else:
-        raise ValueError("Invalid ordering. Must be 'sitk' or 'numpy'.")
+    raise ValueError("Invalid ordering. Must be 'sitk' or 'numpy'.")
 
 
 def linear_indices_to_sitk_mask(

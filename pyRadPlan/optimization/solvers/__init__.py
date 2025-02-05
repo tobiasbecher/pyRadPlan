@@ -1,18 +1,27 @@
-"""
-Solvers module.
+"""Solvers module providing different solvers for pyRadPlan."""
 
-==================================================================
-
-The module aims to provide methods and classes for configuration of different \
-local and global solvers.
-"""
-
-# Author: Tim Ortkamp <tim.ortkamp@kit.edu>
+from ._factory import register_solver, get_available_solvers, get_solver
 
 try:
-    from ._ipopt import IpoptSolver
-except ImportError:
-    IpoptSolver = None
-from ._scipy_solver import SciPySolver
+    from ._ipopt import OptimizerIpopt
 
-__all__ = ["IpoptSolver", "SciPySolver"]
+    register_solver(OptimizerIpopt)
+
+except ImportError:
+    OptimizerIpopt = None
+
+from ._base_solvers import SolverBase, NonLinearOptimizer
+from ._scipy_solver import OptimizerSciPy
+
+register_solver(OptimizerSciPy)
+
+
+__all__ = [
+    "OptimizerIpopt",
+    "OptimizerSciPy",
+    "SolverBase",
+    "NonLinearOptimizer",
+    "register_solver",
+    "get_available_solvers",
+    "get_solver",
+]

@@ -52,14 +52,12 @@ class StfGeneratorBase(ABC):
                 f"Invalid radiation mode. Possible modes are: {self.possible_radiation_modes}"
             )
 
-    @property
-    def computed_target_margin(self) -> float:
+    def _computed_target_margin(self) -> float:
         """Margin to be applied to the union of targets for stf generation."""
         return 0.0
 
     # Initialization method for non-constant properties
     def __init__(self, pln=None):
-
         # Defaults
         self.vis_mode: int = 0  # Visualization Options
         self.add_margin: bool = (
@@ -140,7 +138,7 @@ class StfGeneratorBase(ABC):
         if not self.add_margin:
             self._target_voxels = self._cst.target_union_voxels(order="numpy")
         if self.add_margin:
-            added_margin = self.computed_target_margin  # pbMargin in matRad
+            added_margin = self._computed_target_margin()  # pbMargin in matRad
 
             max_iso_shift = np.max(self._mult_scen.iso_shift, axis=0)
             range_margin = (
@@ -162,7 +160,7 @@ class StfGeneratorBase(ABC):
             ).astype(int)
 
             dilation = sitk.BinaryDilateImageFilter()
-            dilation.SetKernelType(sitk.sitkBall)
+            dilation.SetKernelType(sitk.sitkBox)
             dilation.SetKernelRadius(voxel_margin.astype(int).tolist())
 
             self._target_mask = dilation.Execute(self._target_mask)
@@ -180,14 +178,10 @@ class StfGeneratorBase(ABC):
 
         # Now obtain the target voxel coordinates
         # TODO: 4D issues? And can this be done more
-        subscripts = np.array(np.unravel_index(self._target_voxels, self._ct.size))
-        self._target_voxel_coordinates = np.zeros(subscripts.shape)
 
-        # TODO: either numba jit or try to vectorize by using grids
-        for i in range(self._target_voxels.size):
-            self._target_voxel_coordinates[:, i] = self._cube_hu.TransformIndexToPhysicalPoint(
-                subscripts[:, i].tolist()
-            )
+        self._target_voxel_coordinates = np2sitk.linear_indices_to_grid_coordinates(
+            self._target_voxels, self._ct.grid, index_type="numpy"
+        ).T
 
         # Multiply with target mask to ignore densities outside of target
         apply_mask = sitk.MaskImageFilter()
