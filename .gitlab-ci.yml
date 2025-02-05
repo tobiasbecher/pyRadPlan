@@ -7,7 +7,7 @@ variables:  # Change pip's cache directory to be inside the project directory si
 stages:
     - build
     - test
-    - docs
+    - package
     - deploy
 
 # before_script:
@@ -17,6 +17,7 @@ stages:
 build:
     stage: build
     script:
+        - python3 -m pip install --upgrade pip
         - python3 -m venv .venv
         - source .venv/bin/activate
         # - LLVM_CONFIG=/usr/bin/llvm14-config pip install llvmlite
@@ -81,8 +82,11 @@ tests:
             - .testreports/report.xml
     coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
 
-docs:
-    stage: docs
+packaging:
+    stage: package
+    variables:
+        TWINE_USERNAME: gitlab-ci-token
+        TWINE_PASSWORD: $CI_JOB_TOKEN
     cache:
         key: "cache-$CI_COMMIT_REF_SLUG"
         paths:
@@ -91,6 +95,22 @@ docs:
         policy: pull
     script:
         - source .venv/bin/activate
+        - pip install --upgrade build
+        - python -m build
+    artifacts:
+        paths:
+            - dist/
+        expire_in: 1 week
+
+docs:
+    stage: package
+    cache:
+        key: "cache-$CI_COMMIT_REF_SLUG"
+        paths:
+            - .venv/
+            - .cache/pip/
+        policy: pull
+    script:
         - pip install sphinx
         - pip install sphinx-autodoc-typehints
         - pip install autodoc_pydantic
@@ -102,10 +122,48 @@ docs:
         when: always
         paths:
             - .doc
-    only:
-        - main  # Adjust this to the branch you want to build on
 
-pages:
+deploy-tag-internal:
+    stage: deploy
+    variables:
+        TWINE_USERNAME: gitlab-ci-token
+        TWINE_PASSWORD: $CI_JOB_TOKEN
+    cache:
+        key: "cache-$CI_COMMIT_REF_SLUG"
+        paths:
+            - .venv/
+            - .cache/pip/
+        policy: pull
+    rules:
+        - if: '$CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/'
+    script:
+        - source .venv/bin/activate
+        - pip install --upgrade twine
+        - python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+    dependencies:
+        - packaging
+
+deploy-tag-pypi:
+    stage: deploy
+    variables:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: $PYPI_TOKEN
+    cache:
+        key: "cache-$CI_COMMIT_REF_SLUG"
+        paths:
+            - .venv/
+            - .cache/pip/
+        policy: pull
+    rules:
+        - if: '$CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/'
+    script:
+        - source .venv/bin/activate
+        - pip install --upgrade twine
+        - python -m twine upload dist/*
+    dependencies:
+        - packaging
+
+pages-internal:
     stage: deploy
     dependencies:
         - tests
@@ -116,5 +174,5 @@ pages:
     artifacts:
         paths:
             - public
-    only:
-        - main
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
