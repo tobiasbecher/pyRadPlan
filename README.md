@@ -7,7 +7,7 @@ Development is lead by the [Radiotherapy Optimization group](https://www.dkfz.de
 pyRadPlan is a multi-modality treatment planning toolkit in python born from the established Matlab-based toolkit [matRad](http://www.matRad.org). As such, pyRadPlan aims to provide a framework as well as tools for combining dose calculation with optimization with focus on ion planning.
 
 ### Data Structures
-pyRadPlan uses a similar datastructure and workflow concept as in matRad, while trying to ensure that the corresponding datastructures can be easily imported and exported from/to matRad. This facilitates the application of either algortihms from matRad or native pyRadPlan at any staget of the treatment planning workflow.
+pyRadPlan uses a similar datastructure and workflow concept as in matRad, while trying to ensure that the corresponding datastructures can be easily imported and exported from/to matRad. This facilitates the application of either algortihms from matRad or native pyRadPlan at any stage of the treatment planning workflow.
 
 To enforce valid datastructures, we perform validation and serialization with [`pydantic`](https://docs.pydantic.dev/latest/).
 Datastructures and algorithms rely mostly on [`SimpleITK`](https://simpleitk.readthedocs.io), [`numpy`](https://numpy.org/), and [`scipy`](https://scipy.org/) for internal data representation and processing.
@@ -42,11 +42,11 @@ fluence = fluence_optimization(ct, cst, stf, dij, pln)
 result = dij.compute_result_ct_grid(fluence)
 ```
 
-This script uses the top-level API exposed when importing pyRadPlan. The top-level functions are designed to take the main data structures as input and configure the corresponding workflow step via the `pln: Plan` using the attribute dictionaries `pln.prop*`:
+This script uses the top-level API exposed when importing pyRadPlan. The top-level functions are designed to take the main data structures as input and configure the corresponding workflow step via the `Plan` using the attribute dictionaries `pln.prop*`:
 
 | Plan property | API function | Description | ID |
 | -------- | ------- | ------ | ------- |
-| `prop_stf`  | `prop_stf` | Create beam Geometry |  generator |
+| `prop_stf`  | `generate_stf` | Create beam Geometry |  generator |
 | `prop_dose_calc`  | `calc_dose_influence`, `calc_dose_forward` |  Calculate dose matrix / distribution | engine |
 | `prop_opt` | `fluence_optimization` | Optimization of beam fluences | problem
 
@@ -55,7 +55,7 @@ The Plan properties are dictionaries. Based on their content, the top-level-api 
 The top level api is designed to require minimal programming experience and to run the same planning workflows with different configurations by just changing the corresponding plan object.
 
 #### Low-level API
-Instead of using above top-level workflow functions and a central plan configuration, one can also built custom workflows instantiating the necessary classes directly, for example:
+Instead of using above top-level workflow functions and a central plan configuration, one can also built custom workflows instantiating the necessary algorithm objects directly, for example:
 
 ```python
 ...
