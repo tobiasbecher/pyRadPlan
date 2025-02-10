@@ -8,7 +8,11 @@ except ImportError:
 import pymatreader
 import numpy as np
 
+from pyRadPlan.ct import validate_ct
+from pyRadPlan.cst import validate_cst
+from pyRadPlan.plan import IonPlan
 from pyRadPlan.stf import SteeringInformation, create_stf
+from pyRadPlan.stf.generators import StfGeneratorIMPT
 
 
 @pytest.fixture
@@ -138,12 +142,6 @@ def test_create_stf_from_stf(sample_stf_snake):
 
 
 def test_stfgen_to_stf():
-    # pyRadPlan Module Imports
-    from pyRadPlan.ct import validate_ct
-    from pyRadPlan.cst import validate_cst
-    from pyRadPlan.plan import IonPlan
-    from pyRadPlan.stf import StfGeneratorIMPT
-
     files = resources.files("pyRadPlan.data.phantoms")
     path = files.joinpath("TG119.mat")
     tmp = pymatreader.read_mat(path)

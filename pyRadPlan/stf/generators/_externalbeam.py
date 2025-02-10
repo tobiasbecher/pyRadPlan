@@ -6,13 +6,30 @@ from tqdm import tqdm
 
 from pyRadPlan.geometry import lps
 from pyRadPlan.plan import Plan
-from pyRadPlan.stf import StfGeneratorBase
+from ._base import StfGeneratorBase
 
 
 class StfGeneratorExternalBeam(StfGeneratorBase):
     """
-    Base class for geometry steering information generated for external beam
-    therapy.
+    Base class for geometry enerated for external beam therapy.
+
+    Provides the basic functionality and infrastructure for external beam
+    therapy, such as the definition of gantry / couch angles, an isocenter,
+    and basic ray geometry transformations.
+
+    Parameters
+    ----------
+    pln : Plan, optional
+        A Plan object. If given, configuration will be loaded from the plan.
+
+    Attributes
+    ----------
+    gantry_angles : list[float]
+        A list of gantry angles.
+    couch_angles : list[float]
+        A list of couch angles.
+    iso_center : Union[ArrayLike, None]
+        The isocenter coordinates.
     """
 
     gantry_angles: list[float]
@@ -37,8 +54,12 @@ class StfGeneratorExternalBeam(StfGeneratorBase):
 
 class StfGeneratorExternalBeamRayBixel(StfGeneratorExternalBeam):
     """
-    Base class for steering information generated for intensity-modulated
-    external beam therapy.
+    Base class for ray-bixel-based geometry for IMRT.
+
+    Attributes
+    ----------
+    bixel_width : float
+        The bixel width (beamlet / spot spacing).
     """
 
     bixel_width: float
@@ -49,6 +70,7 @@ class StfGeneratorExternalBeamRayBixel(StfGeneratorExternalBeam):
         super().__init__(pln)
 
     def _computed_target_margin(self) -> float:
+        """Target margin to apply for beamlet placing."""
         return self.bixel_width
 
     def _create_rays(self, beam) -> list[dict]:

@@ -3,19 +3,30 @@
 import warnings
 import numpy as np
 
-from pyRadPlan.stf import StfGeneratorExternalBeamRayBixel
 from pyRadPlan.raytracer import RayTracerSiddon
 from pyRadPlan.machines import IonAccelerator
 from pyRadPlan.ct import default_hlut
-from pyRadPlan.stf._rangeshifter import RangeShifter
-from pyRadPlan.stf._beamlet import IonSpot
-from pyRadPlan.stf._ray import Ray
+
+from .._rangeshifter import RangeShifter
+from .._beamlet import IonSpot
+from .._ray import Ray
+from ._externalbeam import StfGeneratorExternalBeamRayBixel
 
 
 class StfGeneratorIonRayBixel(StfGeneratorExternalBeamRayBixel):
-    """Intermediate Abstract Class representing an Ion Ray Bixel Geometry Stf
-    Generator.
     """
+    Intermediate Interface for an Ion-Ray-Bixel Geometry Generator.
+
+    Attributes
+    ----------
+    use_range_shifter : bool
+        Use range shifter when finding energies for irradiation.
+    use_given_wet_image : bool
+        Use a provided WET image for range determination.
+    """
+
+    use_range_shifter: bool
+    use_given_wet_image: bool
 
     def __init__(self, pln=None):
         self.use_range_shifter = False
@@ -74,7 +85,8 @@ class StfGeneratorIonSingleSpot(StfGeneratorIonRayBixel):
     possible_radiation_modes = ["protons", "helium", "carbon", "oxygen"]
 
     def _generate_ray_positions_in_isocenter_plane(self, beam):
-        """Generates the ray positions in the isocenter plane.
+        """Generate the ray positions in the isocenter plane.
+
         As we have a single spot, this is a single ray to the isocenter.
 
         Parameters
@@ -85,13 +97,14 @@ class StfGeneratorIonSingleSpot(StfGeneratorIonRayBixel):
         Returns
         -------
         np.ndarray
-            A numpy array with the single ray position of (0, 0, 0) in the isocenter.
+            A numpy array with the single ray position of (0, 0, 0) in the
+            isocenter.
         """
 
         return np.zeros((3, 1), dtype=float)
 
     def _generate_source_geometry(self):
-        """Generates the source geometry for the ion single spot geometry."""
+        """Generate the source geometry for the ion single spot geometry."""
         stf = super()._generate_source_geometry()
 
         return stf
@@ -112,7 +125,7 @@ class StfGeneratorIMPT(StfGeneratorIonRayBixel):
 
     name = "IMPT"
     short_name = "IMPT"
-    possible_radiation_modes = ["protons", "helium", "carbon"]
+    possible_radiation_modes = ["protons", "helium", "carbon", "oxygen"]
 
     # Alias for bixel_width
     @property
@@ -130,7 +143,7 @@ class StfGeneratorIMPT(StfGeneratorIonRayBixel):
         super().__init__(pln)
 
     def _generate_source_geometry(self):
-        """Generates the source geometry for the photon IMRT geometry."""
+        """Generate the source geometry for the photon IMRT geometry."""
 
         # TODO: Get available Energies
         stf = super()._generate_source_geometry()

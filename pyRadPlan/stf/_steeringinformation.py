@@ -45,7 +45,8 @@ class SteeringInformation(PyRadPlanBaseModel):
         cls, data: Any, handler: ValidatorFunctionWrapHandler, info: ValidationInfo
     ) -> Self:
         """
-        Validates the input data for creating the model instance.
+        Validate the input data for creating the model instance.
+
         Will first try to run pydantics handler, and if it fails with a
         ValidationError, it will
         try to convert the data to the right format.
@@ -99,9 +100,7 @@ class SteeringInformation(PyRadPlanBaseModel):
 
     @field_serializer("beams")
     def custom_beams_serializer(self, v: list[Beam], info: SerializationInfo) -> Any:
-        """Serializes the beams fields and facilitates conversion to given
-        context.
-        """
+        """Serialize the beams fields in various contexts."""
         context = info.context
         if context and context.get("matRad") == "mat-file":
             override_types = {"rays": np.recarray}
@@ -137,7 +136,7 @@ def create_stf(
     stf: Union[dict[str, Any], SteeringInformation, None] = None, **kwargs
 ) -> SteeringInformation:
     """
-    Function to create a Steering Information object.
+    Create a Steering Information object.
 
     Parameters
     ----------
@@ -169,7 +168,8 @@ def validate_stf(
     stf: Union[dict[str, Any], SteeringInformation, None] = None, **kwargs
 ) -> SteeringInformation:
     """
-    Function to validate a Steering Information object.
+    Validate a Steering Information object.
+
     Synonym to create_stf but should be used in validation context.
 
     Parameters
