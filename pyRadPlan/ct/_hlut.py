@@ -2,7 +2,7 @@ import numpy as np
 
 
 def default_hlut(radiation_mode: str = None) -> np.ndarray:
-    """Default HLUT by radiation mode.
+    """Return default HLUT by radiation mode.
 
     Parameters
     ----------

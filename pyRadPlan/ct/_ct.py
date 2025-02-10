@@ -1,5 +1,6 @@
-"""Module for handling CT images in pyRadPlan. Defines a CT pydantic model and
-factories.
+"""Module for handling CT images in pyRadPlan.
+
+Defines a CT pydantic model and factories.
 """
 
 import os
@@ -318,19 +319,15 @@ class CT(PyRadPlanBaseModel, ABC):
         -------
         np.ndarray
             The converted cube coordinates.
-
-        Example Usage
-        -------------
-        >>> worlds_coords = beam.iso_center
         """
 
         return np.array(self.cube_hu.TransformPhysicalPointToIndex(world_coords))
 
     def compute_wet(self, hlut: np.ndarray) -> sitk.Image:
         """
-        Compute the water equivalent thickness (WET) from the CT image and
-        the
-        Hounsfield Look-Up Table (HLUT).
+        Compute the water equivalent thickness (WET).
+
+        Uses a provided appropriate Hounsfield Look-Up Table (HLUT).
 
         Parameters
         ----------
