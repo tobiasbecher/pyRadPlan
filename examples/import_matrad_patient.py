@@ -15,31 +15,26 @@ except ImportError:
     import importlib_resources as resources  # Backport for older versions
 
 # Third Party Imports from pyRadPlan requirements
-import pymatreader
+
 import numpy as np
 import SimpleITK as sitk
 import matplotlib.pyplot as plt
 
 # pyRadPlan Module Imports
-from pyRadPlan.ct import validate_ct, default_hlut
-from pyRadPlan.cst import validate_cst
+from pyRadPlan.ct import default_hlut
 from pyRadPlan.plan import IonPlan
-from pyRadPlan.stf import StfGeneratorIMPT
+from pyRadPlan.stf.generators import StfGeneratorIMPT
 from pyRadPlan.raytracer import RayTracerSiddon
 from pyRadPlan.visualization import plot_slice
+from pyRadPlan.io import load_patient
 
 # Configure the Logger to show you debug information
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("pyRadPlan").setLevel(logging.DEBUG)
 
-# We use importlib resources to load the TG119.mat file from the pyRadPlan.data.phantoms package
-files = resources.files("pyRadPlan.data.phantoms")
-path = files.joinpath("TG119.mat")
-tmp = pymatreader.read_mat(path)
-
-# The validation functions for ct and cst allow us to create valid CTs and StructureSets
-ct = validate_ct(tmp["ct"])
-cst = validate_cst(tmp["cst"], ct=ct)
+#  Read patient from provided TG119.mat file and validate data
+path = resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat")
+ct, cst = load_patient(path)
 
 # Choose a slice to visualize
 view_slice = int(np.round(ct.size[2] / 2))

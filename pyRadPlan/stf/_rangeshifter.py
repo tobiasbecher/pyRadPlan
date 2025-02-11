@@ -30,9 +30,8 @@ class RangeShifter(PyRadPlanBaseModel):
     def _field_typing(
         self, v: Any, handler: SerializerFunctionWrapHandler, info: FieldSerializationInfo
     ) -> Any:
-        """Make sure that values are correctly serialized in various
-        serialization contexts.
-        """
+        """Serialize with possible matRad context."""
+
         context = info.context
         if context and context.get("matRad") == "mat-file":
             return np.float64(v)  # Ensure double for MATLAB/matRad

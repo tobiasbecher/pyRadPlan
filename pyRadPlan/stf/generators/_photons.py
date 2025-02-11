@@ -2,8 +2,7 @@ import logging
 
 import numpy as np
 
-from pyRadPlan.ct import CT
-from pyRadPlan.stf._externalbeam import StfGeneratorExternalBeamRayBixel
+from ._externalbeam import StfGeneratorExternalBeamRayBixel
 from pyRadPlan.machines import PhotonLINAC
 
 logger = logging.getLogger(__name__)
@@ -50,12 +49,12 @@ class StfGeneratorPhotonIMRT(StfGeneratorExternalBeamRayBixel):
             self.energy = machine_energy
 
     def _generate_source_geometry(self):
-        """Generates the source geometry for the photon IMRT geometry."""
+        """Generate the source geometry for the photon IMRT geometry."""
         stf = super()._generate_source_geometry()
         return stf
 
     def _create_rays(self, beam: dict) -> list[dict]:
-        """Creates the rays for the photon IMRT geometry.
+        """Create the rays for the photon IMRT geometry.
 
         Parameters
         ----------
@@ -115,7 +114,8 @@ class StfGeneratorPhotonCollimatedSquareFields(StfGeneratorExternalBeamRayBixel)
         super().__init__(pln)
 
     def _generate_ray_positions_in_isocenter_plane(self, beam):
-        """Generates the ray positions in the isocenter plane.
+        """Generate the ray positions in the isocenter plane.
+
         As we have a square field, this is a single ray to the isocenter.
 
         Parameters
@@ -132,40 +132,10 @@ class StfGeneratorPhotonCollimatedSquareFields(StfGeneratorExternalBeamRayBixel)
         return np.zeros((3, 1), dtype=float)
 
     def _generate_source_geometry(self):
-        """Generates the source geometry for the photon collimated square
-        fields.
-        """
+        """Generate the source geometry for photon collimated square fields."""
         stf = super()._generate_source_geometry()
 
         for i, field in enumerate(stf):
             field["field_width"] = self.field_width
 
         return stf
-
-
-if __name__ == "__main__":
-    import SimpleITK as sitk
-
-    sample_array = np.random.rand(50, 100, 100) * 1000  # Random HU values
-    image = sitk.GetImageFromArray(sample_array)
-    image.SetOrigin((0, 0, 0))
-    image.SetSpacing((1, 1, 2))
-    image.SetDirection((1, 0, 0, 0, 1, 0, 0, 0, 1))
-
-    ct = CT(cube_hu=image)
-    cst = {"dummy": {"indices": [int(1e5)], "type": "TARGET"}}
-
-    stf_gen = StfGeneratorPhotonIMRT()
-
-    stf_gen.machine = "Generic"
-
-    stf_gen.mult_scen = "nomScen"
-
-    stf_gen.gantry_angles = [90.0, 270.0]
-    stf_gen.couch_angles = [0.0, 0.0]
-
-    stf_gen.bixel_width = 5.0
-
-    stf = stf_gen.generate(ct, cst)
-
-    print(stf)

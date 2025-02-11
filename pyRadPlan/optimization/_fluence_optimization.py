@@ -13,8 +13,7 @@ def fluence_optimization(
     ct: CT, cst: StructureSet, stf: SteeringInformation, dij: Dij, pln: Plan
 ) -> np.ndarray:
     """
-    Trigger fluence optimization using the configuration stored in the pln
-    object.
+    Trigger fluence optimization using the configuration stored in the pln object.
 
     Parameters
     ----------

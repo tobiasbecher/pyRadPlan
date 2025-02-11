@@ -9,7 +9,7 @@ except ImportError:
 import SimpleITK as sitk
 import numpy as np
 
-import pyRadPlan.io.matRad as matRadIO
+from pyRadPlan.io import load_patient
 from pyRadPlan.core import np2sitk
 from pyRadPlan.ct import validate_ct, CT
 from pyRadPlan.cst import validate_cst, StructureSet
@@ -18,11 +18,7 @@ from pyRadPlan.cst import validate_cst, StructureSet
 @pytest.fixture
 def tg119():
     path = resources.files("pyRadPlan.data.phantoms")
-    tg119_file = path.joinpath("TG119.mat")
-    tg119 = matRadIO.load(tg119_file)
-
-    ct = validate_ct(tg119["ct"])
-    cst = validate_cst(tg119["cst"], ct=ct)
+    ct, cst = load_patient(path.joinpath("TG119.mat"))
     return {"ct": ct, "cst": cst}
 
 
