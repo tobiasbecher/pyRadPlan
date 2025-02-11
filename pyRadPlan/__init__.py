@@ -1,3 +1,5 @@
+"""pyRadPlan is a Python package for radiation therapy treatment planning."""  # noqa: N999
+
 from importlib.metadata import version, PackageNotFoundError
 import logging
 

@@ -5,12 +5,13 @@ import SimpleITK as sitk
 import matplotlib.pyplot as plt
 import pint
 
-ureg = pint.UnitRegistry()
-
 from pyRadPlan import CT, validate_ct, StructureSet, validate_cst
 
+# Initialize Units
+ureg = pint.UnitRegistry()
 
-def plot_slice(
+
+def plot_slice(  # noqa: PLR0913
     ct: Optional[Union[CT, dict]] = None,
     cst: Optional[Union[StructureSet, dict, list]] = None,
     overlay: Optional[Union[sitk.Image, np.ndarray]] = None,
@@ -20,7 +21,6 @@ def plot_slice(
     overlay_unit: Union[str, pint.Unit] = pint.Unit(""),
     overlay_rel_threshold: float = 0.01,
     contour_line_width: float = 1.0,
-    title: Optional[str] = None,
 ):
     """Plot a slice of the CT with overlay.
 
@@ -37,18 +37,12 @@ def plot_slice(
         cube_hu = sitk.GetArrayViewFromImage(ct.cube_hu)
 
     if cst is not None:
-        cst = validate_cst(cst)
+        cst = validate_cst(cst, ct=ct)
 
     if ct is None and cst is None:
         raise ValueError("Nothing to visualize!")
 
-    if isinstance(plane, str):
-        if plane == "axial":
-            plane = 0
-        elif plane == "coronal":
-            plane = 1
-        elif plane == "sagittal":
-            plane = 2
+    plane = {"axial": 0, "coronal": 1, "sagittal": 2}.get(plane, plane)
 
     if isinstance(overlay_unit, str):
         overlay_unit = ureg(overlay_unit)
@@ -80,7 +74,7 @@ def plot_slice(
                 mask[view_slice, :, :],
                 levels=[0.5],
                 colors=[color],
-                linewidths=1,
+                linewidths=contour_line_width,
             )
 
     if overlay is not None:
