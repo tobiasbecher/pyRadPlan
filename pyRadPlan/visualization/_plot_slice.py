@@ -35,17 +35,25 @@ def plot_slice(  # noqa: PLR0913
     if ct is not None:
         ct = validate_ct(ct)
         cube_hu = sitk.GetArrayViewFromImage(ct.cube_hu)
+        array_shape = cube_hu.shape
 
     if cst is not None:
-        cst = validate_cst(cst, ct=ct)
+        cst = validate_cst(cst)
+        array_shape = cst.ct_image.size[::-1]
 
     if ct is None and cst is None:
         raise ValueError("Nothing to visualize!")
 
     plane = {"axial": 0, "coronal": 1, "sagittal": 2}.get(plane, plane)
 
+    if not isinstance(plane, int) or not 0 <= plane <= 2:
+        raise ValueError("Invalid plane")
+
     if isinstance(overlay_unit, str):
         overlay_unit = ureg(overlay_unit)
+
+    if view_slice is None:
+        view_slice = int(np.round(array_shape[plane] / 2))
 
     slice_indexing = tuple(slice(None) if i != plane else view_slice for i in range(3))
 
@@ -71,7 +79,7 @@ def plot_slice(  # noqa: PLR0913
             cmap = plt.colormaps["cool"]
             color = cmap(v / len(cst.vois))  # Select color based on colormap 'cool'
             plt.contour(
-                mask[view_slice, :, :],
+                mask[slice_indexing],
                 levels=[0.5],
                 colors=[color],
                 linewidths=contour_line_width,
