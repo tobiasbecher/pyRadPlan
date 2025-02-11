@@ -93,32 +93,15 @@ def validate_matrad_patient(mdict: dict[str], remove_matrad_structures: bool = T
     if cst is not None:
         patient_dict["cst"] = validate_cst(cst, patient_dict["ct"])
 
-    pln = mdict.get("pln", None)
-    if pln is not None:
-        try:
-            patient_dict["pln"] = validate_pln(pln)
-            if remove_matrad_structures:
-                mdict.pop("pln")
-        except ValueError:
-            logger.warning("pln data present but not a valid plan.")
-
-    stf = mdict.get("stf", None)
-    if stf is not None:
-        try:
-            patient_dict["stf"] = validate_stf(stf)
-            if remove_matrad_structures:
-                mdict.pop("stf")
-        except ValueError:
-            logger.warning("stf data present but not a valid steering information.")
-
-    dij = mdict.get("dij", None)
-    if dij is not None:
-        try:
-            patient_dict["dij"] = validate_dij(dij)
-            if remove_matrad_structures:
-                mdict.pop("dij")
-        except ValueError:
-            logger.warning("dij present but not valid.")
+    for key, validator in [("pln", validate_pln), ("stf", validate_stf), ("dij", validate_dij)]:
+        value = mdict.get(key, None)
+        if value is not None:
+            try:
+                patient_dict[key] = validator(value)
+                if remove_matrad_structures:
+                    mdict.pop(key)
+            except ValueError:
+                logger.warning(f"{key} present but could not be validated.")
 
     result = mdict.get("resultGUI", None)
     if result is not None:
