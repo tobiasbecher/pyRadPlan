@@ -233,13 +233,13 @@ def swap_orientation_sparse_matrix(
     """
     row_indices, _ = sparse_matrix.nonzero()
 
-    if axes == (0, 1) or axes == (1, 0):
+    if axes in ((0, 1), (1, 0)):
         j, i, k = np.unravel_index(row_indices, original_shape)
         new_shape = (original_shape[1], original_shape[0], original_shape[2])
-    elif axes == (0, 2) or axes == (2, 0):
+    elif axes in ((0, 2), (2, 0)):
         k, j, i = np.unravel_index(row_indices, original_shape)
         new_shape = (original_shape[2], original_shape[1], original_shape[0])
-    elif axes == (1, 2) or axes == (2, 1):
+    elif axes in ((1, 2), (2, 1)):
         i, k, j = np.unravel_index(row_indices, original_shape)
         new_shape = (original_shape[0], original_shape[2], original_shape[1])
     else:

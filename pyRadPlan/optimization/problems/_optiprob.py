@@ -233,7 +233,8 @@ class PlanningProblem(ABC):
         dij: Union[Dij, dict],
     ) -> tuple[np.ndarray, dict]:
         """
-        Main interface method for solving the planning problem.
+        Solves the planning problem.
+
         Will perform initialization & validation and call the desired Solver.
 
         Parameters
@@ -252,6 +253,7 @@ class PlanningProblem(ABC):
         tuple[np.ndarray,dict]
             The optimized result and additional solver-specific result information as dictionary.
         """
+
         self._ct = validate_ct(ct)
         self._cst = validate_cst(cst)
         self._stf = validate_stf(stf)
