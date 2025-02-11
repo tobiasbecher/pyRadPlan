@@ -4,7 +4,7 @@ import pytest
 import SimpleITK as sitk
 import numpy as np
 
-import pyRadPlan.io.matRad as matRadIO
+import pyRadPlan.io.matfile as matfile
 from pyRadPlan.ct import create_ct
 
 
@@ -44,10 +44,10 @@ def test_cst_to_matrad(matrad_import, tmpdir):
     assert isinstance(matrad_list, list)
 
     tmp_mat_path = os.path.join(tmpdir, "test_cst.mat")
-    matRadIO.save(tmp_mat_path, {"cst": matrad_list})
+    matfile.save(tmp_mat_path, {"cst": matrad_list})
     assert os.path.exists(tmp_mat_path)
 
-    tmp = matRadIO.load(tmp_mat_path)
+    tmp = matfile.load(tmp_mat_path)
 
     assert isinstance(tmp, dict)
     assert isinstance(tmp["cst"], list)

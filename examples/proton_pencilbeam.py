@@ -7,16 +7,14 @@ except ImportError:
 
 import numpy as np
 import SimpleITK as sitk
-import pymatreader
 import matplotlib.pyplot as plt
 
 from pyRadPlan import (
     IonPlan,
-    validate_ct,
-    validate_cst,
     generate_stf,
     calc_dose_influence,
     fluence_optimization,
+    load_patient,
 )
 
 from pyRadPlan.optimization.objectives import SquaredDeviation, SquaredOverdosing, MeanDose
@@ -25,13 +23,11 @@ logging.basicConfig(level=logging.INFO)
 
 #  Read patient from provided TG119.mat file and validate data
 path = resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat")
-tmp = pymatreader.read_mat(path)
-ct = validate_ct(tmp["ct"])
-cst = validate_cst(tmp["cst"], ct=ct)
+ct, cst = load_patient(path)
 
 # Create a plan object
 pln = IonPlan(radiation_mode="protons", machine="Generic")
-pln.prop_opt = {"solver": "ipopt"}
+pln.prop_opt = {"solver": "scipy"}
 
 # Generate Steering Geometry ("stf")
 stf = generate_stf(ct, cst, pln)

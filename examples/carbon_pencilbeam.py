@@ -7,13 +7,11 @@ except ImportError:
 
 import numpy as np
 import SimpleITK as sitk
-import pymatreader
 import matplotlib.pyplot as plt
 
 from pyRadPlan import (
     IonPlan,
-    validate_ct,
-    validate_cst,
+    load_patient,
     generate_stf,
     calc_dose_influence,
     fluence_optimization,
@@ -23,9 +21,7 @@ logging.basicConfig(level=logging.INFO)
 
 #  Read patient from provided TG119.mat file and validate data
 path = resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat")
-tmp = pymatreader.read_mat(path)
-ct = validate_ct(tmp["ct"])
-cst = validate_cst(tmp["cst"], ct=ct)
+ct, cst = load_patient(path)
 
 # Create a plan object
 pln = IonPlan(radiation_mode="carbon", machine="Generic")

@@ -19,12 +19,11 @@ A minimal script is very similar to matRad's example [`matRad.m`](https://github
 ```python
 from importlib import resources
 import pymatreader
-from pyRadPlan import IonPlan, validate_ct, validate_cst, generate_stf, calc_dose_influence, fluence_optimization
+from pyRadPlan import load_patient, IonPlan, generate_stf, calc_dose_influence, fluence_optimization
 
 #  Read patient from provided TG119.mat file and validate data
-phantom = pymatreader.read_mat(resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat"))
-ct = validate_ct(phantom["ct"])
-cst = validate_cst(phantom["cst"], ct=ct)
+tg119_path = resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat")
+ct, cst = load_patient(tg119_path)
 
 # Create a plan object
 pln = IonPlan(radiation_mode="protons", machine="Generic")

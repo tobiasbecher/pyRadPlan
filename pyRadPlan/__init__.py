@@ -8,6 +8,7 @@ from .stf._generate_stf import generate_stf
 from .stf import SteeringInformation, validate_stf
 from .dose._calc_dose import calc_dose_influence, calc_dose_forward
 from .optimization._fluence_optimization import fluence_optimization
+from .io import load_patient
 
 try:
     __version__ = version(__name__)
@@ -34,4 +35,5 @@ __all__ = [
     "fluence_optimization",
     "SteeringInformation",
     "validate_stf",
+    "load_patient",
 ]
