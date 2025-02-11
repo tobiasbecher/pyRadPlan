@@ -1,9 +1,12 @@
+"""Geometry functions for LPS system."""
+
 import numpy as np
 
 
 def get_gantry_rotation_matrix(gantry_angle):
     """
     Calculate the rotation matrix for gantry.
+
     Represents an active, counter-clockwise rotation Matrix for Gantry around z
     with pre-multiplication of the matrix (R*x).
 

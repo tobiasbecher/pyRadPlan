@@ -82,7 +82,7 @@ class RayTracerBase(ABC):
         num_rays = target_points.shape[0]
         num_sources = source_points.shape[0]
 
-        if num_sources != num_rays and num_sources != 1:
+        if num_sources not in (num_rays, 1):
             # MatRad_Config.instance() and dispError equivalent in Python needs handling.
             raise (
                 f"Number of source points ({num_sources}) needs to be one "
