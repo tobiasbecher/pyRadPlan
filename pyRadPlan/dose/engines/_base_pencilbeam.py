@@ -226,6 +226,8 @@ class PencilBeamEngineAbstract(DoseEngineBase):
 
     def _init_dose_calc(self, ct: CT, cst: StructureSet, stf: SteeringInformation):
         """
+        Initialize the dose calculation.
+
         Modified inherited method of the superclass DoseEngine,
         containing initialization which is specifically needed for
         pencil beam calculation and not for other engines.
@@ -304,8 +306,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         self, _dij: dict, ct: CT, _cst: StructureSet, stf: SteeringInformation, i
     ) -> dict:
         """
-        Method for initializing the beams for analytical pencil beam dose
-        calculation.
+        Initialize the beam for pencil beam dose calculation.
 
         Parameters
         ----------
@@ -452,8 +453,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         show_warning: bool = True,
     ):
         """
-        Compute SSD (Source to Surface Distance) for each ray in the
-        steering information.
+        Compute SSD (Source to Surface Distance) for each ray.
 
         Parameters
         ----------
@@ -632,8 +632,9 @@ class PencilBeamEngineAbstract(DoseEngineBase):
 
     def _get_lateral_distance_from_dose_cutoff_on_ray(self, ray: dict) -> float:
         """
-        Obtain the maximum lateral cutoff distance given a dosimetric cutoff
-        on a a ray.
+        Obtain the maximum lateral cutoff on a a ray.
+
+        Distance will computed from dosimetric cutoff setting.
 
         Parameters
         ----------
@@ -660,8 +661,12 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         bixel_counter: int,
     ):
         """
-        Fill the dose influence matrix (dij) with the computed dose cube.
-        This is the last step in bixel dose calculation.
+        Fill the dose influence matrix (dij) with bixel contents.
+
+        This is the last step in bixel dose calculation. It will fill all
+        the computed quantities into sparse matrix containers.
+        If forward calculation is active, accumulation into dense vectors
+        will be performed instead.
 
         Parameters
         ----------
@@ -670,7 +675,8 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         dij : dict
             The dose influence matrix.
         stf : SteeringInformation
-            The structure containing beam information. Unused in this base implementation.
+            The structure containing beam information.
+            Unused in this base implementation.
         scen_idx : int
             The scenario index.
         curr_beam_idx : int
@@ -722,8 +728,10 @@ class PencilBeamEngineAbstract(DoseEngineBase):
 
     def _finalize_dose(self, dij: dict) -> dict:
         """
-        Finalize the dose influence matrix by removing dose influence for
-        voxels outside of segmentations for every CT scenario.
+        Finalize the dose influence matrix.
+
+        Pruning the matrix and concatenating the containers to a compressed
+        sparse matrix.
 
         Parameters
         ----------

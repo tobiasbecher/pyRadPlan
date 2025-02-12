@@ -6,7 +6,7 @@ try:
 except ImportError:
     import importlib_resources as resources  # Backport for older versions
 
-from pyRadPlan.io.matLabFileHandler import MatLabFileHandler
+from pyRadPlan.io._matlab_file_handler import MatlabFileHandler
 import pyRadPlan.io.matfile as matfile
 from pyRadPlan.io import load_patient
 from pyRadPlan.ct import CT
@@ -29,7 +29,7 @@ def test_file_handler(tmp_path, tg119_path):
         "cst": tg119_load["cst"],
     }
 
-    file_handler = MatLabFileHandler(tmp_path)
+    file_handler = MatlabFileHandler(tmp_path)
     file_handler.save(**tg119)
 
     assert os.path.exists(tmp_path.joinpath("ct.mat"))

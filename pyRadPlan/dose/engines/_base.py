@@ -605,9 +605,8 @@ class DoseEngineBase(ABC):
 
     @staticmethod
     def load_machine(radiation_mode, machine_name):
-        fileName = radiation_mode + "_" + machine_name + ".mat"
+        file_name = radiation_mode + "_" + machine_name + ".mat"
         machines_path = resources.files("pyRadPlan.data.machines")
-        path = machines_path.joinpath(fileName)
-        machine = load_machine_from_mat(path)
-        machine = validate_machine(machine)
+        path = machines_path.joinpath(file_name)
+        machine = validate_machine(load_machine_from_mat(path))
         return machine
