@@ -46,8 +46,7 @@ class RayTracerBase(ABC):
         target_points: Union[list, np.ndarray],
     ) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], np.ndarray, np.ndarray]:
         """
-        Trace multiple rays from source points to target points through the
-        cubes.
+        Trace multiple rays through a cube.
 
         Parameters
         ----------
@@ -126,16 +125,19 @@ class RayTracerBase(ABC):
         target_points: Union[list, np.ndarray],
     ) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], np.ndarray, np.ndarray]:
         """
-        Trace a single ray from source point to target point through the
-        cubes.
+        Trace a single ray through cubes.
+
         Abstract Method to be implemented in subclasses.
         """
 
     def trace_cubes(self, beam: Union[dict[str, Any], Beam]) -> list[sitk.Image]:
         """
-        Sets up ray matrix to trace through all cubes and generate
-        corresponding cubes of the
-        traced depths the same size of the supplied images.
+        Automatically calculate depth by tracing rays through cubes.
+
+        Set up ray matrix with appropriate spacing to trace through
+        all cubes, resulting in a cumulative sum of values in every voxel
+        relative to the source. Will calculate cumulative sum on all of
+        the supplied images.
         """
 
         if not isinstance(beam, Beam) and isinstance(beam, dict):
@@ -282,6 +284,7 @@ class RayTracerBase(ABC):
     @abstractmethod
     def _initialize_geometry(self):
         """
-        Initialize geometry of the ray tracer. Will be automatically called
-        when the cubes are set.
+        Initialize geometry of the ray tracer.
+
+        Will be automatically called when the cubes are set.
         """
