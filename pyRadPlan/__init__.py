@@ -1,3 +1,5 @@
+"""pyRadPlan is a Python package for radiation therapy treatment planning."""  # noqa: N999
+
 from importlib.metadata import version, PackageNotFoundError
 import logging
 
@@ -8,6 +10,7 @@ from .stf._generate_stf import generate_stf
 from .stf import SteeringInformation, validate_stf
 from .dose._calc_dose import calc_dose_influence, calc_dose_forward
 from .optimization._fluence_optimization import fluence_optimization
+from .visualization import plot_slice
 from .io import load_patient
 
 try:
@@ -35,5 +38,6 @@ __all__ = [
     "fluence_optimization",
     "SteeringInformation",
     "validate_stf",
+    "plot_slice",
     "load_patient",
 ]

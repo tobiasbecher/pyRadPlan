@@ -25,6 +25,7 @@ from pyRadPlan.ct import default_hlut
 from pyRadPlan.plan import IonPlan
 from pyRadPlan.stf.generators import StfGeneratorIMPT
 from pyRadPlan.raytracer import RayTracerSiddon
+from pyRadPlan.visualization import plot_slice
 from pyRadPlan.io import load_patient
 
 # Configure the Logger to show you debug information
@@ -84,18 +85,13 @@ min_rad_depth = np.min(rd_np)
 max_rad_depth = np.nanmax(rd_np)
 print(f"Minimum rad depth: {min_rad_depth}Maximum rad depth: {max_rad_depth}")
 
-# Now we do visualization of the corresponding slice of our WEPL cube
-rad_depth_slice = rd_np[view_slice, :, :]
-
-plt.imshow(
-    rad_depth_slice,
-    cmap="jet",
-    alpha=0.5 * (rad_depth_slice > 0.0),
-    vmin=min_rad_depth,
-    vmax=max_rad_depth,
+# Visualize
+plot_slice(
+    ct=ct,
+    cst=cst,
+    overlay=rd_np,
+    view_slice=view_slice,
+    plane="axial",
+    overlay_unit="mm",
+    overlay_rel_threshold=1e-3,
 )
-
-# And finally, output!
-plt.draw()
-plt.pause(0.001)
-plt.show()
