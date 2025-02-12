@@ -200,7 +200,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
 
                                         # fill the current bixel in the sparse dose influence
                                         # matrix
-                                        dij = self._fill_dij(
+                                        self._fill_dij(
                                             curr_bixel,
                                             dij,
                                             scen_stf,
@@ -226,6 +226,8 @@ class PencilBeamEngineAbstract(DoseEngineBase):
 
     def _init_dose_calc(self, ct: CT, cst: StructureSet, stf: SteeringInformation):
         """
+        Initialize the dose calculation.
+
         Modified inherited method of the superclass DoseEngine,
         containing initialization which is specifically needed for
         pencil beam calculation and not for other engines.
@@ -304,8 +306,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         self, _dij: dict, ct: CT, _cst: StructureSet, stf: SteeringInformation, i
     ) -> dict:
         """
-        Method for initializing the beams for analytical pencil beam dose
-        calculation.
+        Initialize the beam for pencil beam dose calculation.
 
         Parameters
         ----------
@@ -403,7 +404,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                 )
 
         # Compute SSDs
-        beam_info = self._compute_ssd(beam_info, ct, density_threshold=self.ssd_density_threshold)
+        self._compute_ssd(beam_info, ct, density_threshold=self.ssd_density_threshold)
 
         logger.info("Done.")
 
@@ -439,7 +440,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         ray["sad"] = beam_info["beam"]["sad"]
         ray["bixel_width"] = beam_info["beam"]["bixel_width"]
 
-        ray = self._get_ray_geometry_from_beam(ray, beam_info)
+        self._get_ray_geometry_from_beam(ray, beam_info)
 
         return ray
 
@@ -452,13 +453,12 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         show_warning: bool = True,
     ):
         """
-        Compute SSD (Source to Surface Distance) for each ray in the
-        steering information.
+        Compute SSD (Source to Surface Distance) for each ray.
 
         Parameters
         ----------
         beam_info : dict
-            Beam Information
+            Beam Information, will be modified to include SSD.
         ct : CT
             The CT object.
         mode : Literal["first"], optional
@@ -467,11 +467,6 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             Value determining the skin threshold.
         show_warning : bool, optional
             Flag to show warnings.
-
-        Returns
-        -------
-        SteeringInformation
-            Updated steering information object with SSD values.
         """
 
         beam = beam_info["beam"]
@@ -517,8 +512,6 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             raise ValueError(f"Invalid mode {mode} for SSD calculation")
 
         beam_info["beam"] = beam
-
-        return beam_info
 
     def _closest_neighbor_ssd(
         self, ray_pos_bev: np.ndarray, ssd: np.ndarray, curr_pos: np.ndarray
@@ -598,7 +591,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
 
         return scen_ray
 
-    def _get_ray_geometry_from_beam(self, ray: dict[str], beam_info: dict[str]) -> dict[str]:
+    def _get_ray_geometry_from_beam(self, ray: dict[str], beam_info: dict[str]):
         ray["effective_lateral_cut_off"] = beam_info["effective_lateral_cut_off"]
         lateral_ray_cutoff = self._get_lateral_distance_from_dose_cutoff_on_ray(ray)
 
@@ -628,12 +621,12 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         ray["rad_depths"] = [
             rD[ix] for rD, ix in zip(beam_info["rad_depths"], ray["valid_coords"])
         ]
-        return ray
 
     def _get_lateral_distance_from_dose_cutoff_on_ray(self, ray: dict) -> float:
         """
-        Obtain the maximum lateral cutoff distance given a dosimetric cutoff
-        on a a ray.
+        Obtain the maximum lateral cutoff on a a ray.
+
+        Distance will computed from dosimetric cutoff setting.
 
         Parameters
         ----------
@@ -660,8 +653,12 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         bixel_counter: int,
     ):
         """
-        Fill the dose influence matrix (dij) with the computed dose cube.
-        This is the last step in bixel dose calculation.
+        Fill the dose influence matrix (dij) with bixel contents.
+
+        This is the last step in bixel dose calculation. It will fill all
+        the computed quantities into sparse matrix containers.
+        If forward calculation is active, accumulation into dense vectors
+        will be performed instead.
 
         Parameters
         ----------
@@ -670,7 +667,8 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         dij : dict
             The dose influence matrix.
         stf : SteeringInformation
-            The structure containing beam information. Unused in this base implementation.
+            The structure containing beam information.
+            Unused in this base implementation.
         scen_idx : int
             The scenario index.
         curr_beam_idx : int
@@ -718,12 +716,12 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             dij["ray_num"][bixel_counter] = curr_ray_idx
             dij["bixel_num"][bixel_counter] = curr_bixel_idx
 
-        return dij
-
-    def _finalize_dose(self, dij: dict) -> dict:
+    def _finalize_dose(self, dij: dict):
         """
-        Finalize the dose influence matrix by removing dose influence for
-        voxels outside of segmentations for every CT scenario.
+        Finalize the dose influence matrix.
+
+        Pruning the matrix and concatenating the containers to a compressed
+        sparse matrix.
 
         Parameters
         ----------
@@ -732,8 +730,8 @@ class PencilBeamEngineAbstract(DoseEngineBase):
 
         Returns
         -------
-        dict
-            The updated dose influence matrix.
+        Dij
+            The finalized dose influence matrix.
         """
 
         # Loop over all scenarios and remove dose influence for voxels outside of segmentations
@@ -752,9 +750,7 @@ class PencilBeamEngineAbstract(DoseEngineBase):
             dij["rad_depth_cubes"] = self._rad_depth_cubes
 
         # Call the finalizeDose method from the base class
-        dij = super()._finalize_dose(dij)
-
-        return dij
+        return super()._finalize_dose(dij)
 
     @staticmethod
     def calc_geo_dists(

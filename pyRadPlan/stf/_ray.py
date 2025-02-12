@@ -1,5 +1,6 @@
-"""A class representing a single ray pointing from the beam source to a
-position in the patient.
+"""Defines a class representing a single ray.
+
+The ray is pointing from the beam source to a position in the patient.
 """
 
 import functools
@@ -60,10 +61,8 @@ class Ray(PyRadPlanBaseModel):
     def validate_nparray_dtype(
         cls, v: Any, handler: ValidatorFunctionWrapHandler, info: ValidationInfo
     ) -> NDArray[Shape["3"], np.float64]:
-        """
-        Validates arrays to have floating point values and tries conversion
-        to array.
-        """
+        """Validate / convert arrays to have floating point values."""
+
         if v is not None:
             if not isinstance(v, np.ndarray):
                 v = np.array(v, dtype=float)
@@ -79,9 +78,9 @@ class Ray(PyRadPlanBaseModel):
         cls, data: Any, handler: ValidatorFunctionWrapHandler, info: ValidationInfo
     ) -> Any:
         """
-        Sanitize the beamlet structure in the ray, as it may be structured
-        differently
-        (e.g. when coming from matRad.).
+        Sanitize the beamlet structure in the ray.
+
+        It may be structured differently (e.g. when coming from matRad.).
         """
         # if isinstance(data, list):
         #     for i in range(len(data)):
@@ -191,10 +190,7 @@ class Ray(PyRadPlanBaseModel):
     #         return v
 
     def to_matrad(self, context: Union[str, dict] = "mat-file") -> Any:
-        """
-        Overriden interface method to serialize rays for matRad
-        structure.
-        """
+        """Serialize rays for matRad structure."""
 
         model_dump = super().to_matrad(context=context)
 

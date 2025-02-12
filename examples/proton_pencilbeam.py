@@ -6,17 +6,14 @@ except ImportError:
     import importlib_resources as resources  # Backport for older versions
 
 import numpy as np
-import SimpleITK as sitk
-import pymatreader
-import matplotlib.pyplot as plt
 
 from pyRadPlan import (
     IonPlan,
-    validate_ct,
-    validate_cst,
     generate_stf,
     calc_dose_influence,
     fluence_optimization,
+    plot_slice,
+    load_patient,
 )
 
 from pyRadPlan.optimization.objectives import SquaredDeviation, SquaredOverdosing, MeanDose
@@ -25,13 +22,11 @@ logging.basicConfig(level=logging.INFO)
 
 #  Read patient from provided TG119.mat file and validate data
 path = resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat")
-tmp = pymatreader.read_mat(path)
-ct = validate_ct(tmp["ct"])
-cst = validate_cst(tmp["cst"], ct=ct)
+ct, cst = load_patient(path)
 
 # Create a plan object
 pln = IonPlan(radiation_mode="protons", machine="Generic")
-pln.prop_opt = {"solver": "ipopt"}
+pln.prop_opt = {"solver": "scipy"}
 
 # Generate Steering Geometry ("stf")
 stf = generate_stf(ct, cst, pln)
@@ -55,40 +50,11 @@ result = dij.compute_result_ct_grid(fluence)
 view_slice = int(np.round(ct.size[2] / 2))
 
 # Visualize
-cube_hu = sitk.GetArrayViewFromImage(ct.cube_hu)
-plt.imshow(cube_hu[view_slice, :, :], cmap="gray")
-
-plt.tick_params(
-    axis="both",
-    which="both",
-    bottom=False,
-    top=False,
-    labelbottom=False,
-    left=False,
-    right=False,
-    labelleft=False,
+plot_slice(
+    ct=ct,
+    cst=cst,
+    overlay=result["physical_dose"],
+    view_slice=view_slice,
+    plane="axial",
+    overlay_unit="Gy",
 )
-
-# Now let's visualize the VOIs from the StructureSet.
-for v, voi in enumerate(cst.vois):
-    mask = sitk.GetArrayViewFromImage(voi.mask)
-    cmap = plt.colormaps["cool"]
-    color = cmap(v / len(cst.vois))  # Select color based on colormap 'cool'
-    plt.contour(
-        mask[view_slice, :, :],
-        levels=[0.5],
-        colors=[color],
-        linewidths=1,
-    )
-dose_array = sitk.GetArrayViewFromImage(result["physical_dose"])
-plt.imshow(
-    dose_array[view_slice, :, :],
-    cmap="jet",
-    interpolation="nearest",
-    alpha=0.5 * (dose_array[view_slice, :, :] > 0.02),
-)
-plt.colorbar(label="dose [Gy]")
-plt.title(f"Proton Dose (Slice z={view_slice})")
-plt.show()
-plt.savefig(f"{pln.radiation_mode}_physical_dose.png")
-plt.clf()

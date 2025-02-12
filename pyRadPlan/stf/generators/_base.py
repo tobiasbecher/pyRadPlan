@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Union, ClassVar
 import warnings
 import numpy as np
 
@@ -20,23 +20,10 @@ class StfGeneratorBase(ABC):
     """Base class for steering information generators."""
 
     # Class constants
-    is_stf_generator = True
-
-    # Abstract properties
-    @property
-    @abstractmethod
-    def name(self) -> str:
-        """Descriptive Name."""
-
-    @property
-    @abstractmethod
-    def short_name(self) -> str:
-        """Short name for referencing."""
-
-    @property
-    @abstractmethod
-    def possible_radiation_modes(self) -> list[str]:
-        """Possible radiation modes for the respective StfGenerator."""
+    is_stf_generator: ClassVar[bool] = True
+    name: ClassVar[str]
+    short_name: ClassVar[str]
+    possible_radiation_modes: ClassVar[list[str]]
 
     @property
     def radiation_mode(self):

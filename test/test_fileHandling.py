@@ -1,3 +1,4 @@
+import pytest
 import os
 
 try:
@@ -5,25 +6,30 @@ try:
 except ImportError:
     import importlib_resources as resources  # Backport for older versions
 
-from pyRadPlan.io.matLabFileHandler import MatLabFileHandler
-import pyRadPlan.io.matRad as matRadIO
+from pyRadPlan.io._matlab_file_handler import MatlabFileHandler
+import pyRadPlan.io.matfile as matfile
+from pyRadPlan.io import load_patient
+from pyRadPlan.ct import CT
+from pyRadPlan.cst import StructureSet
+
 
 # Paths
+@pytest.fixture
+def tg119_path():
+    return resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat")
 
 
-def test_file_handler(tmp_path):
+def test_file_handler(tmp_path, tg119_path):
     """Test loading method."""
 
-    phantoms = resources.files("pyRadPlan.data.phantoms")
-    tg119_path = phantoms.joinpath("TG119.mat")
-    tg119_load = matRadIO.load(tg119_path)
+    tg119_load = matfile.load(tg119_path)
 
     tg119 = {
         "ct": tg119_load["ct"],
         "cst": tg119_load["cst"],
     }
 
-    file_handler = MatLabFileHandler(tmp_path)
+    file_handler = MatlabFileHandler(tmp_path)
     file_handler.save(**tg119)
 
     assert os.path.exists(tmp_path.joinpath("ct.mat"))
@@ -37,3 +43,26 @@ def test_file_handler(tmp_path):
     file_handler.delete("ct", "cst")
     assert not os.path.exists(tmp_path.joinpath("ct.mat"))
     assert not os.path.exists(tmp_path.joinpath("cst.mat"))
+
+
+def test_load_file(tg119_path):
+    ct, cst = load_patient(tg119_path)
+
+    assert isinstance(ct, CT)
+    assert isinstance(cst, StructureSet)
+
+
+def test_load_file_extradata(tg119_path):
+    extra_data = {}
+    extra_plan_data = {}
+    ct, cst = load_patient(tg119_path, extra_data=extra_data, extra_plan_data=extra_plan_data)
+
+    assert isinstance(ct, CT)
+    assert isinstance(cst, StructureSet)
+    assert isinstance(extra_data, dict)
+    assert isinstance(extra_plan_data, dict)
+
+
+def test_load_invalid_file():
+    with pytest.raises(FileNotFoundError):
+        _, _ = load_patient("unsupported_file.txt")

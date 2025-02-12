@@ -133,7 +133,7 @@ class Beam(PyRadPlanBaseModel):
     @field_validator("source_point", "source_point_bev", "iso_center", mode="before")
     @classmethod
     def validate_nparray_dtype(cls, v: Any) -> Any:
-        """Validates arrays to have floating point values."""
+        """Validate arrays to have floating point values."""
         v = np.asarray(v, dtype=np.float64)
         return v.reshape((3,))
 
@@ -141,7 +141,7 @@ class Beam(PyRadPlanBaseModel):
     @classmethod
     def validate_rays(cls, v: list[Ray]) -> list[Ray]:
         """
-        Validates the rays attribute.
+        Validate the rays attribute.
 
         Pydantic will validate that it is a list but will also allow list of dicts
         """

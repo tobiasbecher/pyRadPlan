@@ -1,7 +1,4 @@
-"""
-This module contains the dij class, which represents a (collection of)
-influence matrices.
-"""
+"""Contains the dij class as a (collection of) influence matrices."""
 
 from typing import Any, Union, Annotated, cast
 from pydantic import (
@@ -26,8 +23,7 @@ from pyRadPlan.util import swap_orientation_sparse_matrix
 
 class Dij(PyRadPlanBaseModel):
     """
-    Represents a Collection of Dose (or other quantity) Influence Matrices
-    (DIJ) for a given plan.
+    Collection of Dose (or other quantity) Influence Matrices.
 
     Attributes
     ----------
@@ -71,7 +67,7 @@ class Dij(PyRadPlanBaseModel):
     @classmethod
     def validate_matrices(cls, v: Any, info: ValidationInfo) -> np.ndarray:
         """
-        Validates the physical dose matrix.
+        Validate the physical dose matrix.
 
         Raises
         ------
@@ -112,7 +108,7 @@ class Dij(PyRadPlanBaseModel):
     @classmethod
     def validate_grid(cls, grid: Union[Grid, dict]) -> Union[Grid, dict]:
         """
-        Validates grid dictionaries.
+        Validate grid dictionaries.
 
         Raises
         ------
@@ -127,7 +123,7 @@ class Dij(PyRadPlanBaseModel):
     @classmethod
     def validate_numbering_arrays(cls, v: np.ndarray, info: ValidationInfo) -> np.ndarray:
         """
-        Validates the numbering arrays.
+        Validate the numbering arrays.
 
         Raises
         ------
@@ -158,7 +154,7 @@ class Dij(PyRadPlanBaseModel):
         cls, v: np.ndarray, info: ValidationInfo
     ) -> np.ndarray:
         """
-        Validates the number of unique indices in beam_num.
+        Validate the number of unique indices in beam_num.
 
         Raises
         ------
@@ -213,10 +209,7 @@ class Dij(PyRadPlanBaseModel):
         return value
 
     def to_matrad(self, context: str = "mat-file") -> Any:
-        """
-        Converts the Dij object to matRad-compatible dictionary with
-        camelCase keys.
-        """
+        """Convert the Dij to matRad-compatible dictionary."""
 
         dij_dict = super().to_matrad(context=context)
 
@@ -226,7 +219,7 @@ class Dij(PyRadPlanBaseModel):
         self, intensity: np.ndarray, scenario_index: int = 0
     ) -> dict[str, np.ndarray]:
         """
-        Applies the intensity to the dose influence matrix.
+        Compute result arrays from an intensity vector.
 
         Parameters
         ----------
@@ -269,8 +262,7 @@ class Dij(PyRadPlanBaseModel):
         self, intensities: np.ndarray, scenario_index: int = 0
     ) -> dict[str, sitk.Image]:
         """
-        Applies the intensity to the dose influence matrix to get result
-        cubes on the dose grid.
+        Compute results on the dose grid from intensity vector.
 
         Parameters
         ----------
@@ -301,8 +293,7 @@ class Dij(PyRadPlanBaseModel):
         self, intensities: np.ndarray, scenario_index: int = 0
     ) -> dict[str, sitk.Image]:
         """
-        Applies the intensity to the dose influence matrix to get results on
-        the CT grid.
+        Compute results on the CT grid from intensity vector.
 
         Parameters
         ----------
@@ -335,7 +326,7 @@ class Dij(PyRadPlanBaseModel):
 
 def create_dij(data: Union[dict[str, Any], Dij, None] = None, **kwargs) -> Dij:
     """
-    Factory function to create a Plan object.
+    Create a Dij object from raw data or keyword arguments.
 
     Parameters
     ----------
@@ -348,11 +339,6 @@ def create_dij(data: Union[dict[str, Any], Dij, None] = None, **kwargs) -> Dij:
     -------
     Dij
         A Dij object.
-
-    Raises
-    ------
-    ValueError
-        If ..???
     """
 
     if data:
@@ -367,7 +353,8 @@ def create_dij(data: Union[dict[str, Any], Dij, None] = None, **kwargs) -> Dij:
 
 def validate_dij(dij: Union[dict[str, Any], Dij, None] = None, **kwargs) -> Dij:
     """
-    Validates and creates a Dij object.
+    Validate and creates a Dij object.
+
     Synonym to create_dij but should be used in validation context.
 
     Parameters
@@ -382,53 +369,5 @@ def validate_dij(dij: Union[dict[str, Any], Dij, None] = None, **kwargs) -> Dij:
     Dij
         A validated Dij object.
 
-    Raises
-    ------
-    ValueError
-        If ... ???
     """
     return create_dij(dij, **kwargs)
-
-
-if __name__ == "__main__":
-    # Implements an example usage of the Dij class.
-    import numpy as np
-    import pyRadPlan.io.matRad as matRadIO
-
-    # Consider a dictionary of dij information in camelCase
-    dose_information = {
-        "ctGrid": {
-            "resolution": {"x": 3.0, "y": 3.0, "z": 3.0},
-            "dimensions": (167, 167, 107),
-            "numOfVoxels": 167 * 167 * 107,
-        },
-        "doseGrid": {
-            "resolution": {"x": 3.0, "y": 3.0, "z": 3.0},
-            "dimensions": (167, 167, 107),
-            "numOfVoxels": 167 * 167 * 107,
-        },
-        "numOfBeams": 2,
-        "numOfScenarios": 1,
-        "numOfRaysPerBeam": [255, 255],
-        "totalNumOfBixels": 6506,
-        "totalNumOfRays": 510,
-        "bixelNum": np.ones(6506),
-        "rayNum": np.ones(6506),
-        "beamNum": np.ones(6506),
-        "minMu": np.ones(6506),
-        "maxMu": np.ones(6506),
-        "numOfParticlesPerMu": np.ones(6506),
-        "physicalDose": sp.csr_matrix((167 * 167 * 107, 6506), dtype=float),
-    }
-
-    dose_information["beamNum"][3000:] = 2
-    # We create the DIJ object with mdoel validate
-    dij = create_dij(**dose_information)
-    # # print the dataclass
-    # print(dij)
-    # # turn it into a snake_case style dictionary
-    # print(dij.model_dump())
-
-    dij_to_matrad = dij.to_matrad(context="mat-file")
-
-    matRadIO.save("dij.mat", {"dij": dij_to_matrad})

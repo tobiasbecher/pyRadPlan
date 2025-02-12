@@ -36,6 +36,8 @@ class OptimizerIpopt(NonLinearOptimizer):
 
         self.options = {
             "print_level": 5,
+            "print_user_options": "no",
+            "print_options_documentation": "no",
             "tol": 1e-10,
             "dual_inf_tol": 1e-4,
             "constr_viol_tol": 1e-4,
@@ -53,6 +55,7 @@ class OptimizerIpopt(NonLinearOptimizer):
             "limited_memory_max_history": 20,
             "limited_memory_initialization": "scalar2",
             "linear_solver": "mumps",
+            "timing_statistics": "yes",
         }
 
     def solve(self, x0: ArrayLike) -> tuple[np.ndarray, dict]:

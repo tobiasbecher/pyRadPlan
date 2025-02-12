@@ -8,19 +8,19 @@ except ImportError:
 import numpy as np
 import SimpleITK as sitk
 
-import pyRadPlan.io.matRad as matRadIO
+from pyRadPlan.io import load_patient
 from pyRadPlan.plan import create_pln
 from pyRadPlan.ct import CT, validate_ct
 from pyRadPlan.cst import validate_cst, StructureSet, VOI
 
-from pyRadPlan.stf import (
+from pyRadPlan.stf import Ray, get_available_generators, get_generator
+from pyRadPlan.stf.generators import (
     StfGeneratorBase,
     StfGeneratorExternalBeamRayBixel,
     StfGeneratorPhotonIMRT,
     StfGeneratorPhotonCollimatedSquareFields,
     StfGeneratorIonSingleSpot,
     StfGeneratorIMPT,
-    Ray,
 )
 
 
@@ -57,11 +57,7 @@ def sample_cst(sample_ct):
 @pytest.fixture
 def tg119():
     path = resources.files("pyRadPlan.data.phantoms")
-    tg119_file = path.joinpath("TG119.mat")
-    tg119 = matRadIO.load(tg119_file)
-
-    ct = validate_ct(tg119["ct"])
-    cst = validate_cst(tg119["cst"], ct=ct)
+    ct, cst = load_patient(path.joinpath("TG119.mat"))
     return {"ct": ct, "cst": cst}
 
 
@@ -95,6 +91,31 @@ def sample_proton_pln_dict():
 def sample_proton_pln(sample_proton_pln_dict):
     pln = create_pln(sample_proton_pln_dict)
     return pln
+
+
+def test_available_generators(sample_proton_pln):
+    generators = get_available_generators(sample_proton_pln)
+    assert isinstance(generators, dict)
+    assert len(generators.items()) > 0
+
+
+def test_get_generator(sample_proton_pln):
+    sample_proton_pln.prop_stf["generator"] = "IMPT"
+    generator = get_generator(sample_proton_pln)
+    assert generator
+    assert isinstance(generator, StfGeneratorBase)
+
+
+def test_get_generator_default(sample_proton_pln):
+    generator = get_generator(sample_proton_pln)
+    assert generator
+    assert isinstance(generator, StfGeneratorBase)
+
+
+def test_get_generator_invalid(sample_proton_pln):
+    sample_proton_pln.prop_stf["generator"] = "InvalidGenerator"
+    with pytest.warns(UserWarning):
+        generator = get_generator(sample_proton_pln)
 
 
 def test_basic_photon_imrt_construct(sample_photon_pln_dict, sample_photon_pln):

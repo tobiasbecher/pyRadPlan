@@ -34,6 +34,9 @@ class SolverBase(ABC):
         self.max_time = 3600
         self.bounds = [0.0, np.inf]
 
+    def __repr__(self) -> str:
+        return f"Solver {self.name} ({self.short_name})"
+
     @abstractmethod
     def solve(self, x0: ArrayLike) -> tuple[np.ndarray, dict]:
         """
@@ -49,18 +52,6 @@ class SolverBase(ABC):
         tuple[np.ndarray, dict]
             Solution vector and additional information as dictionary
         """
-
-
-def __repr__(self) -> str:
-    """
-    The string representation of Solvers.
-
-    Returns
-    -------
-    string
-        Class Representation as string
-    """
-    return f"Solver {self.name} ({self.short_name})"
 
 
 class NonLinearOptimizer(SolverBase):
@@ -111,7 +102,8 @@ class NonLinearOptimizer(SolverBase):
 
     def iter_func(self, *args, **kwargs) -> bool:
         """
-        Iteration callback function.
+        Get or set solver information as iteration callback.
+
         Agnostic signature with *args and **kwargs to be able to accomodate
         various solvers.
 

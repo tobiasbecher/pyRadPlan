@@ -61,9 +61,8 @@ class Beamlet(PyRadPlanBaseModel):
     def field_typing(
         self, v: Any, handler: SerializerFunctionWrapHandler, info: FieldSerializationInfo
     ) -> Any:
-        """Make sure that values are correctly serialized in various
-        serialization contexts.
-        """
+        """Ensure correct serialization in various contexts."""
+
         context = info.context
         if context and context.get("matRad") == "mat-file":
             if info.field_name == "focus_ix":

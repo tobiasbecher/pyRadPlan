@@ -33,8 +33,9 @@ logger = logging.getLogger(__name__)
 
 class DoseEngineBase(ABC):
     """
-    Abstract base class for all dose engines. All dose engines should
-    inherit from this class.
+    Abstract Interface for all dose engines.
+
+    All dose engines should inherit from this class.
 
     Parameters
     ----------
@@ -113,6 +114,7 @@ class DoseEngineBase(ABC):
     def assign_properties_from_pln(self, pln: Plan, warn_when_property_changed: bool = False):
         """
         Assign properties from a Plan object to the Dose Engine.
+
         This includes the Scenario Model and the Biological Model, and any
         other properties that
         can be stored in the prop_dose_calc dictionary within the Plan object.
@@ -177,9 +179,10 @@ class DoseEngineBase(ABC):
         self, ct: CT, cst: StructureSet, stf: SteeringInformation, w: np.ndarray
     ) -> dict:
         """
-        Perform a forward dose calculation, i.e., compute a dose cube by
-        directly applying
-        a set of weights during dose calculation.
+        Perform a forward dose calculation.
+
+        Compute a dose cube by directly applying a set of weights
+        during dose calculation.
 
         Parameters
         ----------
@@ -199,10 +202,11 @@ class DoseEngineBase(ABC):
 
         Notes
         -----
-        pyRadPlan handles the forward dose calculation by setting a switch in the dose engine
-        (_calc_dose_direct) to True. This facilitates reusing of algorithms in both forward and
-        influence matrix calculations.
+        pyRadPlan handles the forward dose calculation by setting a switch in
+        the dose engine (_calc_dose_direct) to True. This facilitates reusing
+        of algorithms in both forward and influence matrix calculations.
         """
+        time_start = time.time()
 
         self._calc_dose_direct = True
 
@@ -227,15 +231,21 @@ class DoseEngineBase(ABC):
         # Run dose calculation (direct flag is on)
         dij = self._calc_dose(ct, cst, stf)
 
-        # TODO: now do the forward weighting with w
+        # Now do the forward weighting with w
+        # This is done because the engine might store the individual fields
+        result = dij.compute_result_ct_grid(np.ones(dij.total_num_of_bixels, dtype=np.float32))
 
-        return dij.compute_result_ct_grid(np.ones(dij.total_num_of_bixels, dtype=np.float32))
+        time_elapsed = time.time() - time_start
+        logger.info("Forward dose calculation done in %.2f seconds.", time_elapsed)
+
+        return result
 
     def calc_dose_influence(self, ct: CT, cst: StructureSet, stf: SteeringInformation) -> Dij:
         """
-        Calculate the set of dose/quantity influence matrices, i.e.,
-        matrices that map a fluence
-        vector to a dose/quantity distribution.
+        Calculate the set of dose/quantity influence matrices.
+
+        These are the matrices that map a fluence vector to a dose/quantity
+        distribution.
 
         Parameters
         ----------
@@ -253,13 +263,16 @@ class DoseEngineBase(ABC):
 
         Notes
         -----
-        pyRadPlan handles the influence matrix calculation by setting a switch in the dose engine
-        (_calc_dose_direct) to False. This facilitates reusing of algorithms in both forward and
-        influence matrix calculations.
+        pyRadPlan handles the forward dose calculation by setting a switch in
+        the dose engine (_calc_dose_direct) to True. This facilitates reusing
+        of algorithms in both forward and influence matrix calculations.
         """
 
+        time_start = time.time()
         self._calc_dose_direct = False
         dij = self._calc_dose(ct, cst, stf)
+        time_elapsed = time.time() - time_start
+        logger.info("Dose influence matrix calculation done in %.2f seconds.", time_elapsed)
 
         return dij
 
@@ -285,9 +298,9 @@ class DoseEngineBase(ABC):
 
     def select_voxels_from_cst(self, cst, dose_grid, selection_mode):
         """
-        Function to get mask of the voxels (on dose grid) that are included
-        in
-        cst structures specified by selection_mode.
+        Get mask of the voxels (on dose grid).
+
+        Gets the mask from the cst structures specified by selection_mode.
         """
         self.set_overlap_priorities(self, cst, dose_grid["dimensions"])
 
@@ -396,9 +409,7 @@ class DoseEngineBase(ABC):
     # private methods
     def _init_dose_calc(self, ct: CT, cst: StructureSet, stf: SteeringInformation) -> dict:
         """
-        Initializes the dose calculation process for a given CT scan,
-        structure
-        set, and steering information.
+        Initialize the dose calculation.
 
         Parameters
         ----------
@@ -431,9 +442,6 @@ class DoseEngineBase(ABC):
         dij = {}
 
         # Default: dose influence matrix computation
-        # TODO: Not sure whether this if statement works as intended
-        if not hasattr(self, "_calc_dose_direct"):
-            self._calc_dose_direct = False
         if self._calc_dose_direct:
             logger.info("Forward dose calculation using '%s' Dose Engine...", self.name)
         else:
@@ -443,9 +451,8 @@ class DoseEngineBase(ABC):
         machine = list({beam.machine for beam in stf.beams})
         radiation_mode = list({beam.radiation_mode for beam in stf.beams})
 
-        assert len(machine) == 1 or len(radiation_mode) == 1, (
-            "machine and radiation mode need to be unique within supplied stf!"
-        )
+        if len(machine) != 1 or len(radiation_mode) != 1:
+            raise ValueError("machine and radiation mode need to be unique within supplied stf!")
 
         machine = machine[0]
         radiation_mode = radiation_mode[0]
@@ -479,11 +486,9 @@ class DoseEngineBase(ABC):
         dij["total_num_of_rays"] = int(sum(dij["num_of_rays_per_beam"]))
 
         # Check if full dose influence data is required
-        if self._calc_dose_direct:
-            self._num_of_columns_dij = len(stf.beams)
-
-        else:
-            self._num_of_columns_dij = dij["total_num_of_bixels"]
+        self._num_of_columns_dij = (
+            len(stf.beams) if self._calc_dose_direct else dij["total_num_of_bixels"]
+        )
 
         # Set up arrays for book keeping
         dij["bixel_num"] = np.nan * np.ones(self._num_of_columns_dij)
@@ -495,22 +500,12 @@ class DoseEngineBase(ABC):
         dij["max_mu"] = np.ones(self._num_of_columns_dij) * np.inf
         dij["num_of_particles_per_mu"] = np.ones(self._num_of_columns_dij) * 1e6
 
-        if not hasattr(self, "voxel_sub_ix") or self.voxel_sub_ix is None:
-            # take only voxels inside patient
-            tmp_vct_grid_scen = [None] * ct.num_of_ct_scen
+        if self.voxel_sub_ix is None:
+            self.voxel_sub_ix = np.unique(
+                np.concatenate([cst.vois[c].indices_numpy for c in range(0, len(cst.vois))])
+            )
 
-            for s in range(ct.num_of_ct_scen):
-                tmp_scen = [cst.vois[c].indices_numpy for c in range(0, len(cst.vois))]
-                tmp_vct_grid_scen[s] = np.unique(np.concatenate(tmp_scen))
-
-        elif isinstance(self.voxel_sub_ix, list):
-            tmp_vct_grid_scen = [None] * ct.num_of_ct_scen
-
-            for s in range(ct.num_of_ct_scen):
-                tmp_vct_grid_scen[s] = self.voxel_sub_ix
-
-        else:
-            tmp_vct_grid_scen = self.voxel_sub_ix
+        tmp_vct_grid_scen = [np.asarray(self.voxel_sub_ix)] * ct.num_of_ct_scen
 
         self._vct_grid = np.unique(np.concatenate(tmp_vct_grid_scen))
 
@@ -605,9 +600,8 @@ class DoseEngineBase(ABC):
 
     @staticmethod
     def load_machine(radiation_mode, machine_name):
-        fileName = radiation_mode + "_" + machine_name + ".mat"
+        file_name = radiation_mode + "_" + machine_name + ".mat"
         machines_path = resources.files("pyRadPlan.data.machines")
-        path = machines_path.joinpath(fileName)
-        machine = load_machine_from_mat(path)
-        machine = validate_machine(machine)
+        path = machines_path.joinpath(file_name)
+        machine = validate_machine(load_machine_from_mat(path))
         return machine

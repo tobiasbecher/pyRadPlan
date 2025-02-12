@@ -1,12 +1,12 @@
 """Core module with fundamental classes and functions for pyRadPlan."""
 
-from ._exceptions import PyRadPlanException
+from ._exceptions import PyRadPlanError
 from .datamodel import PyRadPlanBaseModel
 from .resample import resample_image, resample_numpy_array
 from ._grids import Grid
 
 __all__ = [
-    "PyRadPlanException",
+    "PyRadPlanError",
     "np2sitk",
     "resample_image",
     "resample_numpy_array",

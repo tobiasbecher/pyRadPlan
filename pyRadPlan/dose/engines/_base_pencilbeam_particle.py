@@ -22,8 +22,7 @@ logger = logging.getLogger(__name__)
 
 class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
     """
-    An abstract class representing Particle Pencil-Beam dose calculation
-    algorithms.
+    Abstract interface for Particle Pencil-Beam dose calculation.
 
     This class extends PencilBeamEngineAbstract by adding infrastructure for particles spots and
     quantities like LET and biological dose for variable RBE calculations.
@@ -67,14 +66,11 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         super().__init__(pln)
 
     @abstractmethod
-    def _calc_particle_bixel(self, bixel):
+    def _calc_particle_bixel(self, bixel: dict):
         pass
 
     def _choose_lateral_model(self):
-        """
-        Chooses / Validates the lateral model according to the requested
-        setting.
-        """
+        """Choose & validate the lateral beam model."""
 
         available_models = {
             "single": self._machine.has_single_gaussian_kernel,
@@ -114,7 +110,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
         logger.info("Using a %s Gaussian pencil-beam kernel model!\n", self.lateral_model)
 
-    def _compute_bixel(self, curr_ray, k):
+    def _compute_bixel(self, curr_ray: dict, k: int) -> dict:
         """
         Compute the bixel for the given ray and index.
 
@@ -134,7 +130,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         bixel = self._init_bixel(curr_ray, k)
 
         # Compute Bixel
-        bixel = self._calc_particle_bixel(bixel)
+        self._calc_particle_bixel(bixel)
 
         return bixel
 
@@ -197,12 +193,12 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         bixel["sigma_ini_sq"] = curr_ray["sigma_ini"][k] ** 2
 
         # Apply beam modifiers
-        bixel = self._get_beam_modifiers(bixel)
+        self._get_beam_modifiers(bixel)
 
         # Gets bixel.ix (voxel indices) and bixel.subIx (logical
         # indices to be used) after cutoff. Storing these allows us to
         # use indexing for performance and avoid too many copies
-        bixel = self._get_bixel_indices_on_ray(bixel, curr_ray)
+        self._get_bixel_indices_on_ray(bixel, curr_ray)
         if "ix" not in bixel or bixel["ix"].size == 0:
             return bixel
 
@@ -261,17 +257,17 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         kernel_interp = {}
         for key, kernel_data in used_kernels.items():
             if kernel_data.ndim > 1:
-                kernel_data = np.apply_along_axis(
+                tmp_kernel_data = np.apply_along_axis(
                     lambda x: np.interp(bixel["rad_depths"], depths, x), axis=1, arr=kernel_data
                 )
             else:
-                kernel_data = np.interp(bixel["rad_depths"], depths, kernel_data)
+                tmp_kernel_data = np.interp(bixel["rad_depths"], depths, kernel_data)
 
-            kernel_interp[key] = kernel_data
+            kernel_interp[key] = tmp_kernel_data
 
         return kernel_interp
 
-    def _get_ray_geometry_from_beam(self, ray: dict[str], beam_info: dict[str]) -> dict[str]:
+    def _get_ray_geometry_from_beam(self, ray: dict[str], beam_info: dict[str]):
         lateral_ray_cutoff = self._get_lateral_distance_from_dose_cutoff_on_ray(ray)
 
         # Ray tracing for beam i and ray j
@@ -300,7 +296,6 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         ray["rad_depths"] = [
             rD[ix] for rD, ix in zip(beam_info["rad_depths"], ray["valid_coords"])
         ]
-        return ray
 
     def _get_bixel_indices_on_ray(self, curr_bixel, curr_ray):
         kernel = cast(IonPencilBeamKernel, curr_bixel["kernel"])
@@ -336,8 +331,6 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         curr_bixel["sub_ix"] = curr_ix
         curr_bixel["ix"] = curr_ray["ix"][curr_ix]
 
-        return curr_bixel
-
     def _get_beam_modifiers(self, curr_bixel):
         add_sigma_sq = 0
         rad_depth_offset = 0
@@ -362,10 +355,10 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         curr_bixel["add_sigma_sq"] = add_sigma_sq
         curr_bixel["rad_depth_offset"] += rad_depth_offset
 
-        return curr_bixel
-
     def _init_dose_calc(self, ct, cst, stf):
         """
+        Initialize dose calculation.
+
         Modified inherited method of the superclass DoseEngine,
         containing intialization which are specificly needed for
         pencil beam calculation and not for other engines.
@@ -418,6 +411,8 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         self, dij: dict, ct: CT, cst: StructureSet, stf: SteeringInformation, i
     ) -> dict:
         """
+        Initialize beam for dose calculation.
+
         Extends the inherited method with particle-specific initialization.
 
         Parameters
@@ -490,9 +485,9 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
     def _load_biological_kernel(self, _cst: StructureSet, dij: dict[str, Any]):
         """
-        Load / organize biological kernel data from the machine data and
-        store meta information in
-        the dose influence matrix dictionary.
+        Load / organize biological kernel data from the machine.
+
+        Stores information in the dose influence matrix dictionary.
 
         Parameters
         ----------
@@ -764,7 +759,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
                     "add_sigma_sq": 0,
                 }
 
-                bixel = self._calc_particle_bixel(bixel)
+                self._calc_particle_bixel(bixel)
                 dose_r = bixel["physical_dose"]
 
                 # Do an integration check that the radial dose integrates to the tabulated
@@ -842,7 +837,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
     def _fill_dij(
         self, bixel, dij, stf, scen_idx, curr_beam_idx, curr_ray_idx, curr_bixel_idx, bixel_counter
     ):
-        dij = super()._fill_dij(
+        super()._fill_dij(
             bixel, dij, stf, scen_idx, curr_beam_idx, curr_ray_idx, curr_bixel_idx, bixel_counter
         )
 
@@ -851,8 +846,6 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
             dij["min_mu"][bixel_counter] = bixel["min_mu"]
             dij["max_mu"][bixel_counter] = bixel["max_mu"]
             dij["num_of_particles_per_mu"][bixel_counter] = bixel["num_particles_per_mu"]
-
-        return dij
 
     def _get_lateral_distance_from_dose_cutoff_on_ray(self, ray: dict):
         # Find index of maximum used energy (round to keV for numerical reasons)
@@ -869,8 +862,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
     def _calc_sigma_ini_on_ray(self, ray: dict, ssd: np.floating = None):
         """
-        This function evaluates simultaneously the initial sigma of the beam
-        for one or more energies.
+        Get initial beam width (sigma) at the sruface.
 
         Parameters
         ----------
@@ -903,8 +895,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         self, energy: np.float64, focus_ix: int, ssd: np.floating
     ) -> np.float64:
         """
-        This function evaluates the initial sigma of the beam for a given
-        energy and focus index.
+        Get the initial beam width for a specific focus.
 
         Parameters
         ----------
@@ -989,7 +980,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
     def round2(self, a: np.floating, b: int) -> np.floating:
         """
-        Helper function for energy selection.
+        Round a number stably for energy selection (helper function).
 
         Parameters
         ----------

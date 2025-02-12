@@ -9,10 +9,7 @@ from pyRadPlan.raytracer._base import RayTracerBase
 
 
 class RayTracerSiddon(RayTracerBase):
-    """
-    Implementation for Siddon Ray Tracing Algorithm through voxelized
-    geometry.
-    """
+    """Siddon Ray Tracing Algorithm through voxelized geometry."""
 
     # @jit(nopython=True)
     def trace_ray(
@@ -21,10 +18,7 @@ class RayTracerSiddon(RayTracerBase):
         source_points: Union[list, np.ndarray],
         target_points: Union[list, np.ndarray],
     ) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], np.ndarray, np.ndarray]:
-        """
-        Traces an individual ray
-        Detailed explanation goes here.
-        """
+        """Trace an individual ray."""
 
         # Check type and dimension of target_point (should be nx3)
         # Check type and dimension of source_point (should be nx3)
@@ -60,6 +54,7 @@ class RayTracerSiddon(RayTracerBase):
     ) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], np.ndarray, np.ndarray]:
         """
         Vectorized Implementation of RayTracing.
+
         Uses padding to create matrices of ray information.
 
         Notes
@@ -73,7 +68,7 @@ class RayTracerSiddon(RayTracerBase):
         num_rays = target_points.shape[0]
         num_sources = source_points.shape[0]
 
-        if num_sources != num_rays and num_sources != 1:
+        if num_sources not in (num_rays, 1):
             raise ValueError(
                 f"Number of source points ({num_sources}) needs to be one or equal to number of "
                 f"target points ({num_rays})!"
@@ -157,6 +152,8 @@ class RayTracerSiddon(RayTracerBase):
 
     def _compute_all_alphas(self) -> np.ndarray:
         """
+        Compute all rays' alpha values (length to plane intersections).
+
         Here we setup grids to enable logical indexing when computing
         the alphas along each dimension. All alphas between the
         minimum and maximum index will be computed, with additional
@@ -355,37 +352,7 @@ class RayTracerSiddon(RayTracerBase):
 
     def _initialize_geometry(self):
         """
-        Initializes the geometry for the ray tracing.
-
-        Parameters
-        ----------
-        resolution : dict
-            Resolution of the cubes in millimeters per voxel. Keys should be 'x', 'y', and 'z'.
-        cube_dim : list or tuple
-            Dimensions of the cube in number of voxels along each axis [x, y, z].
-
-        Attributes
-        ----------
-        self._source_points : numpy.ndarray
-            Source point(s) of ray tracing. Either a 1x3 array or an Nx3 matrix (with N rays to
-            trace).
-            If 1x3 with multiple target points, the one source point will be used for all rays.
-        self._target_points : numpy.ndarray
-            Target point(s) of ray tracing. An Nx3 matrix where N is the number of rays to trace.
-        self._cube_dim : list or tuple
-            Dimensions of the cube in number of voxels along each axis [x, y, z].
-        self._resolution : dict
-            Resolution of the cubes in millimeters per voxel. Keys should be 'x', 'y', and 'z'.
-        self._num_planes : list
-            Number of planes along each axis [x, y, z].
-        self._x_planes : numpy.ndarray
-            Positions of the planes along the x-axis in millimeters.
-        self._y_planes : numpy.ndarray
-            Positions of the planes along the y-axis in millimeters.
-        self._z_planes : numpy.ndarray
-            Positions of the planes along the z-axis in millimeters.
-        self._ray_vec : numpy.ndarray
-            Vector from source points to target points.
+        Initialize the geometry for the ray tracing.
 
         Notes
         -----
