@@ -67,8 +67,6 @@ class ParticleHongPencilBeamEngine(ParticlePencilBeamEngineAbstract):
             bixel["alpha_dose"] = bixel["physical_dose"] * bixel_alpha
             bixel["sqrt_beta_dose"] = bixel["physical_dose"] * np.sqrt(bixel_beta)
 
-        return bixel
-
     @staticmethod
     def is_available(pln, machine):
         available, msg = [], []

@@ -33,8 +33,10 @@ class DijSamplingConfig(TypedDict):
 
 class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
     """
-    Implementation of a pencil beam dose calculation engine for photon beams
-    based on the Singular-value decomposition (SVD) method by Bortfeld.
+    Implementation of a pencil beam dose calculation engine for photons.
+
+    The implementation is based on the Singular-value decomposition (SVD)
+    method by Bortfeld, Schlegel & Rhein (1993).
 
     Parameters
     ----------
@@ -114,21 +116,25 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
 
     def _init_beam(self, beam_info, ct, cst, stf, i):
         """
-        Method for initializing the beams for analytical pencil beam
-        dose calculation.
+        Initialize a beam for pencil beam dose calculation.
 
-        call
-          self.initBeam(ct,stf,dij,i)
+        Parameters
+        ----------
+        beam_info : dict
+            Beam information struct.
+        ct : np.ndarray
+            MatRad CT struct.
+        cst : np.ndarray
+            MatRad steering information struct.
+        stf : np.ndarray
+            MatRad steering information struct.
+        i : int
+            Index of beam.
 
-        input
-          beam_info:                  beam information struct
-          ct:                         matRad ct struct
-          stf:                        matRad steering information struct
-          dij:                        matRad dij struct
-          i:                          index of beam
-
-        output
-          dij:                        updated dij struct
+        Returns
+        -------
+        dict
+            Updated beam information struct.
         """
 
         beam_info = super()._init_beam(beam_info, ct, cst, stf, i)
@@ -319,12 +325,12 @@ class PhotonPencilBeamSVDEngine(PencilBeamEngineAbstract):
         return interpolators
 
     def _sample_dij(self, ix, bixel_dose, rad_depth_v, rad_distances_sq, bixel_width):
-        """Performs lateral sampling of the beam."""
+        """Perform lateral sampling of the beam."""
 
         raise NotImplementedError("This method is not implemented yet.")
 
     def _init_ray(self, beam_info: dict[str], j: int) -> dict[str]:
-        """Initializes the current ray."""
+        """Initialize the current ray."""
 
         ray = super()._init_ray(beam_info, j)
 
