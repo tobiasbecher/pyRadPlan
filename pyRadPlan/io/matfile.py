@@ -1,3 +1,5 @@
+"""Read and write mat-files."""
+
 from os import PathLike
 from scipy import io
 import pymatreader
