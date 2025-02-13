@@ -15,7 +15,7 @@ Introduction
 ============
 
 pyRadPlan is a multi-modality treatment planning toolkit in python born from the established
-Matlab-based toolkit [matRad](http://www.matRad.org).
+Matlab-based toolkit `matRad <http://www.matRad.org>`.
 As such, pyRadPlan aims to provide a framework as well as tools for combining dose calculation with
 optimization with focus on ion planning.
 
@@ -26,9 +26,9 @@ This facilitates the application of either algortihms from matRad or native pyRa
 of the treatment planning workflow.
 
 To enforce valid datastructures, we perform validation and serialization with
-[`pydantic`](https://docs.pydantic.dev/latest/).
-Datastructures and algorithms rely mostly on [`SimpleITK`](https://simpleitk.readthedocs.io),
-[`numpy`](https://numpy.org/), and [`scipy`](https://scipy.org/) for internal data representation
+`pydantic <https://docs.pydantic.dev/latest/>`.
+Datastructures and algorithms rely mostly on `SimpleITK <https://simpleitk.readthedocs.io>`,
+`numpy <https://numpy.org/>`, and `scipy <https://scipy.org/>` for internal data representation
 and processing.
 
 ============
@@ -56,9 +56,10 @@ script:
 
 The top-level API exports major workflow functions and data structures for generating a treatment
 plan and allows to create a basic treatment plan with just a few lines of code, very similar to
-matRad's example [`matRad.m`](https://github.com/e0404/matRad) script:
+matRad's example `matRad.m <https://github.com/e0404/matRad/blob/master/matRad.m>` script:
 
 .. code-block:: python
+
     from importlib import resources
     import pymatreader
     from pyRadPlan import load_patient, IonPlan, generate_stf, calc_dose_influence, fluence_optimization, plot_slice
