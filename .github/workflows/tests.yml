@@ -1,0 +1,52 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+        - uses: actions/checkout@v4
+        - name: Setup Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v5
+          with:
+            python-version: ${{ matrix.python-version }}
+            cache: pip
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            python -m pip install pytest pytest-cov ruff
+            python -m pip install -e .
+        - name: Run tests with pytest
+          run: pytest test --junitxml=.testreports/report.xml --cov=pyRadPlan --cov-report term --cov-report xml:.testreports/coverage.xml --cov-report html:.testreports/html
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v4
+        - name: Setup Python 3.11
+          uses: actions/setup-python@v5
+          with:
+            python-version: 3.12
+            cache: pip
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            python -m pip install ruff
+            python -m pip install -e .
+        - name: Lint with ruff
+          run: ruff check --output-format=github
+        - name: Check formatting with ruff
+          run: ruff format --check
