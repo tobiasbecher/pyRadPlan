@@ -1,15 +1,10 @@
 import logging
 
-try:
-    from importlib import resources  # Standard from Python 3.9+
-except ImportError:
-    import importlib_resources as resources  # Backport for older versions
-
 import numpy as np
 
 from pyRadPlan import (
     IonPlan,
-    load_patient,
+    load_tg119,
     generate_stf,
     calc_dose_influence,
     fluence_optimization,
@@ -18,9 +13,8 @@ from pyRadPlan import (
 
 logging.basicConfig(level=logging.INFO)
 
-#  Read patient from provided TG119.mat file and validate data
-path = resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat")
-ct, cst = load_patient(path)
+# Load TG119 (provided within pyRadPlan)
+ct, cst = load_tg119()
 
 # Create a plan object
 pln = IonPlan(radiation_mode="carbon", machine="Generic")

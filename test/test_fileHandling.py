@@ -1,14 +1,15 @@
 import pytest
 import os
+import sys
 
-try:
-    from importlib import resources  # Standard from Python 3.9+
-except ImportError:
+if sys.version_info < (3, 10):
     import importlib_resources as resources  # Backport for older versions
+else:
+    from importlib import resources  # Standard from Python 3.9+
 
 from pyRadPlan.io._matlab_file_handler import MatlabFileHandler
 import pyRadPlan.io.matfile as matfile
-from pyRadPlan.io import load_patient
+from pyRadPlan.io import load_patient, load_tg119
 from pyRadPlan.ct import CT
 from pyRadPlan.cst import StructureSet
 
@@ -45,11 +46,21 @@ def test_file_handler(tmp_path, tg119_path):
     assert not os.path.exists(tmp_path.joinpath("cst.mat"))
 
 
-def test_load_file(tg119_path):
+def test_load_patient_from_file(tg119_path):
     ct, cst = load_patient(tg119_path)
 
     assert isinstance(ct, CT)
     assert isinstance(cst, StructureSet)
+
+
+def test_load_tg119(tg119_path):
+    ct, cst = load_patient(tg119_path)
+    ct2, cst2 = load_tg119()
+
+    assert isinstance(ct2, CT)
+    assert isinstance(cst2, StructureSet)
+    assert ct == ct2
+    assert cst == cst2
 
 
 def test_load_file_extradata(tg119_path):

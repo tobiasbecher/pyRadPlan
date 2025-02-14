@@ -8,11 +8,12 @@ calling the RayTracer.
 
 # Standard Library Imports
 import logging
+import sys
 
-try:
-    from importlib import resources  # Standard from Python 3.9+
-except ImportError:
+if sys.version_info < (3, 10):
     import importlib_resources as resources  # Backport for older versions
+else:
+    from importlib import resources  # Standard from Python 3.9+
 
 # Third Party Imports from pyRadPlan requirements
 

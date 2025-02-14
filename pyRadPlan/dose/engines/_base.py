@@ -2,10 +2,12 @@
 
 import logging
 
-try:
-    from importlib import resources  # Standard from Python 3.9+
-except ImportError:
+import sys
+
+if sys.version_info < (3, 10):
     import importlib_resources as resources  # Backport for older versions
+else:
+    from importlib import resources  # Standard from Python 3.9+
 
 import warnings
 import time

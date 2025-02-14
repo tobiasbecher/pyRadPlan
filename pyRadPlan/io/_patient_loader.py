@@ -2,6 +2,12 @@ from typing import Optional
 import os
 import warnings
 import logging
+import sys
+
+if sys.version_info < (3, 10):
+    import importlib_resources as resources  # Backport for older versions
+else:
+    from importlib import resources  # Standard from Python 3.9+
 
 from pyRadPlan.ct import validate_ct, CT
 from pyRadPlan.cst import validate_cst, StructureSet
@@ -11,6 +17,22 @@ from pyRadPlan.dij import validate_dij
 from . import matfile
 
 logger = logging.getLogger(__name__)
+
+
+def load_tg119() -> tuple[CT, StructureSet]:
+    """
+    Load the included TG119 phantom.
+
+    This is a helper function to load the TG119 phantom included in the
+    package data using importlib.resources.
+
+    Returns
+    -------
+    tuple[CT, StructureSet]
+        The CT and StructureSet objects.
+    """
+    phantom_data_str = resources.files("pyRadPlan.data.phantoms").joinpath("TG119.mat")
+    return load_patient(phantom_data_str)
 
 
 def load_patient(

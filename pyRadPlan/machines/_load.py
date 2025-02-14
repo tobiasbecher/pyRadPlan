@@ -1,10 +1,11 @@
 import os
+import sys
 from typing import Union
 
-try:
-    from importlib import resources  # Standard from Python 3.9+
-except ImportError:
+if sys.version_info < (3, 10):
     import importlib_resources as resources  # Backport for older versions
+else:
+    from importlib import resources  # Standard from Python 3.9+
 
 from pymatreader import read_mat
 from pyRadPlan.machines import Machine, validate_machine
