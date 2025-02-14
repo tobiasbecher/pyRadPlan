@@ -1,4 +1,13 @@
 # pyRadPlan
+[![Tests](https://github.com/e0404/pyRadPlan/actions/workflows/tests.yml/badge.svg)](https://github.com/e0404/pyRadPlan/actions/workflows/tests.yml)
+[![pypi version](https://img.shields.io/pypi/v/pyRadPlan)](https://pypi.org/project/pyRadPlan/)
+![pyversion](https://img.shields.io/pypi/pyversions/pyRadPlan)
+# ![contributors](https://img.shields.io/github/contributors-anon/e0404/pyRadPlan)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+![License](https://img.shields.io/github/license/e0404/pyRadPlan)
+
+
+
 pyRadPlan is an open-source radiotherapy treatment planning toolkit designed for interoperability with [matRad](http://www.matRad.org).
 
 Development is lead by the [Radiotherapy Optimization group](https://www.dkfz.de/radopt) at the [German Cancer Research Center (DKFZ)](https://www.dkfz.de)
