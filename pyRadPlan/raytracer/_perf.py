@@ -26,8 +26,10 @@ def fast_spatial_circle_lookup(
     """
     candidate_ray_mx = np.full(mesh_x.shape, False, dtype=np.bool_)
     for i in prange(lookup_pos.shape[0]):
-        ix = (mesh_x - lookup_pos[i, 0]) ** 2 + (mesh_z - lookup_pos[i, 2]) ** 2 <= radius**2
-        candidate_ray_mx.ravel()[ix.ravel()] = 1
+        ix = (mesh_x.ravel() - lookup_pos[i, 0]) ** 2 + (
+            mesh_z.ravel() - lookup_pos[i, 2]
+        ) ** 2 <= radius**2
+        candidate_ray_mx.ravel()[ix] = 1
     return candidate_ray_mx
 
 
