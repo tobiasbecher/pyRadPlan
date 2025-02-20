@@ -140,10 +140,8 @@ class RayTracerBase(ABC):
         the supplied images.
         """
 
-        if not isinstance(beam, Beam) and isinstance(beam, dict):
+        if not isinstance(beam, Beam):
             beam = Beam.model_validate(beam)
-        else:
-            raise ValueError("Beam invalid. Must be dictionary or Beam object!")
 
         logger.debug("Initializing geometry...")
         t_trace_start = time.perf_counter()
@@ -182,7 +180,9 @@ class RayTracerBase(ABC):
         candidate_ray_coords_x, candidate_ray_coords_z = np.meshgrid(spacing_range, spacing_range)
 
         # If we have reference positions, we use them to restrict the raytracing region
-        reference_positions_bev = ray_matrix_scale * np.array([ray.ray_pos for ray in beam.rays])
+        reference_positions_bev = ray_matrix_scale * np.array(
+            [ray.ray_pos_bev for ray in beam.rays]
+        )
 
         # use a precompiled numba function to speed up the spatial lookup
         candidate_ray_mx = fast_spatial_circle_lookup(
