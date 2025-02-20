@@ -72,7 +72,7 @@ class PlanningProblem(ABC):
     def __init__(self, pln: Union[Plan, dict] = None):
         self._scenario_model = None
         self.scalarization_strategy = 'weighted_sum' #TODO: Name to change
-        self.tradeoff_strategy = 'single_plan' #TODO: Name to change
+        self.tradeoff_strategy = 'single' #TODO: Name to change
         self.solver = "ipopt"
         self.apply_overlap = True
 
@@ -97,23 +97,25 @@ class PlanningProblem(ABC):
         #check tradeoff strategy
         tradeoff_strategies = get_available_tradeoff_strategies()
         if self.tradeoff_strategy not in tradeoff_strategies:
+            tradeoff_names = list(tradeoff_strategies.keys())
             warnings.warn(
                 f"Tradeoff strategy {self.tradeoff_strategy} not available. Choose from {tradeoff_strategies}"
                 ", and we will choose the first available one for you!"
             )
 
-            self.tradeoff_strategy = tradeoff_strategies[0]
+            self.tradeoff_strategy = tradeoff_names[0]
 
 
         #check scalarization strategy
         scalarization_strategies = get_available_scalarization_strategies()
-        if self.scalarization_strategy not in scalarization_strategies:         
+        if self.scalarization_strategy not in scalarization_strategies:    
+            scalarization_names = list(scalarization_strategies.keys())     
             warnings.warn(
                 f"Scalarization strategy {self.scalarization_strategy} not available. Choose from {scalarization_strategies}"
                 ", and we will choose the first available one for you!"
             )
 
-            self.scalarization_strategy = scalarization_strategies[0]
+            self.scalarization_strategy = scalarization_names[0]
 
 
     def assign_properties_from_pln(self, pln: Plan, warn_when_property_changed: bool = False):
@@ -300,22 +302,22 @@ class LinearPlanningProblem(PlanningProblem):
     """Abstract Class for all Treatment Planning Problems."""
 
     @abstractmethod
-    def _evalulate_objective_functions(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_objective_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the objective functions."""
 
     @abstractmethod
-    def _evalulate_objective_jacobian(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_objective_jacobian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective jacobian."""
 
-    def _evalulate_objective_hessian(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_objective_hessian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective hessian."""
         return {}
 
-    def _evalulate_constraint_functions(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_constraint_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the constraint functions."""
         return None
 
-    def _evalulate_constraint_jacobian(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_constraint_jacobian(self, x: np.ndarray) -> np.ndarray:
         """Define the constraint jacobian."""
         return None
 
@@ -331,22 +333,22 @@ class NonLinearPlanningProblem(PlanningProblem):
     """Abstract Class for all Treatment Planning Problems."""
 
     @abstractmethod
-    def _evalulate_objective_functions(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_objective_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the objective functions."""
 
     @abstractmethod
-    def _evalulate_objective_jacobian(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_objective_jacobian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective jacobian."""
 
-    def _evalulate_objective_hessian(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_objective_hessian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective hessian."""
         return {}
 
-    def _evalulate_constraint_functions(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_constraint_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the constraint functions."""
         return None
 
-    def _evalulate_constraint_jacobian(self, x: np.ndarray) -> np.ndarray:
+    def _evaluate_constraint_jacobian(self, x: np.ndarray) -> np.ndarray:
         """Define the constraint jacobian."""
         return None
 

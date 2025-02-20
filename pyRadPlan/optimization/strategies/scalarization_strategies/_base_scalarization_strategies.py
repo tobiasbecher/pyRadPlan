@@ -23,8 +23,8 @@ class ScalarizationStrategyBase(ABC):
     # TODO
 
     def __init__(self, 
-            evaluate_objectives: callable[np.ndarray[float],list[np.ndarray[float]]],
-            evaluate_constraints: callable[np.ndarray[float],list[np.ndarray[float]]],
+            evaluate_objectives: Callable[np.ndarray[float],list[np.ndarray[float]]],
+            evaluate_constraints: Callable[np.ndarray[float],list[np.ndarray[float]]],
             evaluate_x_gradients,
             evaluate__jacobian,
             etc,
@@ -47,11 +47,11 @@ class ScalarizationStrategyBase(ABC):
         pass
 
     @abstractmethod
-    def get_linear_constraints(self) -> dict[Index, LinearConstraint]:
+    def get_linear_constraints(self):# -> dict[Index, LinearConstraint]:
         pass
 
     @abstractmethod
-    def get_nonlinear_constraints(self) -> dict[Index, NonlinearConstraint]:
+    def get_nonlinear_constraints(self):# -> dict[Index, NonlinearConstraint]:
         pass
 
     @abstractmethod

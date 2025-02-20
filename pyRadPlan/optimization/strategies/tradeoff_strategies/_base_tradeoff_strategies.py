@@ -16,9 +16,9 @@ class TradeoffStrategyBase(ABC):
 
     short_name: ClassVar[str]
     name: ClassVar[str]
-    ScalarizationMethod: tbd
+    ScalarizationStrategy: str
 
-    def __init__(self, params: dict):
+    def __init__(self):
         pass
 
     def solve(x: np.ndarray[float]) -> list[np.ndarray[float]]:

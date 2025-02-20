@@ -35,6 +35,7 @@ def register_scalarization_strategy(scalarization_cls: Type[ScalarizationStrateg
         SCALARIZATIONSTRATEGIES[scalarization_name] = scalarization_cls
 
 
+
 def get_available_scalarization_strategies() -> dict[str]:
     """
     Get a list of available scalarization strategies based on the plan.
@@ -62,7 +63,15 @@ def get_scalarization_strategy(scalarization_desc: Union[str, dict]):
         A strategy instance
     """
     if isinstance(scalarization_desc, str):
-        strategy = SCALARIZATIONSTRATEGIES[scalarization_desc]()
+        strategy = SCALARIZATIONSTRATEGIES[scalarization_desc](
+            evaluate_objectives=None,
+            evaluate_constraints=None,
+            evaluate_x_gradients=None,
+            evaluate_jacobian=None,
+            etc=None,
+            parameters=None
+        )
+    
     elif isinstance(scalarization_desc, dict):
         raise NotImplementedError("Scalarization strategy configuration from dictionary not implemented yet.")
     else:
