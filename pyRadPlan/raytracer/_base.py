@@ -4,10 +4,11 @@ from abc import ABC, abstractmethod
 from typing import Union, Any
 import logging
 import time
-from pyRadPlan.core.np2sitk import linear_indices_to_image_coordinates
+
 import numpy as np
 import SimpleITK as sitk
 
+from pyRadPlan.core.np2sitk import linear_indices_to_image_coordinates
 from pyRadPlan.geometry import lps
 from pyRadPlan.stf._beam import Beam
 
@@ -140,16 +141,12 @@ class RayTracerBase(ABC):
         the supplied images.
         """
 
-        if not isinstance(beam, Beam) and isinstance(beam, dict):
+        if not isinstance(beam, Beam):
             beam = Beam.model_validate(beam)
-        else:
-            raise ValueError("Beam invalid. Must be dictionary or Beam object!")
 
         logger.debug("Initializing geometry...")
         t_trace_start = time.perf_counter()
         self._initialize_geometry()
-
-        iso_center = beam.iso_center
 
         # Obtain coordinates
         cube_ix = np.arange(self.cubes[0].GetNumberOfPixels(), dtype=np.int64)
@@ -159,19 +156,18 @@ class RayTracerBase(ABC):
         rot_mat = lps.get_beam_rotation_matrix(beam.gantry_angle, beam.couch_angle)
 
         # rotate coordinates
-        coords = (coords - iso_center) @ rot_mat - beam.source_point_bev
+        coords = (coords - beam.iso_center) @ rot_mat - beam.source_point_bev
         t_trace_end = time.perf_counter()
         logger.debug("took %s seconds!", t_trace_end - t_trace_start)
 
         # central_ray_vector = np.array(iso_center) - np.array(source_point).reshape
         logger.debug("Setting up Ray matrix...")
         t_trace_start = time.perf_counter()
-        source_point = beam.source_point
-        # source_point_bev = beam["source_point_bev"]
 
-        resolution = np.array(self.cubes[0].GetSpacing(), self.precision)
-        ray_spacing = np.min(resolution) / np.sqrt(2.0, dtype=self.precision)
-        ray_matrix_bev_y = np.max(coords[:, 1]) + np.max(resolution) + beam.source_point_bev[1]
+        ray_spacing = np.min(self._resolution) / np.sqrt(2.0, dtype=self.precision)
+        ray_matrix_bev_y = (
+            np.max(coords[:, 1]) + np.max(self._resolution) + beam.source_point_bev[1]
+        )
         ray_matrix_scale = 1 + ray_matrix_bev_y / beam.sad
 
         # num_candidate_rays = 2 * np.ceil(500.0 / ray_spacing).astype(np.int64) + 1
@@ -182,7 +178,9 @@ class RayTracerBase(ABC):
         candidate_ray_coords_x, candidate_ray_coords_z = np.meshgrid(spacing_range, spacing_range)
 
         # If we have reference positions, we use them to restrict the raytracing region
-        reference_positions_bev = ray_matrix_scale * np.array([ray.ray_pos for ray in beam.rays])
+        reference_positions_bev = ray_matrix_scale * np.array(
+            [ray.ray_pos_bev for ray in beam.rays]
+        )
 
         # use a precompiled numba function to speed up the spatial lookup
         candidate_ray_mx = fast_spatial_circle_lookup(
@@ -218,7 +216,7 @@ class RayTracerBase(ABC):
 
         t_trace_start = time.perf_counter()
         _, lengths, rho, d12, ix = self.trace_rays(
-            iso_center.reshape(1, 3), source_point.reshape(1, 3), ray_matrix_lps
+            beam.iso_center.reshape(1, 3), beam.source_point.reshape(1, 3), ray_matrix_lps
         )
         t_trace_end = time.perf_counter()
 
@@ -226,15 +224,6 @@ class RayTracerBase(ABC):
 
         # Now we compute which rays will respectively give the voxel value for radiological depth
         valid_ix = np.isfinite(ix)
-
-        # Obtain Voxel coordinates
-        t_index_transformation = time.perf_counter()
-
-        t_index_transformation_end = time.perf_counter()
-        logger.debug(
-            "Index transformation took %s seconds...",
-            t_index_transformation_end - t_index_transformation,
-        )
 
         scale_factor = np.zeros_like(ix, dtype=self.precision)
         scale_factor[valid_ix] = (ray_matrix_bev_y + beam.sad) / coords[ix[valid_ix], 1]
@@ -250,15 +239,11 @@ class RayTracerBase(ABC):
 
         ray_selection = ray_spacing / 2.0
 
-        ix_remember_from_tracing = x_dist > -ray_selection
-        np.logical_and(
-            ix_remember_from_tracing, x_dist <= ray_selection, out=ix_remember_from_tracing
-        )
-        np.logical_and(
-            ix_remember_from_tracing, z_dist > -ray_selection, out=ix_remember_from_tracing
-        )
-        np.logical_and(
-            ix_remember_from_tracing, z_dist <= ray_selection, out=ix_remember_from_tracing
+        ix_remember_from_tracing = (
+            (x_dist > -ray_selection)
+            & (x_dist <= ray_selection)
+            & (z_dist > -ray_selection)
+            & (z_dist <= ray_selection)
         )
 
         logger.debug(
