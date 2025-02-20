@@ -81,8 +81,8 @@ class Objective(PyRadPlanBaseModel):
     name: ClassVar[str]
     has_hessian: ClassVar[bool] = False
 
-    is_linear: bool = Field(default=False)
-    is_convex: bool = Field(default=True)
+    is_linear: ClassVar[bool] = False
+    is_convex: ClassVar[bool] = True
 
     priority: float = Field(default=1.0, ge=0.0, alias="penalty")
     quantity: str = Field(default="physical_dose")
