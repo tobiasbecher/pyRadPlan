@@ -300,6 +300,8 @@ class PencilBeamEngineAbstract(DoseEngineBase):
 
             self._computed_quantities.append(q_name)
 
+        self._effective_lateral_cutoff = self.geometric_lateral_cutoff
+
         return dij
 
     def _init_beam(
@@ -592,7 +594,9 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         return scen_ray
 
     def _get_ray_geometry_from_beam(self, ray: dict[str], beam_info: dict[str]):
-        ray["effective_lateral_cut_off"] = beam_info["effective_lateral_cut_off"]
+        ray["effective_lateral_cut_off"] = beam_info.get(
+            "effective_lateral_cut_off", self._effective_lateral_cutoff
+        )
         lateral_ray_cutoff = self._get_lateral_distance_from_dose_cutoff_on_ray(ray)
 
         # Ray tracing for beam i and ray j
