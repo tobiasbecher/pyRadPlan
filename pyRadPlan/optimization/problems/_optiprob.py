@@ -17,6 +17,8 @@ from pyRadPlan.quantities import FluenceDependentQuantity, get_quantity
 
 from ..objectives import get_objective
 from ..solvers import get_available_solvers, get_solver, SolverBase
+from ..strategies.scalarization_strategies import get_available_scalarization_strategies, get_scalarization_strategy, ScalarizationStrategyBase #TODO: Name to change
+from ..strategies.tradeoff_strategies import get_available_tradeoff_strategies, get_tradeoff_strategy, TradeoffStrategyBase #TODO: Name to change
 
 
 logger = logging.getLogger(__name__)
@@ -50,6 +52,8 @@ class PlanningProblem(ABC):
 
     apply_overlap: bool
     solver: Union[str, dict, SolverBase]
+    tradeoff_strategy: TradeoffStrategyBase #TODO: Name to change
+    scalarization_strategy: ScalarizationStrategyBase # TODO: Name to change
 
     # Private properties
     _ct: CT
@@ -67,7 +71,8 @@ class PlanningProblem(ABC):
 
     def __init__(self, pln: Union[Plan, dict] = None):
         self._scenario_model = None
-
+        self.scalarization_strategy = 'weighted_sum' #TODO: Name to change
+        self.tradeoff_strategy = 'single_plan' #TODO: Name to change
         self.solver = "ipopt"
         self.apply_overlap = True
 
@@ -88,6 +93,28 @@ class PlanningProblem(ABC):
             )
 
             self.solver = solver_names[0]
+
+        #check tradeoff strategy
+        tradeoff_strategies = get_available_tradeoff_strategies()
+        if self.tradeoff_strategy not in tradeoff_strategies:
+            warnings.warn(
+                f"Tradeoff strategy {self.tradeoff_strategy} not available. Choose from {tradeoff_strategies}"
+                ", and we will choose the first available one for you!"
+            )
+
+            self.tradeoff_strategy = tradeoff_strategies[0]
+
+
+        #check scalarization strategy
+        scalarization_strategies = get_available_scalarization_strategies()
+        if self.scalarization_strategy not in scalarization_strategies:         
+            warnings.warn(
+                f"Scalarization strategy {self.scalarization_strategy} not available. Choose from {scalarization_strategies}"
+                ", and we will choose the first available one for you!"
+            )
+
+            self.scalarization_strategy = scalarization_strategies[0]
+
 
     def assign_properties_from_pln(self, pln: Plan, warn_when_property_changed: bool = False):
         """
@@ -223,6 +250,12 @@ class PlanningProblem(ABC):
         # set solver options
         self.solver = get_solver(self.solver)
 
+        #set tradeoff strategy (options?)
+        self.tradeoff_strategy = get_tradeoff_strategy(self.tradeoff_strategy)
+
+        #set scalarization method (options?)
+        self.scalarization_strategy = get_scalarization_strategy(self.scalarization_strategy)
+
         # initial point
 
     def solve(
@@ -263,33 +296,64 @@ class PlanningProblem(ABC):
         return self._solve()
 
 
+class LinearPlanningProblem(PlanningProblem):
+    """Abstract Class for all Treatment Planning Problems."""
+
+    @abstractmethod
+    def _evalulate_objective_functions(self, x: np.ndarray) -> np.ndarray:
+        """Define the objective functions."""
+
+    @abstractmethod
+    def _evalulate_objective_jacobian(self, x: np.ndarray) -> np.ndarray:
+        """Define the objective jacobian."""
+
+    def _evalulate_objective_hessian(self, x: np.ndarray) -> np.ndarray:
+        """Define the objective hessian."""
+        return {}
+
+    def _evalulate_constraint_functions(self, x: np.ndarray) -> np.ndarray:
+        """Define the constraint functions."""
+        return None
+
+    def _evalulate_constraint_jacobian(self, x: np.ndarray) -> np.ndarray:
+        """Define the constraint jacobian."""
+        return None
+
+    def _get_constraint_jacobian_structure(self) -> np.ndarray:
+        """Define the constraint jacobian structure."""
+        return None
+
+    def _get_variable_bounds(self, x: np.ndarray) -> np.ndarray:
+        """Define the variable bounds."""
+        return np.array([0.0, np.inf], dtype=np.float64)
+
 class NonLinearPlanningProblem(PlanningProblem):
     """Abstract Class for all Treatment Planning Problems."""
 
     @abstractmethod
-    def _objective_functions(self, x: np.ndarray) -> np.ndarray:
+    def _evalulate_objective_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the objective functions."""
 
     @abstractmethod
-    def _objective_jacobian(self, x: np.ndarray) -> np.ndarray:
+    def _evalulate_objective_jacobian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective jacobian."""
 
-    def _objective_hessian(self, x: np.ndarray) -> np.ndarray:
+    def _evalulate_objective_hessian(self, x: np.ndarray) -> np.ndarray:
         """Define the objective hessian."""
         return {}
 
-    def _constraint_functions(self, x: np.ndarray) -> np.ndarray:
+    def _evalulate_constraint_functions(self, x: np.ndarray) -> np.ndarray:
         """Define the constraint functions."""
         return None
 
-    def _constraint_jacobian(self, x: np.ndarray) -> np.ndarray:
+    def _evalulate_constraint_jacobian(self, x: np.ndarray) -> np.ndarray:
         """Define the constraint jacobian."""
         return None
 
-    def _constraint_jacobian_structure(self) -> np.ndarray:
+    def _get_constraint_jacobian_structure(self) -> np.ndarray:
         """Define the constraint jacobian structure."""
         return None
 
-    def _variable_bounds(self, x: np.ndarray) -> np.ndarray:
+    def _get_variable_bounds(self, x: np.ndarray) -> np.ndarray:
         """Define the variable bounds."""
         return np.array([0.0, np.inf], dtype=np.float64)

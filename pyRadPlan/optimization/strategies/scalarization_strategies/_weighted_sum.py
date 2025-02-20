@@ -1,0 +1,1 @@
+from ._base_scalarization_strategies import ScalarizationStrategyBase
