@@ -203,11 +203,12 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
     def _solve(self) -> tuple[NDArray, dict]:
         """Solve the problem."""
-
         self._deriv_times = []
         self._obj_times = []
 
         x0 = np.zeros((self._dij.total_num_of_bixels,), dtype=np.float64)
+        self.tradeoff_strategy.solve(x0)
+
         t = time.time()
         result = self.solver.solve(x0)
         self._solve_time = time.time() - t

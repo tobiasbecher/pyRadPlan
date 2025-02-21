@@ -310,10 +310,11 @@ class InversePlanningProblem(PlanningProblem):
         super()._initialize()
 
         #set scalarization method (options?)
-        scalarization_strategy = get_scalarization_strategy(self.scalarization_strategy,self.callbacks)#TODO: Pass options
+        #scalarization_strategy = get_scalarization_strategy(self.scalarization_strategy,self.callbacks)#TODO: Pass options
 
         #set tradeoff strategy (options?)
-        self.tradeoff_strategy = get_tradeoff_strategy(self.tradeoff_strategy,self.callbacks,scalarization_strategy)
+        self.tradeoff_strategy = get_tradeoff_strategy(self.tradeoff_strategy,self.callbacks,self.scalarization_strategy)
+        self.tradeoff_strategy._initialize()
 
 
 

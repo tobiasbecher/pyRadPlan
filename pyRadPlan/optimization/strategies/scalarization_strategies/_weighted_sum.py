@@ -28,3 +28,7 @@ class WeightedSum(ScalarizationStrategyBase):
 
     def evaluate_constraints(self,x):
         return self.callbacks['evaluate_constraints'](x)
+    
+    def _solve(self,x: np.ndarray[float]) -> list[np.ndarray[float]]:
+        print('Hello World!')
+        return x

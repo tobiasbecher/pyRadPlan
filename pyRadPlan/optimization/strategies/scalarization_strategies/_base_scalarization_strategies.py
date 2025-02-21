@@ -68,5 +68,12 @@ class ScalarizationStrategyBase(ABC):
     def is_objective_convex() -> bool:
         pass
 
+    def solve(self,x: np.ndarray[float]) -> np.ndarray[float]:
+        return self._solve(x)
+    
+    @abstractmethod
+    def _solve(self,x: np.ndarray[float]) -> np.ndarray[float]:
+        pass
+
     def _call_solver_interface(solver: str, params: dict) -> np.ndarray[float]:
         pass

@@ -4,7 +4,6 @@ import warnings
 import logging
 from typing import Union, Type
 from ._base_tradeoff_strategies import TradeoffStrategyBase
-from ..scalarization_strategies._base_scalarization_strategies import ScalarizationStrategyBase
 
 TRADEOFFSTRATEGIES = {}
 
@@ -50,7 +49,7 @@ def get_available_tradeoff_strategies() -> dict[str, Type[TradeoffStrategyBase]]
 
 def get_tradeoff_strategy(tradeoff_desc: Union[str, dict],
                           callbacks: dict[str, callable],
-                          scalarization_strategy: ScalarizationStrategyBase) -> TradeoffStrategyBase:
+                          scalarization_desc: Union[str,dict]) -> TradeoffStrategyBase:
     """
     Returns a tradeoff strategy based on a descriptive parameter.
 
@@ -69,7 +68,7 @@ def get_tradeoff_strategy(tradeoff_desc: Union[str, dict],
         A solver instance
     """
     if isinstance(tradeoff_desc, str):
-        tradeoff_strategy = TRADEOFFSTRATEGIES[tradeoff_desc](callbacks,scalarization_strategy)
+        tradeoff_strategy = TRADEOFFSTRATEGIES[tradeoff_desc](callbacks,scalarization_desc)
     elif isinstance(tradeoff_desc, dict):
         raise NotImplementedError("Tradeoff strategy configuration from dictionary not implemented yet.")
     else:
