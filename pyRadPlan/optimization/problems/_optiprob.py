@@ -94,29 +94,6 @@ class PlanningProblem(ABC):
 
             self.solver = solver_names[0]
 
-        #check tradeoff strategy
-        tradeoff_strategies = get_available_tradeoff_strategies()
-        if self.tradeoff_strategy not in tradeoff_strategies:
-            tradeoff_names = list(tradeoff_strategies.keys())
-            warnings.warn(
-                f"Tradeoff strategy {self.tradeoff_strategy} not available. Choose from {tradeoff_strategies}"
-                ", and we will choose the first available one for you!"
-            )
-
-            self.tradeoff_strategy = tradeoff_names[0]
-
-
-        #check scalarization strategy
-        scalarization_strategies = get_available_scalarization_strategies()
-        if self.scalarization_strategy not in scalarization_strategies:    
-            scalarization_names = list(scalarization_strategies.keys())     
-            warnings.warn(
-                f"Scalarization strategy {self.scalarization_strategy} not available. Choose from {scalarization_strategies}"
-                ", and we will choose the first available one for you!"
-            )
-
-            self.scalarization_strategy = scalarization_names[0]
-
 
     def assign_properties_from_pln(self, pln: Plan, warn_when_property_changed: bool = False):
         """
@@ -252,13 +229,6 @@ class PlanningProblem(ABC):
         # set solver options
         self.solver = get_solver(self.solver)
 
-        #set tradeoff strategy (options?)
-        self.tradeoff_strategy = get_tradeoff_strategy(self.tradeoff_strategy)
-
-        #set scalarization method (options?)
-        self.scalarization_strategy = get_scalarization_strategy(self.scalarization_strategy)
-
-        # initial point
 
     def solve(
         self,
@@ -296,10 +266,57 @@ class PlanningProblem(ABC):
 
         self._initialize()
         return self._solve()
+    
+class InversePlanningProblem(PlanningProblem):
+
+    def __init__(self, pln: Union[Plan, dict] = None):
+        super().__init__(pln)
+        #TODO: set up the scalarization strategy and tradeoff strategy
+        #check tradeoff strategy
+        tradeoff_strategies = get_available_tradeoff_strategies()
+        if self.tradeoff_strategy not in tradeoff_strategies:
+            tradeoff_names = list(tradeoff_strategies.keys())
+            warnings.warn(
+                f"Tradeoff strategy {self.tradeoff_strategy} not available. Choose from {tradeoff_strategies}"
+                ", and we will choose the first available one for you!"
+            )
+
+            self.tradeoff_strategy = tradeoff_names[0]
 
 
-class LinearPlanningProblem(PlanningProblem):
-    """Abstract Class for all Treatment Planning Problems."""
+        #check scalarization strategy
+        scalarization_strategies = get_available_scalarization_strategies()
+        if self.scalarization_strategy not in scalarization_strategies:    
+            scalarization_names = list(scalarization_strategies.keys())     
+            warnings.warn(
+                f"Scalarization strategy {self.scalarization_strategy} not available. Choose from {scalarization_strategies}"
+                ", and we will choose the first available one for you!"
+            )
+
+            self.scalarization_strategy = scalarization_names[0]
+
+        #generate a dictionary with callbacks that can be passed to strategies
+        self.callbacks = {
+            "evaluate_objective_functions": self._evaluate_objective_functions,
+            "evaluate_objective_jacobian": self._evaluate_objective_jacobian,
+            "evaluate_objective_hessian": self._evaluate_objective_hessian,
+            "evaluate_constraint_functions": self._evaluate_constraint_functions,
+            "evaluate_constraint_jacobian": self._evaluate_constraint_jacobian,
+            "get_constraint_jacobian_structure": self._get_constraint_jacobian_structure,
+            "get_variable_bounds": self._get_variable_bounds
+        }
+        
+    def _initialize(self):
+        super()._initialize()
+
+        #set scalarization method (options?)
+        scalarization_strategy = get_scalarization_strategy(self.scalarization_strategy,self.callbacks)#TODO: Pass options
+
+        #set tradeoff strategy (options?)
+        self.tradeoff_strategy = get_tradeoff_strategy(self.tradeoff_strategy,self.callbacks,scalarization_strategy)
+
+
+
 
     @abstractmethod
     def _evaluate_objective_functions(self, x: np.ndarray) -> np.ndarray:
@@ -329,33 +346,8 @@ class LinearPlanningProblem(PlanningProblem):
         """Define the variable bounds."""
         return np.array([0.0, np.inf], dtype=np.float64)
 
-class NonLinearPlanningProblem(PlanningProblem):
+
+
+
+class NonLinearPlanningProblem(InversePlanningProblem):
     """Abstract Class for all Treatment Planning Problems."""
-
-    @abstractmethod
-    def _evaluate_objective_functions(self, x: np.ndarray) -> np.ndarray:
-        """Define the objective functions."""
-
-    @abstractmethod
-    def _evaluate_objective_jacobian(self, x: np.ndarray) -> np.ndarray:
-        """Define the objective jacobian."""
-
-    def _evaluate_objective_hessian(self, x: np.ndarray) -> np.ndarray:
-        """Define the objective hessian."""
-        return {}
-
-    def _evaluate_constraint_functions(self, x: np.ndarray) -> np.ndarray:
-        """Define the constraint functions."""
-        return None
-
-    def _evaluate_constraint_jacobian(self, x: np.ndarray) -> np.ndarray:
-        """Define the constraint jacobian."""
-        return None
-
-    def _get_constraint_jacobian_structure(self) -> np.ndarray:
-        """Define the constraint jacobian structure."""
-        return None
-
-    def _get_variable_bounds(self, x: np.ndarray) -> np.ndarray:
-        """Define the variable bounds."""
-        return np.array([0.0, np.inf], dtype=np.float64)

@@ -48,7 +48,7 @@ def get_available_scalarization_strategies() -> dict[str]:
     return SCALARIZATIONSTRATEGIES
 
 
-def get_scalarization_strategy(scalarization_desc: Union[str, dict]):
+def get_scalarization_strategy(scalarization_desc: Union[str, dict],eval_callbacks) -> ScalarizationStrategyBase:
     """
     Returns a scalarization strategy instance based on a descriptive parameter.
 
@@ -64,12 +64,7 @@ def get_scalarization_strategy(scalarization_desc: Union[str, dict]):
     """
     if isinstance(scalarization_desc, str):
         strategy = SCALARIZATIONSTRATEGIES[scalarization_desc](
-            evaluate_objectives=None,
-            evaluate_constraints=None,
-            evaluate_x_gradients=None,
-            evaluate_jacobian=None,
-            etc=None,
-            parameters=None
+            eval_callbacks
         )
     
     elif isinstance(scalarization_desc, dict):

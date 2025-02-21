@@ -8,6 +8,10 @@ class ScalarizationStrategyBase(ABC):
     """
     Abstract Base Class for Scalarization Strategy Implementations / Interfaces.
 
+    Parameters
+    ----------
+    callbacks : dict[str, Callable]
+        Functions in the planning problem that are required for the actual optimization
     Attributes
     ----------
     name : ClassVar[str]
@@ -23,15 +27,10 @@ class ScalarizationStrategyBase(ABC):
     # TODO
 
     def __init__(self, 
-            evaluate_objectives: Callable[np.ndarray[float],list[np.ndarray[float]]],
-            evaluate_constraints: Callable[np.ndarray[float],list[np.ndarray[float]]],
-            evaluate_x_gradients,
-            evaluate__jacobian,
-            etc,
-            parameters: dict
+                callbacks: dict[str, Callable],
         ):
         # Implementations of class should also manage the concatenating the additional variables and separating them 
-        pass
+        self.callbacks = callbacks
 
     def __repr__(self) -> str:
         return f"Scalarization Strategy {self.name} ({self.short_name})"
