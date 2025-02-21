@@ -3,7 +3,7 @@ import SimpleITK as sitk
 import numpy as np
 import scipy.sparse as sp
 from pyRadPlan.core import Grid
-from pyRadPlan.dij import Dij, create_dij, validate_dij
+from pyRadPlan.dij import Dij, create_dij, validate_dij, compose_beam_dijs
 
 
 @pytest.fixture
@@ -239,3 +239,16 @@ def test_result_computation_biodose(sample_dij_dict):
     with pytest.raises(ValueError):
         dij.physical_dose = None
         dij.compute_result_dose_grid(f)
+
+
+def test_compose_beam_dijs(sample_dij_dict):
+    dij = create_dij(**sample_dij_dict)
+    composed_dij = compose_beam_dijs([dij, dij])
+    assert isinstance(composed_dij, Dij)
+    assert composed_dij.num_of_beams == 2 * dij.num_of_beams
+    assert composed_dij.total_num_of_bixels == 2 * dij.total_num_of_bixels
+    assert composed_dij.beam_num.shape == (2 * dij.total_num_of_bixels,)
+    assert composed_dij.ray_num.shape == (2 * dij.total_num_of_bixels,)
+    assert composed_dij.bixel_num.shape == (2 * dij.total_num_of_bixels,)
+    assert composed_dij.dose_grid == dij.dose_grid
+    assert composed_dij.ct_grid == dij.ct_grid
