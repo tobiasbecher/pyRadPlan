@@ -1,4 +1,4 @@
-from typing import Any, Optional, Annotated, Union
+from typing import Any, Optional, Annotated, Union, Final
 from typing_extensions import Self
 
 # import warnings
@@ -20,6 +20,56 @@ from pyRadPlan.util.helpers import dl2ld
 from pyRadPlan.machines._base import ExternalBeamMachine
 
 
+class IonBeamEmittance(PyRadPlanBaseModel):
+    """Emittance data for ion accelerator."""
+
+    type: Final[str] = "bigaussian"
+
+    sigma_x: float = Field(alias="sigmaX", ge=0.0)
+    sigma_y: float = Field(alias="sigmaY", ge=0.0)
+    div_x: float = Field(default=1e-12, alias="divX")
+    div_y: float = Field(default=1e-12, alias="divY")
+    corr_x: float = Field(default=1e-12, alias="corrX", ge=-1.0, le=1.0)
+    corr_y: float = Field(default=1e-12, alias="corrY", ge=-1.0, le=1.0)
+
+
+class IonEnergySpectrum(PyRadPlanBaseModel):
+    pass
+
+
+class IonEnergySpectrumGaussian(IonEnergySpectrum):
+    """
+    Energy spectrum data for ion pencil beam kernels.
+
+    Notes
+    -----
+    The energy spectrum is defined as a Gaussian distribution with a mean
+    energy and a relative spread in percent.
+    """
+
+    type: Final[str] = "gaussian"
+
+    mean: float = Field(ge=0.0)
+    sigma: float = Field(
+        ge=0.0, description="Relative spread as percentage sigma of the Gaussian energy spectrum"
+    )
+
+    @property
+    def sigma_relative(self) -> float:
+        """Relative spread of the energy spectrum."""
+        return self.sigma / 100.0
+
+    @property
+    def sigma_absolute(self) -> float:
+        """Absolute sigma of the energy spectrum."""
+        return self.sigma_relative * self.mean
+
+    @property
+    def fwhm(self) -> float:
+        """Full width at half maximum of the energy spectrum."""
+        return 2.35482 * self.sigma_absolute
+
+
 class IonBeamFocus(PyRadPlanBaseModel):
     """Focus data for ion pencil beam kernels."""
 
@@ -27,7 +77,8 @@ class IonBeamFocus(PyRadPlanBaseModel):
     sigma: NDArray[Shape["1-*"], np.float64]
     fwhm_iso: Optional[np.float64] = None
 
-    # TODO: emittance parameterization
+    # emittance parameterization
+    emittance: Optional[IonBeamEmittance] = None
 
     @field_validator("dist", "sigma", mode="before")
     @classmethod
@@ -39,6 +90,11 @@ class IonBeamFocus(PyRadPlanBaseModel):
             raise exc
 
         return v
+
+    @property
+    def has_emittance(self) -> bool:
+        """Check if emittance parameters are available."""
+        return self.sigma_x is not None and self.sigma_y is not None
 
 
 class LateralCutOff(PyRadPlanBaseModel):
@@ -200,7 +256,9 @@ class IonPencilBeamKernel(PyRadPlanBaseModel):
 
 
 class IonAccelerator(ExternalBeamMachine):
-    """Machine Model for Ion Accelerators
+    """
+    Machine Model for Ion Accelerators.
+
     Defines minimum meta-data an ion machine must hold
     Provides multiple data storage formats, currently supported
     - Pencil-Beam Kernels
@@ -239,6 +297,7 @@ class IonAccelerator(ExternalBeamMachine):
     # Minimum required data is energies, Bragg-peak positions and beam foci
     peak_positions: NDArray[Shape["1-*"], np.float64]
     foci: dict[float, list[IonBeamFocus]]
+    spectra: Optional[dict[float, IonEnergySpectrum]] = None
 
     # Optionally we can have pencil-beam kernels
     pb_kernels: Optional[dict[float, IonPencilBeamKernel]] = None
@@ -290,6 +349,14 @@ class IonAccelerator(ExternalBeamMachine):
 
         returned_data["foci"] = foci
 
+        # Energy Spectra
+        spectra_list = tabulated_energy_data.get("energySpectrum", None)
+        if spectra_list is not None:
+            returned_data["spectra"] = {
+                returned_data["energies"][i]: IonEnergySpectrumGaussian(**spectrum)
+                for i, spectrum in enumerate(spectra_list)
+            }
+
         # Extract the pencil beam kernels
         # Pencil beam kernels are not requried so we may skip them
         # if they can't be validated
@@ -307,8 +374,9 @@ class IonAccelerator(ExternalBeamMachine):
     # if self.betas not None:
 
     @model_validator(mode="after")
-    def check_machine(self) -> Self:
-        """Validates the machine model for consistency."""
+    def _check_machine(self) -> Self:
+        """Validate the machine model for consistency."""
+
         if self.bams_to_iso_dist > self.sad:
             raise ValueError("BAMS to iso distance must be small than SAD.")
 
@@ -352,8 +420,7 @@ class IonAccelerator(ExternalBeamMachine):
 
     def get_foci_by_index(self, ix_energy: int) -> list[IonBeamFocus]:
         """
-        Get the focus data of the pencil beam kernel for a specific energy
-        index.
+        Get the focus data of the kernel for a specific energy index.
 
         Parameters
         ----------
@@ -402,7 +469,7 @@ class IonAccelerator(ExternalBeamMachine):
         self, energy: Union[float, np.float64], kernel: IonPencilBeamKernel
     ):
         """
-        Updates a pencil-beam kernel for a specific energy.
+        Update a pencil-beam kernel for a specific energy.
 
         Parameters
         ----------
@@ -425,8 +492,7 @@ class IonAccelerator(ExternalBeamMachine):
 
     def get_focus(self, ix_energy: int) -> dict:
         """
-        Get the focus data of the pencil beam kernel for a specific energy
-        index.
+        Get the focus data of the kernel for a specific energy index.
 
         Parameters
         ----------

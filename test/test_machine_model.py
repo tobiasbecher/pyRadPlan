@@ -129,6 +129,25 @@ def test_proton_machine_model_get_kernel():
     assert isinstance(kernel, IonPencilBeamKernel)
 
 
+def test_proton_machine_model_phase_space():
+    machine = load_from_name(radiation_mode="protons", machine_name="Generic")
+    assert isinstance(machine, IonAccelerator)
+    for _, spectrum in machine.spectra.items():
+        assert isinstance(spectrum.mean, float)
+        assert isinstance(spectrum.sigma, float)
+        assert spectrum.mean * spectrum.sigma / 100 == pytest.approx(spectrum.sigma_absolute)
+        assert spectrum.sigma / 100 == pytest.approx(spectrum.sigma_relative)
+
+    for _, focus_list in machine.foci.items():
+        for focus in focus_list:
+            assert isinstance(focus.emittance.sigma_x, float)
+            assert isinstance(focus.emittance.sigma_y, float)
+            assert isinstance(focus.emittance.div_x, float)
+            assert isinstance(focus.emittance.div_y, float)
+            assert isinstance(focus.emittance.corr_x, float)
+            assert isinstance(focus.emittance.corr_y, float)
+
+
 def test_carbon_machine_model_from_name():
     machine = load_from_name(radiation_mode="carbon", machine_name="Generic")
     assert isinstance(machine, Machine)
