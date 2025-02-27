@@ -7,6 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import os
 import sys
+from pyRadPlan import __version__
 
 print(os.path.abspath("../pyRadPlan"))
 sys.path.insert(0, os.path.abspath("../pyRadPlan"))  # Adjust to your source folder
@@ -14,7 +15,9 @@ sys.path.insert(0, os.path.abspath("../pyRadPlan"))  # Adjust to your source fol
 project = "pyRadPlan"
 copyright = "2024, e0404"
 author = "e0404"
-release = "0.0.1"
+
+version = __version__
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

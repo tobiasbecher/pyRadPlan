@@ -111,6 +111,7 @@ docs:
             - .cache/pip/
         policy: pull
     script:
+        - source .venv/bin/activate
         - pip install sphinx
         - pip install sphinx-autodoc-typehints
         - pip install autodoc_pydantic
