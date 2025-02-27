@@ -1,5 +1,6 @@
 # pyRadPlan
 [![Tests](https://github.com/e0404/pyRadPlan/actions/workflows/tests.yml/badge.svg)](https://github.com/e0404/pyRadPlan/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/e0404/pyRadPlan/graph/badge.svg?token=S1KCYDU17G)](https://codecov.io/gh/e0404/pyRadPlan)
 [![pypi version](https://img.shields.io/pypi/v/pyRadPlan)](https://pypi.org/project/pyRadPlan/)
 ![pyversion](https://img.shields.io/pypi/pyversions/pyRadPlan)
 ![contributors](https://img.shields.io/github/contributors-anon/e0404/pyRadPlan)
