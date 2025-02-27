@@ -62,7 +62,7 @@ class Dij(PyRadPlanBaseModel):
     def num_of_voxels(self) -> int:
         """Number of voxels in the dose influence matrix."""
         return self.physical_dose.flat[0].shape[0]
-    
+
     @computed_field
     @property
     def quantities(self) -> list[str]:
