@@ -51,5 +51,5 @@ def compose_beam_dijs(dijs: list[Dij]) -> Dij:
         beam_num=beam_num,
         ray_num=ray_num,
         bixel_num=bixel_num,
-        **matrices
+        **matrices,
     )
