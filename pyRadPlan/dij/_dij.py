@@ -126,6 +126,25 @@ class Dij(PyRadPlanBaseModel):
             grid = Grid.model_validate(grid)
         return grid
 
+    @field_validator("beam_num", mode="before")
+    @classmethod
+    def validate_unique_indices_in_beam_num(
+        cls, v: np.ndarray, info: ValidationInfo
+    ) -> np.ndarray:
+        """
+        Validate the number of unique indices in beam_num.
+
+        Raises
+        ------
+            ValueError: Number of unique indices does not match number of beams.
+        """
+        num_of_beams = info.data["num_of_beams"]
+        if len(np.unique(v)) != num_of_beams:
+            raise ValueError(
+                "Number of unique indices in beam_num does not match number of beams."
+            )
+        return v
+
     @field_validator("beam_num", "ray_num", "bixel_num", mode="after")
     @classmethod
     def validate_numbering_arrays(cls, v: np.ndarray, info: ValidationInfo) -> np.ndarray:
@@ -153,25 +172,8 @@ class Dij(PyRadPlanBaseModel):
                             "Numbering arrays shape inconsistent with number of bixels"
                         )
 
-        return v
-
-    @field_validator("beam_num")
-    @classmethod
-    def validate_unique_indices_in_beam_num(
-        cls, v: np.ndarray, info: ValidationInfo
-    ) -> np.ndarray:
-        """
-        Validate the number of unique indices in beam_num.
-
-        Raises
-        ------
-            ValueError: Number of unique indices does not match number of beams.
-        """
-        num_of_beams = info.data["num_of_beams"]
-        if len(np.unique(v)) != num_of_beams:
-            raise ValueError(
-                "Number of unique indices in beam_num does not match number of beams."
-            )
+        if info.context and "from_matRad" in info.context and info.context["from_matRad"]:
+            v -= 1
         return v
 
     # Serialization
@@ -353,7 +355,12 @@ def create_dij(data: Union[dict[str, Any], Dij, None] = None, **kwargs) -> Dij:
         if isinstance(data, Dij):
             return data
 
-        return Dij.model_validate(data)
+        if "beamNum" in data and np.min(data["beamNum"]) != 0:
+            # add context when from matRad
+            context = {"from_matRad": True}
+        else:
+            context = {"from_matRad": False}
+        return Dij.model_validate(data, context=context)
 
     return Dij(**kwargs)
 

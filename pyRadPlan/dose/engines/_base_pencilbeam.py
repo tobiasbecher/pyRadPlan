@@ -180,6 +180,10 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                         # Initialize Ray Geometry
                         curr_ray = self._init_ray(curr_beam, j)
 
+                        # check if ray hit anything. If so, skip the computation
+                        if all(not arr.size for arr in curr_ray["rad_depths"]):
+                            continue
+
                         # TODO: incorporate scenarios correctly
                         for ct_scen in range(self.mult_scen.num_of_ct_scen):
                             for range_scen in range(self.mult_scen.tot_num_range_scen):
