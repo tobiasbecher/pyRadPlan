@@ -1,9 +1,10 @@
 import pytest
+import sys
 
-try:
-    from importlib import resources  # Standard from Python 3.9+
-except ImportError:
+if sys.version_info < (3, 10):
     import importlib_resources as resources  # Backport for older versions
+else:
+    from importlib import resources  # Standard from Python 3.9+
 
 import pymatreader
 import numpy as np

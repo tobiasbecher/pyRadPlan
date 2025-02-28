@@ -5,7 +5,10 @@ pyRadPlan documentation
 ************************
 
 **Date**: |today| **Version**: |version|
+pyRadPlan is an open-source, multi-modality radiotherapy treatment planning toolkit designed for interoperability with `matRad <http://www.matRad.org>`_.
+pyRadPlan is born from the established Matlab-based toolkit `matRad <http://www.matRad.org>`_. As such, pyRadPlan aims to provide a framework as well as tools for combining dose calculation with optimization with focus on ion planning.
 
+Development is lead by the `Radiotherapy Optimization group <https://www.dkfz.de/radopt>`_ at the `German Cancer Research Center (DKFZ) <https://www.dkfz.de>`_
 
 
 .. grid:: 1 2 2 2

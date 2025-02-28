@@ -180,6 +180,10 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                         # Initialize Ray Geometry
                         curr_ray = self._init_ray(curr_beam, j)
 
+                        # check if ray hit anything. If so, skip the computation
+                        if all(not arr.size for arr in curr_ray["rad_depths"]):
+                            continue
+
                         # TODO: incorporate scenarios correctly
                         for ct_scen in range(self.mult_scen.num_of_ct_scen):
                             for range_scen in range(self.mult_scen.tot_num_range_scen):
@@ -299,6 +303,8 @@ class PencilBeamEngineAbstract(DoseEngineBase):
                         )
 
             self._computed_quantities.append(q_name)
+
+        self._effective_lateral_cutoff = self.geometric_lateral_cutoff
 
         return dij
 
@@ -592,7 +598,9 @@ class PencilBeamEngineAbstract(DoseEngineBase):
         return scen_ray
 
     def _get_ray_geometry_from_beam(self, ray: dict[str], beam_info: dict[str]):
-        ray["effective_lateral_cut_off"] = beam_info["effective_lateral_cut_off"]
+        ray["effective_lateral_cut_off"] = beam_info.get(
+            "effective_lateral_cut_off", self._effective_lateral_cutoff
+        )
         lateral_ray_cutoff = self._get_lateral_distance_from_dose_cutoff_on_ray(ray)
 
         # Ray tracing for beam i and ray j

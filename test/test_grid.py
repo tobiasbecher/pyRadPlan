@@ -146,3 +146,32 @@ def test_resample_grid_invalid_resolution(sample_grid):
 
     with pytest.raises(ValueError):
         sample_grid.resample("invalid")  # Invalid type
+
+
+# test the custom implementation of the eq/neq operator on grids
+def test_grids_equal():
+    grid = Grid(resolution={"x": 1, "y": 1, "z": 1}, dimensions=(10, 10, 10))
+    grid2 = Grid(resolution={"x": 1, "y": 1, "z": 1}, dimensions=(10, 10, 10))
+
+    assert grid == grid2
+
+
+def test_grids_not_equal():
+    grid = Grid(resolution={"x": 1, "y": 1, "z": 1}, dimensions=(10, 10, 10))
+    grid2 = Grid(resolution={"x": 1, "y": 1, "z": 2}, dimensions=(10, 10, 10))
+    grid3 = Grid(resolution={"x": 1, "y": 1, "z": 1}, dimensions=(10, 10, 20))
+
+    assert grid != grid2
+    assert grid != grid3
+
+
+def test_grids_not_equal_types():
+    grid = Grid(resolution={"x": 1, "y": 1, "z": 1}, dimensions=(10, 10, 10))
+    assert grid != 1
+    assert grid != "string"
+    assert grid != [1, 2, 3]
+
+    # revert
+    assert 1 != grid
+    assert "string" != grid
+    assert [1, 2, 3] != grid

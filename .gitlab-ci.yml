@@ -45,7 +45,6 @@ lint:
         - ruff check --output-format grouped || return_code=$(($return_code + $?))
         - ruff check --exit-zero --output-format grouped --output-file ruff.txt
         - ruff check --exit-zero --output-format gitlab --output-file gl-code-quality-report.json
-        - ruff format --check || return_code=$(($return_code + $?))
         - exit $return_code
     artifacts:
         reports:
@@ -56,6 +55,18 @@ lint:
 
     allow_failure: true
 
+format:
+    stage: test
+    cache:
+        key: "cache-$CI_COMMIT_REF_SLUG"
+        paths:
+            - .venv/
+            - .cache/pip/
+        policy: pull
+    script:
+        - source .venv/bin/activate
+        - pip install ruff
+        - ruff format --check
 
 tests:
     stage: test
@@ -111,6 +122,7 @@ docs:
             - .cache/pip/
         policy: pull
     script:
+        - source .venv/bin/activate
         - pip install sphinx
         - pip install sphinx-autodoc-typehints
         - pip install autodoc_pydantic

@@ -2,10 +2,12 @@
 
 import logging
 
-try:
-    from importlib import resources  # Standard from Python 3.9+
-except ImportError:
+import sys
+
+if sys.version_info < (3, 10):
     import importlib_resources as resources  # Backport for older versions
+else:
+    from importlib import resources  # Standard from Python 3.9+
 
 import warnings
 import time
@@ -14,6 +16,7 @@ from abc import ABC, abstractmethod
 
 import SimpleITK as sitk
 import numpy as np
+from pydantic import ValidationError
 
 from pyRadPlan.core import Grid
 from pyRadPlan.core.np2sitk import linear_indices_to_grid_coordinates
@@ -77,16 +80,14 @@ class DoseEngineBase(ABC):
     # Public properties
     def __init__(self, pln: Union[Plan, dict] = None):
         # Assign default parameters from Matrad_Config or manually
-        self.dose_grid = None
         self.mult_scen = "nomScen"
         self.select_voxels_in_scenarios = None
-        self.dose_grid = None
         self.voxel_sub_ix = None  # selection of where to calculate / store dose, empty by default
+        self.dose_grid = None
 
         if pln is not None:
             self.assign_properties_from_pln(pln, True)
 
-        self._dose_grid = None
         self._ct_grid = None
 
         # Protected properties with public get access
@@ -469,10 +470,19 @@ class DoseEngineBase(ABC):
         dij["ct_grid"] = ct.grid
 
         if self.dose_grid is None:
+            logger.info(
+                "Dose grid not set. Using default resolution: x=%f, y=%f, z=%f",
+                ct.grid.resolution["x"],
+                ct.grid.resolution["y"],
+                ct.grid.resolution["z"],
+            )
             self.dose_grid = ct.grid.resample({"x": 5.0, "y": 5.0, "z": 5.0})
 
         if not isinstance(self.dose_grid, Grid):
-            self.dose_grid = Grid.model_validate(self.dose_grid)
+            try:
+                self.dose_grid = Grid.model_validate(self.dose_grid)
+            except ValidationError:
+                self.dose_grid = ct.grid.resample(self.dose_grid["resolution"])
 
         dij["dose_grid"] = self.dose_grid
 
@@ -515,8 +525,8 @@ class DoseEngineBase(ABC):
         # Initialize tmp_vdose_grid_scen
         tmp_vdose_grid_scen = [None] * ct.num_of_ct_scen
 
-        if self._ct_grid == self._dose_grid:
-            self._dose_grid = self._ct_grid
+        if self._ct_grid == self.dose_grid:
+            tmp_vdose_grid_scen = tmp_vct_grid_scen
             resampled_ct = ct
         else:
             resampled_ct = resample_ct(
@@ -524,7 +534,8 @@ class DoseEngineBase(ABC):
                 interpolator=sitk.sitkNearestNeighbor,
                 target_grid=self.dose_grid,
             )
-            self._dose_grid = Grid.from_sitk_image(resampled_ct.cube_hu)
+            self.dose_grid = Grid.from_sitk_image(resampled_ct.cube_hu)
+
             for s in range(ct.num_of_ct_scen):
                 # Receive linear indices and grid locations from the dose grid
                 tmp_cube = np.zeros(ct.cube_dim[::-1], dtype=np.float32)
@@ -553,7 +564,7 @@ class DoseEngineBase(ABC):
         )
 
         self._vox_world_coords_dose_grid = linear_indices_to_grid_coordinates(
-            self._vdose_grid, self._dose_grid, index_type="numpy"
+            self._vdose_grid, self.dose_grid, index_type="numpy"
         )
 
         # Create helper masks

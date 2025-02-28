@@ -10,7 +10,7 @@ register_engine(ParticleHongPencilBeamEngine)
 __all__ = [
     "DoseEngineBase",
     "PhotonPencilBeamSVDEngine",
-    " ParticleHongPencilBeamEngine",
+    "ParticleHongPencilBeamEngine",
     "get_engine",
     "get_available_engines",
     "register_engine",
