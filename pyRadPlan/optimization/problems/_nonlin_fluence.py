@@ -8,7 +8,6 @@ from numpy.typing import NDArray
 
 from ...plan import Plan
 from ._optiprob import NonLinearPlanningProblem
-from ..solvers import NonLinearOptimizer
 from ..objectives import Objective
 
 logger = logging.getLogger(__name__)
@@ -195,7 +194,7 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         x0 = np.zeros((self._dij.total_num_of_bixels,), dtype=np.float64)
         t = time.time()
         result = self.tradeoff_strategy.solve(x0)
-        #result = self.solver.solve(x0)
+        # result = self.solver.solve(x0)
         self._solve_time = time.time() - t
 
         logger.info("Solver time: %g s", self._solve_time)

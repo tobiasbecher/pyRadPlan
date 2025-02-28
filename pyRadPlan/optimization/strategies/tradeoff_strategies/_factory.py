@@ -1,4 +1,4 @@
-"""Factory method to manage available tradeoff exploration method implementations. """
+"""Factory method to manage available tradeoff exploration method implementations."""
 
 import warnings
 import logging
@@ -47,11 +47,13 @@ def get_available_tradeoff_strategies() -> dict[str, Type[TradeoffStrategyBase]]
     return TRADEOFFSTRATEGIES
 
 
-def get_tradeoff_strategy(tradeoff_desc: Union[str, dict],
-                          callbacks: dict[str, callable],
-                          scalarization_desc: Union[str,dict],
-                          scalarization_model_params, #TODO: Define type,
-                          solver_desc: Union[str,dict]) -> TradeoffStrategyBase:
+def get_tradeoff_strategy(
+    tradeoff_desc: Union[str, dict],
+    callbacks: dict[str, callable],
+    scalarization_desc: Union[str, dict],
+    scalarization_model_params,  # TODO: Define type,
+    solver_desc: Union[str, dict],
+) -> TradeoffStrategyBase:
     """
     Returns a tradeoff strategy based on a descriptive parameter.
 
@@ -72,9 +74,13 @@ def get_tradeoff_strategy(tradeoff_desc: Union[str, dict],
         A solver instance
     """
     if isinstance(tradeoff_desc, str):
-        tradeoff_strategy = TRADEOFFSTRATEGIES[tradeoff_desc](callbacks,scalarization_desc, scalarization_model_params,solver_desc)
+        tradeoff_strategy = TRADEOFFSTRATEGIES[tradeoff_desc](
+            callbacks, scalarization_desc, scalarization_model_params, solver_desc
+        )
     elif isinstance(tradeoff_desc, dict):
-        raise NotImplementedError("Tradeoff strategy configuration from dictionary not implemented yet.")
+        raise NotImplementedError(
+            "Tradeoff strategy configuration from dictionary not implemented yet."
+        )
     else:
         raise ValueError(f"Invalid tradeoff strategy description: {tradeoff_desc}")
 

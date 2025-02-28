@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class abstract_objective():
+class abstract_objective:
     def __init__(self):
         pass
 

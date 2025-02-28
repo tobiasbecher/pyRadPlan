@@ -1,7 +1,10 @@
 """Scalarization strategy module providing different scalarization strategies for pyRadPlan."""
 
-from ._factory import register_scalarization_strategy, get_available_scalarization_strategies, get_scalarization_strategy
-
+from ._factory import (
+    register_scalarization_strategy,
+    get_available_scalarization_strategies,
+    get_scalarization_strategy,
+)
 
 
 from ._base_scalarization_strategies import ScalarizationStrategyBase

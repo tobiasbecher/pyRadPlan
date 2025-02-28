@@ -1,6 +1,7 @@
 import numpy as np
 
-class TradeoffExplorationMethod():
+
+class TradeoffExplorationMethod:
     def __init__(self, params: dict):
         pass
 

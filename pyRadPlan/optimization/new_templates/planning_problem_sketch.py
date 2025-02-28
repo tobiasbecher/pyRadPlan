@@ -1,11 +1,14 @@
 import numpy as np
 from enum import Enum
 
-class PlanningProblem():
-    def __init__(self,
-                 scalarization_method: str | Enum,
-                 tradeoff_exploration_method: str | Enum | None,
-                 method_parameters: dict):
+
+class PlanningProblem:
+    def __init__(
+        self,
+        scalarization_method: str | Enum,
+        tradeoff_exploration_method: str | Enum | None,
+        method_parameters: dict,
+    ):
         pass
 
     def evaluate_objectives(x: np.ndarray[float]) -> list[np.ndarray[float]]:
@@ -40,11 +43,11 @@ class PlanningProblem():
         pass
 
     def make_tradeoff_exploration_method_instance(
-            evaluate_objectives: callable[np.ndarray[float],list[np.ndarray[float]]],
-            evaluate_constraints: callable[np.ndarray[float],list[np.ndarray[float]]],
-            evaluate_x_gradients,
-            etc,
-            scalarization_method: str,
-            method_parameters: dict,
-        ) -> TradeoffExplorationMethod:
+        evaluate_objectives: callable[np.ndarray[float], list[np.ndarray[float]]],
+        evaluate_constraints: callable[np.ndarray[float], list[np.ndarray[float]]],
+        evaluate_x_gradients,
+        etc,
+        scalarization_method: str,
+        method_parameters: dict,
+    ) -> TradeoffExplorationMethod:
         pass
