@@ -37,15 +37,13 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
     bypass_objective_jacobian: bool
 
     def __init__(self, pln: Union[Plan, dict] = None):
-        self.bypass_objective_jacobian = True
+        self.bypass_objective_jacobian = False
 
         self._target_voxels = None
         self._patient_voxels = None
 
         self._grad_cache_intermediate = None
         self._grad_cache = None
-        self._obj_times = []
-        self._deriv_times = []
         self._solve_time = None
 
         super().__init__(pln)
@@ -54,15 +52,15 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         """Initialize this problem."""
         super()._initialize()
 
-        # Check if the solver is adequate to solve this problem
-        # TODO: check that it can do constraints
-        if not isinstance(self.solver, NonLinearOptimizer):
-            raise ValueError("Solver must be an instance of SolverBase")
-
-        self.solver.objective = self._objective_function
-        self.solver.gradient = self._objective_gradient
-        self.solver.bounds = (0.0, np.inf)
-        self.solver.max_iter = 500
+        # # Check if the solver is adequate to solve this problem
+        # # TODO: check that it can do constraints
+        # # if not isinstance(self.solver, NonLinearOptimizer):
+        # #     raise ValueError("Solver must be an instance of SolverBase")
+        # self.solver = get_solver(self.solver)
+        # self.solver.objective = self._objective_function
+        # self.solver.gradient = self._objective_gradient
+        # self.solver.bounds = (0.0, np.inf)
+        # self.solver.max_iter = 500
 
     def _evaluate_objective_functions(self, x: NDArray) -> NDArray:
         """Define the objective functions."""
@@ -85,8 +83,7 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
                 f_vals.append(
                     sum(
                         [
-                            obj.priority
-                            * obj.compute_objective(q_vectors[obj.quantity].flat[scen_ix][ix])
+                            obj.compute_objective(q_vectors[obj.quantity].flat[scen_ix][ix])
                             for scen_ix in q_scenarios[obj.quantity]
                         ]
                     )
@@ -95,11 +92,9 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
         # return as numpy array
         return np.asarray(f_vals, dtype=np.float64)
 
-    def _objective_function(self, x: NDArray) -> np.float64:
-        t = time.time()
-        f = np.sum(self._evaluate_objective_functions(x))
-        self._obj_times.append(time.time() - t)
-        return f
+    # def _objective_function(self, x: NDArray) -> np.float64:
+    #     f = np.sum(self._evaluate_objective_functions(x))
+    #     return f
 
     def _evaluate_objective_jacobian(self, x: NDArray) -> NDArray:
         """Define the objective jacobian."""
@@ -142,8 +137,7 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
                     q_cache_index = self._q_cache_index[cnt]
                 for scen_ix in q_scenarios[obj.quantity]:
                     self._grad_cache_intermediate[obj.quantity][q_cache_index, ix] += (
-                        obj.priority
-                        * obj.compute_gradient(q_vectors[obj.quantity].flat[scen_ix][ix])
+                        obj.compute_gradient(q_vectors[obj.quantity].flat[scen_ix][ix])
                     )
                 cnt += 1
 
@@ -175,12 +169,6 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
         return self._grad_cache
 
-    def _objective_gradient(self, x: NDArray) -> NDArray:
-        t = time.time()
-        jac = np.sum(self._evaluate_objective_jacobian(x), axis=0)
-        self._deriv_times.append(time.time() - t)
-        return jac
-
     def _evaluate_objective_hessian(self, x: NDArray) -> NDArray:
         """Define the objective hessian."""
         return {}
@@ -203,28 +191,13 @@ class NonLinearFluencePlanningProblem(NonLinearPlanningProblem):
 
     def _solve(self) -> tuple[NDArray, dict]:
         """Solve the problem."""
-        self._deriv_times = []
-        self._obj_times = []
 
         x0 = np.zeros((self._dij.total_num_of_bixels,), dtype=np.float64)
-        self.tradeoff_strategy.solve(x0)
-
         t = time.time()
-        result = self.solver.solve(x0)
+        result = self.tradeoff_strategy.solve(x0)
+        #result = self.solver.solve(x0)
         self._solve_time = time.time() - t
 
-        logger.info(
-            "%d Objective function evaluations, avg. time: %g +/- %g s",
-            len(self._obj_times),
-            np.mean(self._obj_times),
-            np.std(self._obj_times),
-        )
-        logger.info(
-            "%d Derivative evaluations, avg. time: %g +/- %g s",
-            len(self._deriv_times),
-            np.mean(self._deriv_times),
-            np.std(self._deriv_times),
-        )
         logger.info("Solver time: %g s", self._solve_time)
 
         return result

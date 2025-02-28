@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Union, ClassVar
+from typing import Union, ClassVar, Union, cast
+
 import warnings
 import logging
 
@@ -16,9 +17,10 @@ from pyRadPlan.scenarios import ScenarioModel
 from pyRadPlan.quantities import FluenceDependentQuantity, get_quantity
 
 from ..objectives import get_objective
-from ..solvers import get_available_solvers, get_solver, SolverBase
+from ..solvers import get_available_solvers, SolverBase
 from ..strategies.scalarization_strategies import get_available_scalarization_strategies, get_scalarization_strategy, ScalarizationStrategyBase #TODO: Name to change
 from ..strategies.tradeoff_strategies import get_available_tradeoff_strategies, get_tradeoff_strategy, TradeoffStrategyBase #TODO: Name to change
+from ..objectives import Objective
 
 
 logger = logging.getLogger(__name__)
@@ -51,9 +53,9 @@ class PlanningProblem(ABC):
     possible_radiation_modes: list[str] = ["photons", "protons", "helium", "carbon", "oxygen"]
 
     apply_overlap: bool
-    solver: Union[str, dict, SolverBase]
-    tradeoff_strategy: TradeoffStrategyBase #TODO: Name to change
-    scalarization_strategy: ScalarizationStrategyBase # TODO: Name to change
+    solver: Union[str, dict]
+    tradeoff_strategy: Union[str,dict,TradeoffStrategyBase] #TODO: Name to change
+    scalarization_strategy: Union[str,dict] # TODO: Name to change
 
     # Private properties
     _ct: CT
@@ -173,17 +175,19 @@ class PlanningProblem(ABC):
         # sanitize objectives and constraints and manage required quantities
         objectives = []
         quantity_ids = []
+        priorities = []
         for voi in self._cst.vois:
             if len(voi.objectives) > 0:
                 # get the index list
                 cube_ix = voi.indices_numpy
                 objs = [get_objective(obj) for obj in voi.objectives]
-
                 objectives.append((cube_ix, objs))
 
                 quantity_ids.extend([obj.quantity for obj in objs])
+                priorities.extend([obj.priority for obj in objs])
 
         self._objective_list = objectives
+        self._priorities = np.array(priorities)
 
         # unique quantities
         quantity_ids = list(set(quantity_ids))
@@ -227,7 +231,7 @@ class PlanningProblem(ABC):
         # self._quantities = quantity_obj_info
 
         # set solver options
-        self.solver = get_solver(self.solver)
+        #self.solver = get_solver(self.solver)
 
 
     def solve(
@@ -313,9 +317,7 @@ class InversePlanningProblem(PlanningProblem):
         #scalarization_strategy = get_scalarization_strategy(self.scalarization_strategy,self.callbacks)#TODO: Pass options
 
         #set tradeoff strategy (options?)
-        self.tradeoff_strategy = get_tradeoff_strategy(self.tradeoff_strategy,self.callbacks,self.scalarization_strategy)
-        self.tradeoff_strategy._initialize()
-
+        self.tradeoff_strategy = get_tradeoff_strategy(self.tradeoff_strategy,self.callbacks,self.scalarization_strategy,self._priorities,self.solver)
 
 
 
