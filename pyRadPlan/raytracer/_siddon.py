@@ -305,12 +305,20 @@ class RayTracerSiddon(RayTracerBase):
 
         alphas = np.concatenate((alpha_limits, alpha_x, alpha_y, alpha_z), axis=1)
 
-        # Row wise Unique (could be externalized and potentially jitted if performance critical)
-        np_unique = np.unique  # Lookup function once to improve performance
-        for i in range(alphas.shape[0]):
-            v = np_unique(alphas[i, :])
-            alphas[i, : v.size] = v
-            alphas[i, v.size + 1 :] = np.nan
+        # Vectorized unique operation across rows
+        # Sort alphas row-wise and remove duplicates
+        alphas = np.sort(alphas, axis=1)  # Sort each row ascendingly
+        mask = np.diff(alphas, axis=1) == 0  # Identify duplicates
+        alphas[:, 1:][mask] = np.nan  # Replace duplicates with NaN
+        alphas = np.sort(alphas, axis=1)
+
+        # Alternative for loop to the last sorting operation in O(n)
+        # Could be numba'd to squeeze out more performance
+        # for row in alphas:
+        #     mask = ~np.isnan(row)
+        #     k = np.sum(mask)  # how many non-NaN in this row
+        #     row[:k] = row[mask]      # move them to the front
+        #     row[k:] = np.nan         # fill the rest with NaN
 
         # Size Reduction
         max_num_columns = np.max(np.sum(~np.isnan(alphas), axis=1))
