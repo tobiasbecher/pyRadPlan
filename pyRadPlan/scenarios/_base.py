@@ -1,19 +1,35 @@
-"""Module: _base.py
-This module contains the base class for scenario models.
+"""
+Abstract Interface for scenario models.
 
 Classes
 -------
 - ScenarioModel: Abstract base class for scenario models.
 """
 
-from abc import ABC, abstractmethod
-from typing import List, Optional, Tuple, Dict
+from abc import abstractmethod
+from typing import Optional, Tuple, ClassVar, Self, Any
+
+from pydantic import (
+    Field,
+    computed_field,
+    model_validator,
+    field_validator,
+    AliasChoices,
+    PrivateAttr,
+    FieldSerializationInfo,
+    field_serializer,
+    SerializerFunctionWrapHandler,
+    model_serializer,
+    SerializationInfo,
+)
+from numpydantic import NDArray, Shape
+
 import numpy as np
-from copy import deepcopy
+from pyRadPlan.core import PyRadPlanBaseModel
 from pyRadPlan.ct import validate_ct
 
 
-class ScenarioModel(ABC):
+class ScenarioModel(PyRadPlanBaseModel):
     """Abstract base class for scenario models.
 
     Attributes
@@ -26,7 +42,7 @@ class ScenarioModel(ABC):
         The standard deviation for shift in x, y, and z directions.
     wc_sigma : float
         The sigma value for the wc_factor.
-    ct_scen_prob : List[Tuple[int,float]]
+    ct_scen_prob : list[Tuple[int,float]]
         The probability of each CT scenario.
 
     Methods
@@ -43,219 +59,213 @@ class ScenarioModel(ABC):
             Converts full scenario index to scenario number.
     """
 
+    name: ClassVar[str]
+    short_name: ClassVar[str]
+
+    range_rel_sd: float = Field(
+        default=3.5,
+        description="The relative standard deviation for range.",
+        ge=0,
+        alias="rangeRelSD",
+    )
+    range_abs_sd: float = Field(
+        default=1,
+        description="The absolute standard deviation for range.",
+        ge=0,
+        alias="rangeAbsSD",
+    )
+    shift_sd: Tuple[float, float, float] = Field(
+        default=(2.25, 2.25, 2.25),
+        description="The standard deviation for shift in x, y, and z directions.",
+        alias="shiftSD",
+    )
+    ct_scen_prob: list[Tuple[int, float]] = Field(
+        default=[(0, 1.0)], description="The probability of each CT scenario."
+    )
+    wc_sigma: float = Field(
+        1,
+        description="Worst-case definition in multiples of standard deviation.",
+        ge=0,
+        validation_alias=AliasChoices("wcSigma", "wc_factor", "wcFactor"),
+        serialization_alias="wcSigma",
+    )
+
+    # Other properties with protected access
+    _num_of_available_ct_scen: int = PrivateAttr(default=1)
+    _ct_scen_ix: np.ndarray[int] = PrivateAttr(default=np.array([0]))
+    _iso_shift: np.ndarray[float] = PrivateAttr(default=np.array([[0.0, 0.0, 0.0]]))
+    _rel_range_shift: np.ndarray[float] = PrivateAttr(default=0.0)
+    _abs_range_shift: np.ndarray[float] = PrivateAttr(default=0.0)
+    _tot_num_shift_scen: int = PrivateAttr(default=1)
+    _tot_num_range_scen: int = PrivateAttr(default=1)
+    _tot_num_scen: int = PrivateAttr(default=1)
+    _scen_for_prob: np.ndarray[float] = PrivateAttr(
+        default=np.array([[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]])
+    )
+    _scen_prob: np.ndarray[float] = PrivateAttr(default=np.array([1.0]))
+    _scen_weight: np.ndarray[float] = PrivateAttr(default=np.array([1.0]))
+    _scen_mask: np.ndarray[bool] = PrivateAttr(default=np.ones((1, 1, 1), dtype=bool))
+    _linear_mask: np.ndarray[int] = PrivateAttr(default=np.array([[0, 0, 0]]))
+
     # Constructor
-    def __init__(self, ct=None):
+    def __init__(self, ct: Optional[Any] = None, **kwargs):
+        super(ScenarioModel, self).__init__(**kwargs)
+
         if ct is not None:
             ct = validate_ct(ct)
-            self._num_of_ct_scen = ct.num_of_ct_scen
             self._num_of_available_ct_scen = ct.num_of_ct_scen
         else:
             self._num_of_available_ct_scen = 1
-            self._num_of_ct_scen = 1
 
-        self._ct_scen_prob = [
-            (i, 1 / self._num_of_ct_scen) for i in range(0, self._num_of_ct_scen)
-        ]
+    @model_validator(mode="after")
+    def _validate_model(self) -> Self:
+        """
+        Post-assignment validator.
 
+        Mainly used to update Scenario Information.
+        """
         self.update_scenarios()
+        return self
 
-    # Abstract property override
+    @field_validator("ct_scen_prob", mode="after")
+    @classmethod
+    def _validate_ct_scen_prob(
+        cls, ct_scen_prob: list[Tuple[int, float]]
+    ) -> list[Tuple[int, float]]:
+        """
+        Post-assignment validator for ct_scen_prob.
+
+        Ensures sensible probabilities for ct scnearios.
+        """
+        if not all(0 <= x[1] <= 1 for x in ct_scen_prob):
+            raise ValueError("All probabilities must be between 0 and 1.")
+        if not all(0 <= x[0] for x in ct_scen_prob):
+            raise ValueError("Scenario indices must be positive.")
+
+        return ct_scen_prob
+
+    @field_serializer("ct_scen_prob")
+    def _serialize_ct_scen_prob(
+        self, val: Any, info: FieldSerializationInfo
+    ) -> list[Tuple[int, float]]:
+        """Adapt for matRad if serialized for matRad."""
+
+        if info.context is not None and "matRad" in info.context:
+            return [(a + 1, b) for a, b in val]
+
+        return val
+
+    @computed_field
     @property
-    def name(self) -> str:
-        """Name of the scenario model."""
-        return self._name
-
-    @name.setter
-    def name(self, value: str):
-        raise AttributeError("Cannot set value directly. Use subclass implementation.")
-
-    @property
-    def short_name(self) -> str:
-        """Short name of the scenario model."""
-        return self._short_name
-
-    @short_name.setter
-    def short_name(self, value: str):
-        raise AttributeError("Cannot set value directly. Use subclass implementation.")
-
-    # Main Uncertainty Model Properties
-    @property
-    def range_rel_sd(self) -> float:
-        """The relative standard deviation for range."""
-        return self._range_rel_sd
-
-    @range_rel_sd.setter
-    def range_rel_sd(self, value: float):
-        self._range_rel_sd = value
-        self.update_scenarios()
-
-    @property
-    def range_abs_sd(self) -> float:
-        """The absolute standard deviation for range."""
-        return self._range_abs_sd
-
-    @range_abs_sd.setter
-    def range_abs_sd(self, value: float):
-        self._range_abs_sd = value
-        self.update_scenarios()
-
-    @property
-    def shift_sd(self) -> Tuple[float]:
-        """The standard deviation for shift in x, y, and z directions."""
-        return self._shift_sd
-
-    @shift_sd.setter
-    def shift_sd(self, value: Tuple[float]):
-        self._shift_sd = value
-        self.update_scenarios()
-
-    @property
-    def wc_sigma(self) -> float:
-        """The sigma value for the wc_factor."""
-        return self._wc_sigma
-
-    @wc_sigma.setter
-    def wc_sigma(self, value: float):
-        self._wc_sigma = value
-        self.update_scenarios()
-
-    @property
-    def ct_scen_prob(self) -> List[Tuple[int, float]]:
-        """The probability of each CT scenario."""
-        return self._ct_scen_prob
-
-    @ct_scen_prob.setter
-    def ct_scen_prob(self, value: List[Tuple[int, float]]):
-        self._ct_scen_prob = value
-        self.update_scenarios()
-
-    # Dependent properties
-    @property
-    def wc_factor(self) -> float:
-        """Wc_factor is just an alias for wc_sigma."""
-        return self.wc_sigma
-
-    @wc_factor.setter
-    def wc_factor(self, value: float):
-        self.wc_sigma = value
-
-    # Name Properties
-    _name: str
-    _short_name: str
-
-    # Main uncertainty model properties
-    _range_rel_sd: float = 3.5
-    _range_abs_sd: float = 1
-    _shift_sd: Tuple[float] = (2.25, 2.25, 2.25)
-    _wc_sigma: float = 1
-    _ct_scen_prob: List[Tuple[int, float]] = [(0, 1.0)]
-
-    # Other properties with protected access
-    _num_of_ct_scen: int
-    _num_of_available_ct_scen: int
-    _ct_scen_ix: np.ndarray[int]
-    _iso_shift: np.ndarray[float]
-    _rel_range_shift: np.ndarray[float]
-    _abs_range_shift: np.ndarray[float]
-    _tot_num_shift_scen: int
-    _tot_num_range_scen: int
-    _tot_num_scen: int
-    _scen_for_prob: np.ndarray[float]
-    _scen_prob: np.ndarray[float]
-    _scen_weight: np.ndarray[float]
-    _scen_mask: np.ndarray[bool]
-    _linear_mask: np.ndarray[int]
-
-    @property
-    def num_of_ct_scen(self) -> Optional[int]:
+    def num_of_ct_scen(self) -> int:
         """Number of CT scenarios in the model."""
-        return self._num_of_ct_scen
+        return len(self.ct_scen_prob)
 
+    @computed_field
     @property
     def num_of_available_ct_scen(self) -> int:
         """Number of totally available CT scenarios in the CT."""
         return self._num_of_available_ct_scen
 
+    @computed_field
     @property
-    def ct_scen_ix(self) -> np.ndarray[int]:
+    def ct_scen_ix(self) -> NDArray[Shape["1-*"], int]:
         """CT scenario indices of the used CT scenarios."""
         return self._ct_scen_ix
 
+    @computed_field
     @property
-    def iso_shift(self) -> np.ndarray[float]:
+    def iso_shift(self) -> NDArray[Shape["1-*,3"], float]:
         """Isocenter shift values."""
         return self._iso_shift
 
+    @computed_field
     @property
     def rel_range_shift(self) -> float:
         """Relative range shift value."""
         return self._rel_range_shift
 
+    @computed_field
     @property
     def abs_range_shift(self) -> float:
         """Absolute range shift value."""
         return self._abs_range_shift
 
+    @computed_field
     @property
     def max_abs_range_shift(self) -> float:
         """Maximum absolute range shift value."""
         return np.max(self.abs_range_shift)
 
+    @computed_field
     @property
     def max_rel_range_shift(self) -> float:
         """Maximum relative range shift value."""
         return np.max(self.abs_range_shift)
 
+    @computed_field
     @property
     def tot_num_shift_scen(self) -> int:
         """Total number of shift scenarios."""
         return self._tot_num_shift_scen
 
+    @computed_field
     @property
     def tot_num_range_scen(self) -> int:
         """Total number of range shift scenarios."""
         return self._tot_num_range_scen
 
+    @computed_field
     @property
-    def tot_num_scen(self) -> Optional[int]:
+    def tot_num_scen(self) -> int:
         """Total number of scenarios."""
         return self._tot_num_scen
 
-    @tot_num_scen.setter
-    def tot_num_scen(self, value: Optional[int]):
-        self._tot_num_scen = value
-
+    @computed_field
     @property
-    def scen_for_prob(self) -> np.ndarray[float]:
+    def scen_for_prob(self) -> NDArray[Shape["1-*,1-*"], float]:
         """Scenarios organized for probability calculation."""
         return self._scen_for_prob
 
+    @computed_field
     @property
-    def scen_prob(self) -> np.ndarray[float]:
+    def scen_prob(self) -> NDArray[Shape["1-*,1-*"], float]:
         """Scenarios probability matrix."""
         return self._scen_prob
 
+    @computed_field
     @property
-    def scen_weight(self) -> np.ndarray[float]:
+    def scen_weight(self) -> NDArray[Shape["1-*,1-*"], float]:
         """Scenarios weight matrix."""
         return self._scen_weight
 
+    @computed_field
     @property
-    def scen_mask(self) -> np.ndarray[bool]:
+    def scen_mask(self) -> NDArray[Shape["1-*,1-*"], bool]:
         """Scenarios mask matrix describing how scenarios should be stored."""
         return self._scen_mask
 
+    @computed_field
     @property
-    def linear_mask(self) -> np.ndarray[int]:
+    def linear_mask(self) -> NDArray[Shape["1-*,1-*"], int]:
         """Linear mask matrix for scenario selection."""
         return self._linear_mask
+
+    @field_serializer("linear_mask")
+    def _serialize_linear_mask(
+        self, val: Any, info: FieldSerializationInfo
+    ) -> NDArray[Shape["1-*,1-*"], int]:
+        """Serialize the linear mask according to context."""
+
+        if info.context is not None and "matRad" in info.context:
+            return val + 1
+
+        return val
 
     # Abstract methods
     @abstractmethod
     def update_scenarios(self) -> np.ndarray[float]:
-        """This function needs to be implemented by subclasses to update
-        scenarios.
-        """
+        """Update scenario data from uncertainty model settings."""
 
     @abstractmethod
     def extract_single_scenario(self, scen_num: int) -> "ScenarioModel":
@@ -289,7 +299,7 @@ class ScenarioModel(ABC):
 
     def sub2scen_ix(self, ct_scen: int, shift_scen: int, range_shift_scen: int) -> int:
         """
-        Convert a sub-scenario index to a scenario index.
+        Convert a subscript index to a linear scenario index.
 
         Parameters
         ----------
@@ -320,7 +330,9 @@ class ScenarioModel(ABC):
 
     def scen_num(self, full_scen_ix: int) -> int:
         """
-        Returns the index of the first occurrence of `full_scen_ix` in
+        Return the scenario number given the scecnario ray index.
+
+        This corresponds to the first occurrence of `full_scen_ix` in
         `self.scen_mask`.
 
         Parameters
@@ -337,44 +349,22 @@ class ScenarioModel(ABC):
         scen_indices = np.where(self._scen_mask.flatten())[0]
         return int(np.where(scen_indices == full_scen_ix)[0][0])
 
-    def to_dict(self) -> Dict:
+    @model_serializer(mode="wrap")
+    def _serialize(self, wrap: SerializerFunctionWrapHandler, info: SerializationInfo) -> dict:
         """
-        Returns a dictionary with the scenario model properties.
+        Serialize the model to a dictionary.
+
+        Parameters
+        ----------
+        wrap : SerializerFunctionWrapHandler
+            The serialization function wrapper.
 
         Returns
         -------
-        Dict
-            The scenario model properties.
+        dict
+            The serialized model.
         """
-        return {
-            "model": self.short_name,
-            "range_rel_sd": self.range_rel_sd,
-            "range_abs_sd": self.range_abs_sd,
-            "shift_sd": self.shift_sd,
-            "wc_sigma": self.wc_sigma,
-            "ct_scen_prob": self.ct_scen_prob,
-        }
 
-    def to_matrad(self, context: str = "mat-file") -> Dict:
-        """
-        Returns a dictionary with the scenario model properties formatted
-        for matRad.
-
-        Returns
-        -------
-        Dict
-            The scenario model properties for MatRad.
-        """
-        self = deepcopy(self)
-        if context != "mat-file":
-            raise ValueError(f"Context {context} not supported")
-
-        return {
-            "model": self.short_name,
-            "rangeRelSD": self.range_rel_sd,
-            "rangeAbsSD": self.range_abs_sd,
-            "shiftSD": self.shift_sd,
-            "wcSigma": self.wc_sigma,
-            # adding (1.0, 0.0) to ctScenProb to match matRad indexing
-            "ctScenProb": [(a + 1, b) for (a, b) in self.ct_scen_prob],
-        }
+        output = wrap(self, info)
+        output["model"] = self.short_name
+        return output

@@ -1,7 +1,7 @@
 """
-Module: _plans.py
-This module contains the definition of the Plan class and its derived classes,
-PhotonPlan and IonPlan.
+Contains the definition of the Plan class and its derived classes.
+
+Available spezialized Plan classes are PhotonPlan and IonPlan.
 """
 
 from abc import ABC
@@ -11,8 +11,6 @@ from copy import deepcopy
 from pydantic import (
     Field,
     field_validator,
-    field_serializer,
-    SerializationInfo,
     ValidationError,
 )
 from pydantic.alias_generators import to_snake
@@ -60,7 +58,7 @@ class Plan(PyRadPlanBaseModel, ABC):
     @classmethod
     def validate_radiation_mode(cls, v: str) -> str:
         """
-        Validates the radiation mode.
+        Validate the radiation mode.
 
         Parameters
         ----------
@@ -76,11 +74,11 @@ class Plan(PyRadPlanBaseModel, ABC):
 
     @field_validator("mult_scen", mode="before")
     @classmethod
-    def validate_mult_scen(
+    def _validate_mult_scen(
         cls, v: Union[Union[Dict[str, Any], ScenarioModel], str]
     ) -> ScenarioModel:
         """
-        Validates the mult_scen attribute.
+        Validate the mult_scen attribute.
 
         Parameters
         ----------
@@ -109,7 +107,8 @@ class Plan(PyRadPlanBaseModel, ABC):
     @classmethod
     def validate_prop(cls, v: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Validates the workflow property dictionaries.
+        Validate the workflow property dictionaries.
+
         Will try to convert to snake_case if camelCase is used.
 
         Parameters
@@ -129,38 +128,9 @@ class Plan(PyRadPlanBaseModel, ABC):
         # Convert camelCase to snake_case
         return {to_snake(k): v for k, v in v.items()}
 
-    @field_serializer("mult_scen")
-    def serialize_mult_scen(self, v: ScenarioModel, info: SerializationInfo) -> Dict:
-        """
-        Serializes the mult_scen attribute.
-
-        Parameters
-        ----------
-        v : ScenarioModel
-            The ScenarioModel object to be serialized.
-
-        Returns
-        -------
-        Dict
-            The serialized ScenarioModel object.
-        """
-
-        use_alias = info.by_alias
-        context = info.context
-
-        if context and context.get("matfile_compatible"):
-            out_dict = v.to_matrad(context=context)
-        elif use_alias:
-            out_dict = v.to_matrad()
-        else:
-            out_dict = v.to_dict()
-
-        return out_dict
-
     def to_matrad(self, context: str = "mat-file") -> Any:
         """
-        Creates a dictionary ready to save the Plan model to a mat-file that
-        can be ready.
+        Create a dictionary ready to save the Plan model to a mat-file.
 
         Returns
         -------
@@ -193,7 +163,7 @@ class PhotonPlan(Plan):
     @classmethod
     def validate_radiation_mode(cls, v: str) -> str:
         """
-        Validates the radiation mode for a PhotonPlan.
+        Validate the radiation mode for a PhotonPlan.
 
         Parameters
         ----------
@@ -269,7 +239,7 @@ class IonPlan(Plan):
 
 def create_pln(data: Union[Dict[str, Any], Plan, None] = None, **kwargs) -> Plan:
     """
-    Factory function to create a Plan object.
+    Create a Plan object (factory function).
 
     Parameters
     ----------
@@ -316,7 +286,8 @@ def create_pln(data: Union[Dict[str, Any], Plan, None] = None, **kwargs) -> Plan
 
 def validate_pln(plan: Union[Dict[str, Any], Plan, None] = None, **kwargs) -> Plan:
     """
-    Validates and creates a Plan object.
+    Validate and create a Plan object.
+
     Synonym to create_pln but should be used in validation context.
 
     Parameters
