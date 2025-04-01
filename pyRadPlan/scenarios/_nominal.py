@@ -1,4 +1,5 @@
-"""Nominal Scenario Model.
+"""
+Nominal Scenario Model.
 
 This module contains the NominalScenario class, which represents an example scenario.
 
@@ -10,6 +11,8 @@ Example
     # scenario = NominalScenario()
     # scenario.list_all_scenarios()
 """
+
+from typing import ClassVar
 
 import warnings
 import numpy as np
@@ -36,32 +39,36 @@ class NominalScenario(ScenarioModel):
         Extracts a single scenario.
     """
 
-    name = "Nominal Scenario"
-    short_name = "nomScen"
+    name: ClassVar[str] = "Nominal Scenario"
+    short_name: ClassVar[str] = "nomScen"
+
+    @property
+    def ndim(self) -> int:
+        """Dimensionality of the scenario model."""
+        return 1
 
     def update_scenarios(self) -> np.ndarray[float]:
-        self._num_of_ct_scen = len(self.ct_scen_prob)
+        num_of_ct_scen = len(self.ct_scen_prob)
+        self._num_of_available_ct_scen = num_of_ct_scen
 
         # Scenario weight
-        self._scen_weight = np.ones(self._num_of_ct_scen).astype(float) / float(
-            self._num_of_ct_scen
-        )
-        self._scen_weight = [prob[1] for prob in self._ct_scen_prob]
-        self._ct_scen_ix = [prob[0] for prob in self._ct_scen_prob]
+        self._scen_weight = np.ones(num_of_ct_scen).astype(float) / float(num_of_ct_scen)
+        self._scen_weight = [prob[1] for prob in self.ct_scen_prob]
+        self._ct_scen_ix = [prob[0] for prob in self.ct_scen_prob]
 
         # set variables
         self._tot_num_shift_scen = 1
         self._tot_num_range_scen = 1
-        self._tot_num_scen = self._num_of_ct_scen
+        self._tot_num_scen = num_of_ct_scen
 
         # Individual shifts
-        self._rel_range_shift = np.zeros(self._num_of_ct_scen)
-        self._abs_range_shift = np.zeros(self._num_of_ct_scen)
-        self._iso_shift = np.zeros((self._num_of_ct_scen, 3))
+        self._rel_range_shift = np.zeros(num_of_ct_scen)
+        self._abs_range_shift = np.zeros(num_of_ct_scen)
+        self._iso_shift = np.zeros((num_of_ct_scen, 3))
 
         # Probability matrices
         self._scen_for_prob = np.hstack(
-            (np.array(self.ct_scen_prob)[:, 0].reshape(-1, 1), np.zeros((self._num_of_ct_scen, 5)))
+            (np.array(self.ct_scen_prob)[:, 0].reshape(-1, 1), np.zeros((num_of_ct_scen, 5)))
         )  # Realization matrix
         self._scen_prob = np.array(self.ct_scen_prob)[:, 1]  # Probabilities for each scenario
 
@@ -83,7 +90,7 @@ class NominalScenario(ScenarioModel):
         )
         d = float(covariance.shape[0])
         cs = np.linalg.cholesky(covariance)
-        tmp_standardized = np.linalg.solve(cs, self.scen_for_prob[:, 1:].T).T
+        tmp_standardized = np.linalg.solve(cs, self._scen_for_prob[:, 1:].T).T
         tmp_scen_prob = (
             (2 * np.pi) ** (-d / 2)
             * np.exp(-0.5 * np.sum(tmp_standardized**2, axis=1))
@@ -118,9 +125,3 @@ class NominalScenario(ScenarioModel):
                 "Currently the Nominal Scenario Model is only implemented for single ct scenarios!"
             )
         return self
-
-
-# Usage Example
-if __name__ == "__main__":
-    scenario = NominalScenario()
-    scenario.list_all_scenarios()

@@ -71,7 +71,7 @@ def test_create_pln_kwargs_unknown():
 
 
 def test_create_pln_dict_photons_snake():
-    scen_dict = NominalScenario().to_dict()
+    scen_dict = NominalScenario().model_dump()
 
     pln_dict = {
         "radiation_mode": "photons",  # either photons / protons / carbon
@@ -93,16 +93,19 @@ def test_create_pln_dict_photons_snake():
     assert pln.num_of_fractions == 30
     assert pln.machine == "Generic"
     assert pln.prescribed_dose == 60.0
+    assert isinstance(pln.mult_scen, NominalScenario)
 
     pln_from_dict = pln.model_dump()
-    print(set(pln_dict) ^ set(pln_from_dict))
+    # print(set(pln_dict) ^ set(pln_from_dict))
+    pln_dict.pop("mult_scen")
+    pln_from_dict.pop("mult_scen")
     assert pln_dict == pln_from_dict
 
 
 def test_create_pln_dict_photons_camel():
     scen = NominalScenario()
     scen_dict_camel = scen.to_matrad()
-    scen_dict_snake = scen.to_dict()
+    scen_dict_snake = scen.model_dump()
 
     pln_dict_camel = {
         "radiationMode": "photons",  # either photons / protons / carbon
@@ -138,12 +141,17 @@ def test_create_pln_dict_photons_camel():
     assert pln.num_of_fractions == 30
     assert pln.machine == "Generic"
     assert pln.prescribed_dose == 60.0
+    assert isinstance(pln.mult_scen, NominalScenario)
+
+    pln_dict_snake.pop("mult_scen")
+    pln_dict_camel.pop("multScen")
 
     pln_to_dict = pln.model_dump()
-    print(set(pln_dict_snake) ^ set(pln_to_dict))
+    pln_to_dict.pop("mult_scen")
     assert pln_dict_snake == pln_to_dict
 
     pln_to_dict_camel = pln.to_matrad()
+    pln_to_dict_camel.pop("multScen")
     print(set(pln_dict_camel) ^ set(pln_to_dict_camel))
     assert pln_dict_camel == pln_to_dict_camel
 

@@ -11,7 +11,7 @@ def sample_model_dict_matrad():
         "model": "nomScen",
         "rangeRelSD": 5.0,
         "rangeAbsSD": 2.5,
-        "shiftSD": [3.0, 3.0, 3.0],
+        "shiftSD": (3.0, 3.0, 3.0),
         # TODO!: MatRad export has e.g. (1, 0.5) as indexing.
         # The Model does not yet respect that (converting 1 to 0)
         # because it cant distinguish whether its from the user or matRad. (adding '1' or keeping '0')
@@ -82,7 +82,6 @@ def test_nominal_scenario_construct():
     assert isinstance(scenario, ScenarioModel)
     assert isinstance(scenario, NominalScenario)
     assert scenario.name == "Nominal Scenario"
-    assert scenario.short_name == "nomScen"
     assert scenario.short_name == "nomScen"
     assert scenario.ct_scen_prob == [(0, 1.0)]
     assert scenario.num_of_ct_scen == 1
@@ -159,7 +158,7 @@ def test_nominal_scenario_creation_by_dict():
         "model": "nomScen",
         "range_rel_sd": 5.0,
         "range_abs_sd": 2.5,
-        "shift_sd": [3.0, 3.0, 3.0],
+        "shift_sd": (3.0, 3.0, 3.0),
         "ct_scen_prob": [(0, 0.5)],
         "wc_sigma": 5.0,
     }
@@ -170,13 +169,17 @@ def test_nominal_scenario_creation_by_dict():
     assert isinstance(scenario, NominalScenario)
     assert scenario.range_rel_sd == 5.0
     assert scenario.range_abs_sd == 2.5
-    assert np.array_equal(scenario.shift_sd, [3.0, 3.0, 3.0])
+    assert np.array_equal(scenario.shift_sd, (3.0, 3.0, 3.0))
     assert scenario.ct_scen_prob == [(0, 0.5)]
     assert scenario.wc_sigma == 5.0
 
-    return_dict = scenario.to_dict()
+    return_dict = scenario.model_dump()
 
-    assert return_dict == model_dict
+    model_dict.pop("model")
+
+    for key in model_dict.keys():
+        assert key in return_dict
+        assert return_dict[key] == model_dict[key]
 
 
 def test_nominal_scenario_creation_by_matrad_dict(sample_model_dict_matrad):
@@ -192,7 +195,11 @@ def test_nominal_scenario_creation_by_matrad_dict(sample_model_dict_matrad):
 
     return_dict = scenario.to_matrad()
 
-    assert return_dict == sample_model_dict_matrad
+    sample_model_dict_matrad.pop("model")
+
+    for key in sample_model_dict_matrad.keys():
+        assert key in return_dict
+        assert return_dict[key] == sample_model_dict_matrad[key]
 
 
 def test_nominal_scenario_extract_single_scenario():

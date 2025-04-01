@@ -1,12 +1,11 @@
-"""Sceanrio Models for uncertainty quantification, robust optimization and
-robustness analysis.
+"""
+Sceanrio Models.
 
-This module provides functionality for creating and validating scenario models.
+Used for uncertainty quantification, robust optimization and
+robustness analysis.
 """
 
-from typing import Union
-from warnings import warn
-from pydantic.alias_generators import to_snake
+from typing import Union, Optional, Type
 from pyRadPlan.ct import CT, validate_ct
 from ._base import ScenarioModel
 from ._nominal import NominalScenario
@@ -17,16 +16,17 @@ logger = logging.getLogger(__name__)
 
 
 def available_scenario_models() -> list[str]:
-    """Returns a list of available scenario models."""
+    """Return a list of available scenario models."""
 
     return ["nomScen"]
 
 
 def create_scenario_model(
-    model_def: Union[ScenarioModel, Union[str, dict]] = "nomScen", ct: Union[CT, dict] = None
+    model_def: Union[ScenarioModel, Union[str, dict]] = "nomScen",
+    ct: Optional[Union[CT, dict]] = None,
 ) -> ScenarioModel:
     """
-    Returns a scenario model object.
+    Return a scenario model object.
 
     Parameters
     ----------
@@ -42,52 +42,43 @@ def create_scenario_model(
     if isinstance(ct, dict):
         ct = validate_ct(ct)
 
+    if isinstance(model_def, str):
+        model_class = _get_model_class_by_name(model_def)
+        return model_class(ct)
+
     if isinstance(model_def, ScenarioModel):
         return model_def
 
     if isinstance(model_def, dict):
-        model_name = model_def.get("model", None)
+        model_name = model_def.pop("model", None)
         if model_name is None:
             raise ValueError("Scenario model name not provided in the model definition")
 
-        model = create_scenario_model(model_name, ct)
-        for key in model_def:
-            if key == "model":
-                continue
-            attr_name = key
-            if not hasattr(model, attr_name):
-                attr_name = to_snake(key)
-                if not hasattr(model, attr_name):
-                    warn(f"Unknown attribute {key} in scenario model definition")
-                    continue
-
-            setattr(model, attr_name, model_def[key])
-
-        return model
-
-    if isinstance(model_def, str):
-        model_name = model_def
-
-        if model_name == "nomScen":
-            return NominalScenario(ct)
-        if model_name == "wcScen":
-            raise NotImplementedError("Worst Case Scenarios are not implemented yet")
-        if model_name == "impScen":
-            raise NotImplementedError(
-                "Gridded Importance Weighted Scenarios are not implemented yet"
-            )
-        if model_name == "rndScen":
-            raise NotImplementedError("Random Scenarios are not implemented yet")
-        raise ValueError(f"Unknown scenario model: {model_name}")
+        model_class = _get_model_class_by_name(model_name)
+        return model_class(ct, **model_def)
 
     raise ValueError("Invalid scenario model definition")
+
+
+def _get_model_class_by_name(model_name: str) -> Type[ScenarioModel]:
+    """Return the scenario model class by name."""
+
+    if model_name == "nomScen":
+        return NominalScenario
+    if model_name == "wcScen":
+        raise NotImplementedError("Worst Case Scenarios are not implemented yet")
+    if model_name == "impScen":
+        raise NotImplementedError("Gridded Importance Weighted Scenarios are not implemented yet")
+    if model_name == "rndScen":
+        raise NotImplementedError("Random Scenarios are not implemented yet")
+    raise ValueError(f"Unknown scenario model: {model_name}")
 
 
 def validate_scenario_model(
     model_def: Union[ScenarioModel, Union[str, dict]], ct: Union[CT, dict] = None
 ) -> ScenarioModel:
     """
-    Validates a scenario model input and returns a scenario model object.
+    Validate a scenario model input and returns a scenario model object.
 
     Parameters
     ----------
