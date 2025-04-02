@@ -7,7 +7,8 @@ Classes
 """
 
 from abc import abstractmethod
-from typing import Optional, Tuple, ClassVar, Self, Any
+from typing import Optional, Tuple, ClassVar, Any
+from typing_extensions import Self  # python 3.9 & 3.10 compatibility
 
 from pydantic import (
     Field,
