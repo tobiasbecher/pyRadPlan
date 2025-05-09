@@ -10,7 +10,7 @@ pyRadPlan = ["data/**/*"]
 
 [project]
 name = "pyRadPlan"
-version = "0.2.2"
+version = "0.2.3"
 # dynamic = ["version"] # Will be used in the future
 authors = [
   { name="Niklas Wahl", email = "n.wahl@dkfz-heidelberg.de"},
@@ -46,7 +46,7 @@ dependencies = [
     "pydicom>=2.4.4",
     "numba>=0.60.0",
     "matplotlib>=3.9.2",
-    "pydantic>=2.10",
+    "pydantic>=2.10,<2.11",
     "numpydantic>=1.6.0",
     "SimpleITK>=2.4.0",
     "tqdm>=4.0.0",

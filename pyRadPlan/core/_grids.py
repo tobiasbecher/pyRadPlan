@@ -76,9 +76,9 @@ class Grid(PyRadPlanBaseModel):
             raise ValueError("resolution must have keys 'x', 'y', 'z'")
 
         # Check if all resolution values are positive floats. If not, try to cast them to float
-        for key in value:
-            if value[key] <= 0:
-                raise ValueError(f"resolution values must be positive floats, got {value[key]}")
+        for _, v in value.items():
+            if v <= 0:
+                raise ValueError(f"resolution values must be positive floats, got {v}")
 
         return value
 
@@ -93,11 +93,12 @@ class Grid(PyRadPlanBaseModel):
         # Check if all dimensions values are positive integers. If not, try to cast them to int
         for dim in value:
             try:
-                dim = int(dim)
+                tmpdim = int(dim)
             except ValueError:
                 raise ValueError(f"dimension value could not be casted into int, got {dim}")
-            if dim <= 0:
-                raise ValueError(f"dimension values must be positive integers, got {dim}")
+
+            if tmpdim <= 0:
+                raise ValueError(f"dimension values must be positive integers, got {tmpdim}")
 
         return value
 
@@ -162,8 +163,7 @@ class Grid(PyRadPlanBaseModel):
         ],
     ) -> Self:
         """
-        Create a resampled grid covering the original grid in a new
-        resolution.
+        Create a resampled grid covering the original grid in new resolution.
 
         Parameters
         ----------

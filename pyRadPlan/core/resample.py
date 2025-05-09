@@ -1,3 +1,5 @@
+"""Image / Grid Resampling."""
+
 import numpy as np
 import SimpleITK as sitk
 from ._grids import Grid
@@ -11,8 +13,9 @@ def resample_image(
     target_grid: Grid = None,
 ) -> sitk.Image:  # also accept sitk images and grid points. Can be dealt with with kwargs
     """
-    Resamples an sitk Image to a target resolution, reference image
-    dimensions, or Grid.
+    Resample an sitk Image.
+
+    Use target resolution, reference image, dimensions, or Grid as input.
 
     Parameters
     ----------
@@ -70,8 +73,10 @@ def resample_numpy_array(
     target_grid: Grid = None,
 ) -> np.ndarray:
     """
-    Resamples a numpy grid to a target resolution, reference image
-    dimensions, or Grid.
+    Resample a numpy grid.
+
+    Use target resolution, reference image, dimensions, or Grid as input.
+
     We convert the numpy array to an sitk.Image, so the dimensions will be
     switched. More exactly,
     the numpy array will be index i,j,k <-> z,y,x, which will converted to

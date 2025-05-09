@@ -1,6 +1,4 @@
-"""Helper Functions relating to conversion between numpy and SimpleITK data
-types.
-"""
+"""Helpers for conversion between numpy and SimpleITK."""
 
 from typing import Literal
 import SimpleITK as sitk
