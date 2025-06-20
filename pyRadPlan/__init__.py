@@ -10,6 +10,7 @@ from .stf._generate_stf import generate_stf
 from .stf import SteeringInformation, validate_stf
 from .dose._calc_dose import calc_dose_influence, calc_dose_forward
 from .optimization._fluence_optimization import fluence_optimization
+from .analysis._dvh import DVH, DVHCollection
 from .visualization import plot_slice
 from .io import load_patient, load_tg119
 
@@ -36,6 +37,8 @@ __all__ = [
     "calc_dose_influence",
     "calc_dose_forward",
     "fluence_optimization",
+    "DVH",
+    "DVHCollection",
     "SteeringInformation",
     "validate_stf",
     "plot_slice",
