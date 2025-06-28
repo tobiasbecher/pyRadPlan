@@ -270,7 +270,8 @@ def create_cst(
             idx_list = []
             # Only one scenario (3D CT)
             if not isinstance(vdata[3], list):
-                idx_list.append(vdata[3].astype(int).tolist())
+                idx_list.append(np.asarray(vdata[3]).astype(int).tolist())
+
             # Multiple scenarios (4D CT)
             else:
                 for vdata_scen in vdata[3]:
