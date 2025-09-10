@@ -279,6 +279,24 @@ class ParticleAccelerator(ExternalBeamMachine):
         )
 
     @property
+    def has_focused_gaussian_kernel(self) -> bool:
+        """
+        Check if it has focused gaussian pencil-beamkernels.
+
+        Returns
+        -------
+        bool
+            True if all kernels have focused gaussian lateral scattering model
+        """
+        if self.pb_kernels is None:
+            return False
+
+        return all(
+            kernel.sigma_x is not None and kernel.sigma_y is not None
+            for kernel in self.pb_kernels.values()
+        )
+
+    @property
     def has_let_kernel(self) -> bool:
         """
         Check if it has LET values in the pencil-beam kernels.

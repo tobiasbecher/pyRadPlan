@@ -31,6 +31,8 @@ class ParticlePencilBeamKernel(PyRadPlanBaseModel):
     sigma: Optional[NDArray[Shape["1-*"], np.float64]] = None
     sigma_1: Optional[NDArray[Shape["1-*"], np.float64]] = None
     sigma_2: Optional[NDArray[Shape["1-*"], np.float64]] = None
+    sigma_x: Optional[NDArray[Shape["1-*"], np.float64]] = None
+    sigma_y: Optional[NDArray[Shape["1-*"], np.float64]] = None
     weight: Optional[NDArray[Shape["1-*"], np.float64]] = None
     sigma_multi: Optional[NDArray[Shape["1-*,1-*"], np.float64]] = None
     weight_multi: Optional[NDArray[Shape["1-*,1-*"], np.float64]] = None
@@ -71,6 +73,8 @@ class ParticlePencilBeamKernel(PyRadPlanBaseModel):
         "sigma",
         "sigma_1",
         "sigma_2",
+        "sigma_x",
+        "sigma_y",
         "weight",
         "sigma_multi",
         "weight_multi",
@@ -91,7 +95,9 @@ class ParticlePencilBeamKernel(PyRadPlanBaseModel):
 
         return v
 
-    @field_validator("idd", "sigma", "sigma_1", "sigma_2", "let", mode="after")
+    @field_validator(
+        "idd", "sigma", "sigma_1", "sigma_2", "sigma_x", "sigma_y", "let", mode="after"
+    )
     @classmethod
     def validate_kernel_lengths(
         cls, v: Union[np.ndarray, None], info: ValidationInfo

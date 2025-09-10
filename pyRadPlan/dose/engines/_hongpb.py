@@ -8,7 +8,7 @@ class ParticleHongPencilBeamEngine(ParticlePencilBeamEngineAbstract):
     # constants
     short_name = "HongPB"
     name = "Hong Particle Pencil-Beam"
-    possible_radiation_modes = ["protons", "helium", "carbon"]
+    possible_radiation_modes = ["protons", "helium", "carbon", "VHEE"]
 
     # private methods
     def _calc_particle_bixel(self, bixel):
@@ -46,6 +46,21 @@ class ParticleHongPencilBeamEngine(ParticlePencilBeamEngineAbstract):
                 ),
                 axis=1,
             )
+        elif self.lateral_model == "singleXY":
+            # Extract squared distances in the two lateral axes
+            x_sq = bixel["lat_dists"][:, 0] ** 2
+            y_sq = bixel["lat_dists"][:, 1] ** 2
+
+            sigma_sq_x = kernels["sigma_x"] ** 2 + bixel["sigma_ini_sq"]
+            sigma_sq_y = kernels["sigma_y"] ** 2 + bixel["sigma_ini_sq"]
+            sigma_x = np.sqrt(sigma_sq_x)
+            sigma_y = np.sqrt(sigma_sq_y)
+
+            # Anisotropic 2D Gaussian
+            lateral = np.exp(-(x_sq / (2 * sigma_sq_x) + y_sq / (2 * sigma_sq_y))) / (
+                2 * np.pi * sigma_x * sigma_y
+            )
+
         else:
             raise ValueError("Invalid Lateral Model")
 

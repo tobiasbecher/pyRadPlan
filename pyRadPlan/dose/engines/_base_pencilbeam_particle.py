@@ -52,7 +52,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
     calc_let: bool
     calc_bio_dose: bool
     air_offset_correction: bool
-    lateral_model: Literal["auto", "single", "double", "multi", "fastest"]
+    lateral_model: Literal["auto", "single", "double", "multi", "fastest", "singleXY"]
     cut_off_method: Literal["integral", "relative"]
 
     def __init__(self, pln):
@@ -81,6 +81,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
             "single": self._machine.has_single_gaussian_kernel,
             "double": self._machine.has_double_gaussian_kernel,
             "multi": self._machine.has_multi_gaussian_kernel,
+            "singleXY": self._machine.has_focused_gaussian_kernel,
         }
 
         # First we validate the users choice
@@ -204,8 +205,6 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         # indices to be used) after cutoff. Storing these allows us to
         # use indexing for performance and avoid too many copies
         self._get_bixel_indices_on_ray(bixel, curr_ray)
-        if "ix" not in bixel or bixel["ix"].size == 0:
-            return bixel
 
         # Get quantities 1:1 from ray. Here we trust Python's memory
         # management to not copy the arrays until they are modified.
@@ -213,6 +212,9 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         # bixel computation
         bixel["radial_dist_sq"] = curr_ray["radial_dist_sq"][bixel["sub_ix"]]
         bixel["rad_depths"] = curr_ray["rad_depths"][bixel["sub_ix"]]
+        # Propagate lateral distances if available (needed for singleXY focused model)
+        if "lat_dists" in curr_ray:
+            bixel["lat_dists"] = curr_ray["lat_dists"][bixel["sub_ix"]]
         # TODO:
         # if self.calc_bio_dose:
         #     bixel["v_tissue_index"] = curr_ray["v_tissue_index"][bixel["sub_ix"]]
@@ -238,6 +240,9 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         # Lateral Kernel Model
         if self.lateral_model == "single":
             used_kernels["sigma"] = kernel.sigma
+        elif self.lateral_model == "singleXY":
+            used_kernels["sigma_x"] = kernel.sigma_x
+            used_kernels["sigma_y"] = kernel.sigma_y
         elif self.lateral_model == "double":
             used_kernels["sigma_1"] = kernel.sigma_1
             used_kernels["sigma_2"] = kernel.sigma_2
@@ -276,7 +281,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         lateral_ray_cutoff = self._get_lateral_distance_from_dose_cutoff_on_ray(ray)
 
         # Ray tracing for beam i and ray j
-        ix, radial_dist_sq, _, _ = self.calc_geo_dists(
+        ix, radial_dist_sq, lat_dists, _ = self.calc_geo_dists(
             beam_info["bev_coords"],
             ray["source_point_bev"],
             ray["target_point_bev"],
@@ -292,6 +297,8 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         ray["radial_dist_sq"] = [
             radial_dist_sq[beam_ix[ix]] for beam_ix in beam_info["valid_coords"]
         ]
+        if lat_dists is not None:
+            ray["lat_dists"] = [lat_dists[beam_ix[ix]] for beam_ix in beam_info["valid_coords"]]
 
         ray["valid_coords_all"] = np.any(np.vstack(ray["valid_coords"]), axis=1)
 
@@ -590,6 +597,39 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         dr = np.diff(v_x)
         radial_dist_sq = r_mid**2
 
+        # Handle different lateral models for integration
+        if self.lateral_model == "singleXY":
+            v_theta = np.linspace(0, 2 * np.pi, 361)
+            v_theta = v_theta[:-1]  # remove last to avoid duplication at 2*pi
+            # angular bin size
+            d_theta_angle = (v_theta[1] - v_theta[0]) * np.ones_like(v_theta)
+
+            # Store original radial mid vector length before expansion
+            n_radial_bins = r_mid.size  # equals numel(vR)-1 in MATLAB
+            n_angles = v_theta.size
+
+            r_mid_mesh, theta_mesh = np.meshgrid(r_mid, v_theta)
+
+            # Flatten r_mid_mesh
+            r_mid = r_mid_mesh.ravel(order="F")
+            radial_dist_sq = r_mid**2
+
+            # Expand dr /repeat
+            dr = np.repeat(dr, n_angles)
+
+            # Flatten theta
+            theta = theta_mesh.ravel(order="F")
+
+            # Expand d_theta: replicate angular step sequence for each radial bin
+            d_theta = np.tile(d_theta_angle, n_radial_bins)
+
+            # Lateral distances per sample point (vector of radii times unit vectors)
+            sqrt_r2 = np.sqrt(radial_dist_sq)
+            lat_dists = sqrt_r2[:, np.newaxis] * np.column_stack((np.cos(theta), np.sin(theta)))
+        else:
+            lat_dists = np.tile(np.sqrt(radial_dist_sq / 2)[:, np.newaxis], (1, 2))
+            d_theta = 2 * np.pi
+
         # Number of depth points for which a lateral cutoff is determined
         num_depth_val = 35
 
@@ -753,6 +793,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
                     "energy_ix": energy_ix,
                     "kernel": base_kernel,
                     "radial_dist_sq": radial_dist_sq,
+                    "lat_dists": lat_dists,
                     "sigma_ini_sq": largest_sigma_sq4unique_energies[
                         cnt - 1
                     ],  # TODO: check if this result is correct (rounded but may be right)
@@ -770,9 +811,8 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
                 self._calc_particle_bixel(bixel)
                 dose_r = bixel["physical_dose"]
 
-                # Do an integration check that the radial dose integrates to the tabulated
-                # integrated depth dose
-                cum_area = np.cumsum(2 * np.pi * r_mid * dose_r * dr)
+                cum_area = np.cumsum(r_mid * dose_r * dr * d_theta)
+
                 relative_tolerance = 0.5  # in [%]
 
                 if abs((cum_area[-1] / idd[j]) - 1) * 100 > relative_tolerance:
