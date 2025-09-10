@@ -43,7 +43,7 @@ ct, cst = load_tg119()
 # %%
 # Create a plan object - (VHEE | Generic) => FermiEyges
 pln = IonPlan(radiation_mode="VHEE", machine="Generic")  # Alternative: Focused
-pln.prop_opt = {"solver": "ipopt"}  # USE IPOPT!
+pln.prop_opt = {"solver": "scipy"}  # better use IPOPT from ipyopt!
 
 # Some specific Settings for VHEE
 pln.prop_stf = {
@@ -54,7 +54,7 @@ pln.prop_stf = {
 }
 
 # Setting the dose grid resolution
-pln.prop_dose_calc = {"dose_grid": {"resolution": [3.0, 3.0, 3.0]}}
+pln.prop_dose_calc = {"dose_grid": {"resolution": [5.0, 5.0, 5.0]}}
 
 # Generate Steering Geometry ("stf")
 stf = generate_stf(ct, cst, pln)
@@ -62,6 +62,7 @@ stf = generate_stf(ct, cst, pln)
 # Calculate Dose Influence Matrix ("dij")
 dij = calc_dose_influence(ct, cst, stf, pln)
 
+# %% [markdown]
 # Optimization
 cst.vois[0].objectives = [SquaredOverdosing(priority=10.0, d_max=1.0)]  # OAR
 cst.vois[1].objectives = [SquaredDeviation(priority=100.0, d_ref=3.0)]  # Target
@@ -75,7 +76,6 @@ result = dij.compute_result_ct_grid(fluence)
 
 # %% [markdown]
 # Visualize the results
-# %%
 # Choose a slice to visualize
 view_slice = int(np.round(ct.size[2] / 2))
 
@@ -88,3 +88,5 @@ plot_slice(
     plane="axial",
     overlay_unit="Gy",
 )
+
+# %%
