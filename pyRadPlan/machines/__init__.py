@@ -11,13 +11,14 @@ from .particles import (
     ParticlePencilBeamKernel,
     LateralCutOff,
     IonAccelerator,
+    VHEEAccelerator,
 )
 from ._validate import validate_machine
 from ._load import load_from_name, load_machine_from_mat, load_machine
 
 register_machine(PhotonLINAC)
 register_machine(IonAccelerator)
-# register_machine(VHEEAccelerator)
+register_machine(VHEEAccelerator)
 
 __all__ = [
     "Machine",
