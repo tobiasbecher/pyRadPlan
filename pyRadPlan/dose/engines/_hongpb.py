@@ -1,7 +1,7 @@
 from typing import cast
 import numpy as np
 from ._base_pencilbeam_particle import ParticlePencilBeamEngineAbstract
-from pyRadPlan.machines import IonPencilBeamKernel
+from pyRadPlan.machines import ParticlePencilBeamKernel
 
 
 class ParticleHongPencilBeamEngine(ParticlePencilBeamEngineAbstract):
@@ -14,7 +14,7 @@ class ParticleHongPencilBeamEngine(ParticlePencilBeamEngineAbstract):
     def _calc_particle_bixel(self, bixel):
         kernels = self._interpolate_kernels_in_depth(bixel)
 
-        pb_kernel = cast(IonPencilBeamKernel, bixel["kernel"])
+        pb_kernel = cast(ParticlePencilBeamKernel, bixel["kernel"])
 
         # Lateral Component
         if self.lateral_model == "single":

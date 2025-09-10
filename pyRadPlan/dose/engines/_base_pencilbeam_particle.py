@@ -13,7 +13,11 @@ from scipy.integrate import cumulative_trapezoid
 
 from pyRadPlan.ct import CT
 from pyRadPlan.stf import SteeringInformation
-from pyRadPlan.machines import IonAccelerator, IonPencilBeamKernel, LateralCutOff
+from pyRadPlan.machines.particles import (
+    ParticleAccelerator,
+    ParticlePencilBeamKernel,
+    LateralCutOff,
+)
 from pyRadPlan.cst import StructureSet
 from ._base_pencilbeam import PencilBeamEngineAbstract
 
@@ -183,7 +187,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         bixel["energy_ix"] = energy_ix
 
         # Get the kernel for the current energy
-        tmp_machine = cast(IonAccelerator, self._machine)
+        tmp_machine = cast(ParticleAccelerator, self._machine)
         bixel["kernel"] = tmp_machine.get_kernel_by_index(energy_ix)
 
         bixel["range_shifter"] = curr_ray["beamlets"][k]["range_shifter"]
@@ -218,7 +222,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         return bixel
 
     def _interpolate_kernels_in_depth(self, bixel):
-        kernel = cast(IonPencilBeamKernel, bixel["kernel"])
+        kernel = cast(ParticlePencilBeamKernel, bixel["kernel"])
         depths = kernel.depths
 
         # Add potential offset
@@ -299,7 +303,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         ]
 
     def _get_bixel_indices_on_ray(self, curr_bixel, curr_ray):
-        kernel = cast(IonPencilBeamKernel, curr_bixel["kernel"])
+        kernel = cast(ParticlePencilBeamKernel, curr_bixel["kernel"])
 
         # Create offset vector to account for additional offsets modeled in the base data
         # and a potential range shifter
@@ -437,7 +441,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
         beam_info = super()._init_beam(dij, ct, cst, stf, i)
 
         # Sanity Check
-        assert isinstance(self._machine, IonAccelerator)
+        assert isinstance(self._machine, ParticleAccelerator)
 
         # Assuming currBeam is part of beam_info
         curr_beam = beam_info["beam"]
@@ -557,7 +561,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
     def _calc_lateral_particle_cut_off(self, cut_off_level, stf_element):
         # Sanity Checks
-        assert isinstance(self._machine, IonAccelerator)
+        assert isinstance(self._machine, ParticleAccelerator)
 
         if len(stf_element) > 1 and not isinstance(stf_element, dict):
             raise ValueError(
@@ -798,7 +802,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
     def _init_ray(self, beam_info: dict[str], j: int) -> dict[str]:
         ray = super()._init_ray(beam_info, j)
 
-        self._machine = cast(IonAccelerator, self._machine)
+        self._machine = cast(ParticleAccelerator, self._machine)
 
         # Calculate initial sigma for all bixels on the current ray
         # TODO: here [ray] since calc_sigma_ini takes multiple rays (why?)
@@ -853,7 +857,7 @@ class ParticlePencilBeamEngineAbstract(PencilBeamEngineAbstract):
 
     def _get_lateral_distance_from_dose_cutoff_on_ray(self, ray: dict):
         # Find index of maximum used energy (round to keV for numerical reasons)
-        self._machine = cast(IonAccelerator, self._machine)
+        self._machine = cast(ParticleAccelerator, self._machine)
 
         max_energy = max([beamlet["energy"] for beamlet in ray["beamlets"]])
         kernel = self._machine.get_kernel_by_energy(max_energy)
