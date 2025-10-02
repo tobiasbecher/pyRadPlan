@@ -4,7 +4,7 @@ name: Sphinx to GitHub pages
 on:
   push:
     branches:
-      - devops/github_pages
+      - main
 
   workflow_dispatch:
 
