@@ -1,0 +1,1111 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyRadPlan.dose.engines package &#8212; pyRadPlan 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/dose.engines';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyRadPlan.dose" href="dose.html" />
+    <link rel="prev" title="pyRadPlan.scenarios" href="scenarios.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyRadPlan 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Api documentation:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ct.html">ct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stf.html">stf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cst.html">cst</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pln.html">plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dij.html">Dij</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">optimization</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="machines.html">Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">pyRadPlan.core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">pyRadPlan.util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">pyRadPlan.io package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="raytracer.html">pyRadPlan.raytracer package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenarios.html">pyRadPlan.scenarios</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pyRadPlan.dose.engines package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dose.html">pyRadPlan.dose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">pyRadPlan.geometry package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">api documentation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyRadPlan.dose.engines package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pyradplan-dose-engines-package">
+<h1>pyRadPlan.dose.engines package<a class="headerlink" href="#pyradplan-dose-engines-package" title="Link to this heading">#</a></h1>
+<section id="module-pyRadPlan.dose.engines">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyRadPlan.dose.engines" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoseEngineBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_base.html#DoseEngineBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract Interface for all dose engines.</p>
+<p>All dose engines should inherit from this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pln</strong> (<a class="reference internal" href="pln.html#pyRadPlan.plan.Plan" title="pyRadPlan.plan.Plan"><em>Plan</em></a>) – The Plan object to assign properties from.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.short_name">
+<span class="sig-name descname"><span class="pre">short_name</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.short_name" title="Link to this definition">#</a></dt>
+<dd><p>The short name of the dose engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.name" title="Link to this definition">#</a></dt>
+<dd><p>The name of the dose engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.possible_radiation_modes">
+<span class="sig-name descname"><span class="pre">possible_radiation_modes</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.possible_radiation_modes" title="Link to this definition">#</a></dt>
+<dd><p>The possible radiation modes for the dose engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.is_dose_engine">
+<span class="sig-name descname"><span class="pre">is_dose_engine</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.is_dose_engine" title="Link to this definition">#</a></dt>
+<dd><p>Helper class variable telling you that this is a dose engine</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool = True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.select_voxels_in_scenarios">
+<span class="sig-name descname"><span class="pre">select_voxels_in_scenarios</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.select_voxels_in_scenarios" title="Link to this definition">#</a></dt>
+<dd><p>Whether to select voxels in scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.mult_scen">
+<span class="sig-name descname"><span class="pre">mult_scen</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.mult_scen" title="Link to this definition">#</a></dt>
+<dd><p>The scenario model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[str, <a class="reference internal" href="scenarios.html#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios.ScenarioModel">ScenarioModel</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.bio_model">
+<span class="sig-name descname"><span class="pre">bio_model</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.bio_model" title="Link to this definition">#</a></dt>
+<dd><p>The biological model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[str, dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.dose_grid">
+<span class="sig-name descname"><span class="pre">dose_grid</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.dose_grid" title="Link to this definition">#</a></dt>
+<dd><p>The dose grid to use (struct with at least doseGrid.resolution.x/y/z set).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[<a class="reference internal" href="core.html#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid">Grid</a>,dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyRadPlan.dose.engines.DoseEngineBase.assign_properties_from_pln" title="pyRadPlan.dose.engines.DoseEngineBase.assign_properties_from_pln"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_properties_from_pln</span></code></a>(pln[, ...])</p></td>
+<td><p>Assign properties from a Plan object to the Dose Engine.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_forward" title="pyRadPlan.dose.engines.DoseEngineBase.calc_dose_forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_dose_forward</span></code></a>(ct, cst, stf, w)</p></td>
+<td><p>Perform a forward dose calculation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_influence" title="pyRadPlan.dose.engines.DoseEngineBase.calc_dose_influence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_dose_influence</span></code></a>(ct, cst, stf)</p></td>
+<td><p>Calculate the set of dose/quantity influence matrices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyRadPlan.dose.engines.DoseEngineBase.is_available" title="pyRadPlan.dose.engines.DoseEngineBase.is_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_available</span></code></a>(pln, machine)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyRadPlan.dose.engines.DoseEngineBase.resize_cst_to_grid" title="pyRadPlan.dose.engines.DoseEngineBase.resize_cst_to_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resize_cst_to_grid</span></code></a>(cst, dij, new_ct)</p></td>
+<td><p>Resize the CST to the dose cube resolution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyRadPlan.dose.engines.DoseEngineBase.select_voxels_from_cst" title="pyRadPlan.dose.engines.DoseEngineBase.select_voxels_from_cst"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_voxels_from_cst</span></code></a>(cst, dose_grid, ...)</p></td>
+<td><p>Get mask of the voxels (on dose grid).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyRadPlan.dose.engines.DoseEngineBase.set_overlap_priorities" title="pyRadPlan.dose.engines.DoseEngineBase.set_overlap_priorities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_overlap_priorities</span></code></a>(cst[, ct_dim])</p></td>
+<td><p>Set overlap priorities for the structures in the CST.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>load_machine</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.assign_properties_from_pln">
+<span class="sig-name descname"><span class="pre">assign_properties_from_pln</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn_when_property_changed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_base.html#DoseEngineBase.assign_properties_from_pln"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.assign_properties_from_pln" title="Link to this definition">#</a></dt>
+<dd><p>Assign properties from a Plan object to the Dose Engine.</p>
+<p>This includes the Scenario Model and the Biological Model, and any
+other properties that
+can be stored in the prop_dose_calc dictionary within the Plan object.
+This function will check if a property exists for the dose engine and,
+if yes, set it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pln</strong> (<a class="reference internal" href="pln.html#pyRadPlan.plan.Plan" title="pyRadPlan.plan.Plan"><em>Plan</em></a>) – The Plan object to assign properties from.</p></li>
+<li><p><strong>warn_when_property_changed</strong> (<em>bool</em>) – Whether to warn when properties are changed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">bio_model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><span class="pre">]</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.calc_dose_forward">
+<span class="sig-name descname"><span class="pre">calc_dose_forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_base.html#DoseEngineBase.calc_dose_forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_forward" title="Link to this definition">#</a></dt>
+<dd><p>Perform a forward dose calculation.</p>
+<p>Compute a dose cube by directly applying a set of weights
+during dose calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ct</strong> (<a class="reference internal" href="ct.html#pyRadPlan.ct.CT" title="pyRadPlan.ct.CT"><em>CT</em></a>) – The CT scan data.</p></li>
+<li><p><strong>cst</strong> (<a class="reference internal" href="cst.html#pyRadPlan.cst.StructureSet" title="pyRadPlan.cst.StructureSet"><em>StructureSet</em></a>) – The structure set containing volumes of interest (VOIs).</p></li>
+<li><p><strong>stf</strong> (<a class="reference internal" href="stf.html#pyRadPlan.stf.SteeringInformation" title="pyRadPlan.stf.SteeringInformation"><em>SteeringInformation</em></a>) – The steering information containing beam configurations.</p></li>
+<li><p><strong>w</strong> (<em>np.ndarray</em>) – The weights to apply during dose calculation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The dose information</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="dij.html#pyRadPlan.dij.Dij" title="pyRadPlan.dij.Dij">Dij</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>pyRadPlan handles the forward dose calculation by setting a switch in
+the dose engine (_calc_dose_direct) to True. This facilitates reusing
+of algorithms in both forward and influence matrix calculations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.calc_dose_influence">
+<span class="sig-name descname"><span class="pre">calc_dose_influence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_base.html#DoseEngineBase.calc_dose_influence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_influence" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the set of dose/quantity influence matrices.</p>
+<p>These are the matrices that map a fluence vector to a dose/quantity
+distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ct</strong> (<a class="reference internal" href="ct.html#pyRadPlan.ct.CT" title="pyRadPlan.ct.CT"><em>CT</em></a>) – The CT scan data.</p></li>
+<li><p><strong>cst</strong> (<a class="reference internal" href="cst.html#pyRadPlan.cst.StructureSet" title="pyRadPlan.cst.StructureSet"><em>StructureSet</em></a>) – The structure set containing volumes of interest (VOIs).</p></li>
+<li><p><strong>stf</strong> (<a class="reference internal" href="stf.html#pyRadPlan.stf.SteeringInformation" title="pyRadPlan.stf.SteeringInformation"><em>SteeringInformation</em></a>) – The steering information containing beam configurations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The dose influence matrix collection</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="dij.html#pyRadPlan.dij.Dij" title="pyRadPlan.dij.Dij">Dij</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>pyRadPlan handles the forward dose calculation by setting a switch in
+the dose engine (_calc_dose_direct) to True. This facilitates reusing
+of algorithms in both forward and influence matrix calculations.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">dose_grid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code><span class="pre">[</span><a class="reference internal" href="core.html#pyRadPlan.core.Grid" title="pyRadPlan.core._grids.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><span class="pre">]</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.is_available">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">machine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_base.html#DoseEngineBase.is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.is_available" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">is_dose_engine</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.load_machine">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_machine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radiation_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">machine_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_base.html#DoseEngineBase.load_machine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.load_machine" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">mult_scen</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">,</span> <a class="reference internal" href="scenarios.html#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios._base.ScenarioModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScenarioModel</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">possible_radiation_modes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">NotImplemented</span></em><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.resize_cst_to_grid">
+<span class="sig-name descname"><span class="pre">resize_cst_to_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dij</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_ct</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_base.html#DoseEngineBase.resize_cst_to_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.resize_cst_to_grid" title="Link to this definition">#</a></dt>
+<dd><p>Resize the CST to the dose cube resolution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cst.html#pyRadPlan.cst.StructureSet" title="pyRadPlan.cst._cst.StructureSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureSet</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.select_voxels_from_cst">
+<span class="sig-name descname"><span class="pre">select_voxels_from_cst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dose_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection_mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_base.html#DoseEngineBase.select_voxels_from_cst"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.select_voxels_from_cst" title="Link to this definition">#</a></dt>
+<dd><p>Get mask of the voxels (on dose grid).</p>
+<p>Gets the mask from the cst structures specified by selection_mode.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">select_voxels_in_scenarios</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></em><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.DoseEngineBase.set_overlap_priorities">
+<span class="sig-name descname"><span class="pre">set_overlap_priorities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ct_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_base.html#DoseEngineBase.set_overlap_priorities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.DoseEngineBase.set_overlap_priorities" title="Link to this definition">#</a></dt>
+<dd><p>Set overlap priorities for the structures in the CST.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cst.html#pyRadPlan.cst.StructureSet" title="pyRadPlan.cst._cst.StructureSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureSet</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">short_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.ParticleHongPencilBeamEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParticleHongPencilBeamEngine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_hongpb.html#ParticleHongPencilBeamEngine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ParticlePencilBeamEngineAbstract</span></code></p>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_properties_from_pln</span></code>(pln[, ...])</p></td>
+<td><p>Assign properties from a Plan object to the Dose Engine.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_dose_forward</span></code>(ct, cst, stf, w)</p></td>
+<td><p>Perform a forward dose calculation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_dose_influence</span></code>(ct, cst, stf)</p></td>
+<td><p>Calculate the set of dose/quantity influence matrices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_geo_dists</span></code>(rot_coords_bev, ...)</p></td>
+<td><p>Calculate geometric distances for dose calculation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resize_cst_to_grid</span></code>(cst, dij, new_ct)</p></td>
+<td><p>Resize the CST to the dose cube resolution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">round2</span></code>(a, b)</p></td>
+<td><p>Round a number stably for energy selection (helper function).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_voxels_from_cst</span></code>(cst, dose_grid, ...)</p></td>
+<td><p>Get mask of the voxels (on dose grid).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_overlap_priorities</span></code>(cst[, ct_dim])</p></td>
+<td><p>Set overlap priorities for the structures in the CST.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>is_available</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>load_machine</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.is_available">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">machine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_hongpb.html#ParticleHongPencilBeamEngine.is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.is_available" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[str]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Hong</span> <span class="pre">Particle</span> <span class="pre">Pencil-Beam'</span></em><a class="headerlink" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.possible_radiation_modes">
+<span class="sig-name descname"><span class="pre">possible_radiation_modes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[list[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['protons',</span> <span class="pre">'helium',</span> <span class="pre">'carbon']</span></em><a class="headerlink" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.possible_radiation_modes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.short_name">
+<span class="sig-name descname"><span class="pre">short_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[str]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'HongPB'</span></em><a class="headerlink" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.short_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PhotonPencilBeamSVDEngine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_svdpb.html#PhotonPencilBeamSVDEngine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PencilBeamEngineAbstract</span></code></p>
+<p>Implementation of a pencil beam dose calculation engine for photons.</p>
+<p>The implementation is based on the Singular-value decomposition (SVD)
+method by Bortfeld, Schlegel &amp; Rhein (1993).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pln</strong> (<a class="reference internal" href="pln.html#pyRadPlan.plan.PhotonPlan" title="pyRadPlan.plan.PhotonPlan"><em>PhotonPlan</em></a>) – A photon plan object.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.use_custom_primary_photon_fluence">
+<span class="sig-name descname"><span class="pre">use_custom_primary_photon_fluence</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.use_custom_primary_photon_fluence" title="Link to this definition">#</a></dt>
+<dd><p>Use custom primary photon fluence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.kernel_cutoff">
+<span class="sig-name descname"><span class="pre">kernel_cutoff</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.kernel_cutoff" title="Link to this definition">#</a></dt>
+<dd><p>Kernel cutoff.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.random_seed">
+<span class="sig-name descname"><span class="pre">random_seed</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.random_seed" title="Link to this definition">#</a></dt>
+<dd><p>Random seed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.int_conv_resolution">
+<span class="sig-name descname"><span class="pre">int_conv_resolution</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.int_conv_resolution" title="Link to this definition">#</a></dt>
+<dd><p>Intensity convolution resolution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.enable_dij_sampling">
+<span class="sig-name descname"><span class="pre">enable_dij_sampling</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.enable_dij_sampling" title="Link to this definition">#</a></dt>
+<dd><p>Enable Dij sampling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.dij_sampling">
+<span class="sig-name descname"><span class="pre">dij_sampling</span></span><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.dij_sampling" title="Link to this definition">#</a></dt>
+<dd><p>Dij sampling configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DijSamplingConfig</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_properties_from_pln</span></code>(pln[, ...])</p></td>
+<td><p>Assign properties from a Plan object to the Dose Engine.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_dose_forward</span></code>(ct, cst, stf, w)</p></td>
+<td><p>Perform a forward dose calculation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_dose_influence</span></code>(ct, cst, stf)</p></td>
+<td><p>Calculate the set of dose/quantity influence matrices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_geo_dists</span></code>(rot_coords_bev, ...)</p></td>
+<td><p>Calculate geometric distances for dose calculation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_available</span></code>(pln, machine)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resize_cst_to_grid</span></code>(cst, dij, new_ct)</p></td>
+<td><p>Resize the CST to the dose cube resolution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_voxels_from_cst</span></code>(cst, dose_grid, ...)</p></td>
+<td><p>Get mask of the voxels (on dose grid).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_overlap_priorities</span></code>(cst[, ct_dim])</p></td>
+<td><p>Set overlap priorities for the structures in the CST.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>load_machine</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">dij_sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">DijSamplingConfig</span></code></em><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">enable_dij_sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">int_conv_resolution</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.5</span></em><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">kernel_cutoff</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#id11" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[str]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SVD</span> <span class="pre">Pencil</span> <span class="pre">Beam'</span></em><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.possible_radiation_modes">
+<span class="sig-name descname"><span class="pre">possible_radiation_modes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[list[str]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['photons']</span></em><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.possible_radiation_modes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">random_seed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id12" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.short_name">
+<span class="sig-name descname"><span class="pre">short_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[str]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SVDPB'</span></em><a class="headerlink" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.short_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">use_custom_primary_photon_fluence</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></em><a class="headerlink" href="#id13" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.get_available_engines">
+<span class="sig-name descname"><span class="pre">get_available_engines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_factory.html#get_available_engines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.get_available_engines" title="Link to this definition">#</a></dt>
+<dd><p>Get a list of available engines based on the plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pln</strong> (<em>Union</em><em>[</em><a class="reference internal" href="pln.html#pyRadPlan.plan.Plan" title="pyRadPlan.plan.Plan"><em>Plan</em></a><em>,</em><em>dict</em><em>]</em>) – A Plan object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of available engines.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.get_engine">
+<span class="sig-name descname"><span class="pre">get_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_factory.html#get_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.get_engine" title="Link to this definition">#</a></dt>
+<dd><p>Factory function to get the appropriate engine based on the plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pln</strong> (<a class="reference internal" href="pln.html#pyRadPlan.plan.Plan" title="pyRadPlan.plan.Plan"><em>Plan</em></a>) – A Plan object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Dose Engine object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Engine</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.dose.engines.register_engine">
+<span class="sig-name descname"><span class="pre">register_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine_cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/dose/engines/_factory.html#register_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.dose.engines.register_engine" title="Link to this definition">#</a></dt>
+<dd><p>Register a new engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>engine_cls</strong> (<em>type</em>) – A Dose Engine class.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="scenarios.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyRadPlan.scenarios</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dose.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyRadPlan.dose</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyRadPlan.dose.engines">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.short_name"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.short_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.name"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.possible_radiation_modes"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.possible_radiation_modes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.is_dose_engine"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.is_dose_engine</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.select_voxels_in_scenarios"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.select_voxels_in_scenarios</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.mult_scen"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.mult_scen</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.bio_model"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.bio_model</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.dose_grid"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.dose_grid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.assign_properties_from_pln"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.assign_properties_from_pln()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.bio_model</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_forward"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.calc_dose_forward()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_influence"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.calc_dose_influence()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.dose_grid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.is_available"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.is_available()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.is_dose_engine</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.load_machine"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.load_machine()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.mult_scen</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.possible_radiation_modes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.resize_cst_to_grid"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.resize_cst_to_grid()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.select_voxels_from_cst"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.select_voxels_from_cst()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.select_voxels_in_scenarios</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.DoseEngineBase.set_overlap_priorities"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.set_overlap_priorities()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">DoseEngineBase.short_name</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine"><code class="docutils literal notranslate"><span class="pre">ParticleHongPencilBeamEngine</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.is_available"><code class="docutils literal notranslate"><span class="pre">ParticleHongPencilBeamEngine.is_available()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.name"><code class="docutils literal notranslate"><span class="pre">ParticleHongPencilBeamEngine.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.possible_radiation_modes"><code class="docutils literal notranslate"><span class="pre">ParticleHongPencilBeamEngine.possible_radiation_modes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.short_name"><code class="docutils literal notranslate"><span class="pre">ParticleHongPencilBeamEngine.short_name</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.use_custom_primary_photon_fluence"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.use_custom_primary_photon_fluence</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.kernel_cutoff"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.kernel_cutoff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.random_seed"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.random_seed</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.int_conv_resolution"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.int_conv_resolution</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.enable_dij_sampling"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.enable_dij_sampling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.dij_sampling"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.dij_sampling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.dij_sampling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.enable_dij_sampling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.int_conv_resolution</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.kernel_cutoff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.name"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.possible_radiation_modes"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.possible_radiation_modes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.random_seed</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.short_name"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.short_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">PhotonPencilBeamSVDEngine.use_custom_primary_photon_fluence</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.get_available_engines"><code class="docutils literal notranslate"><span class="pre">get_available_engines()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.get_engine"><code class="docutils literal notranslate"><span class="pre">get_engine()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.dose.engines.register_engine"><code class="docutils literal notranslate"><span class="pre">register_engine()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/dose.engines.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, e0404.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

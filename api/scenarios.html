@@ -1,0 +1,1364 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyRadPlan.scenarios &#8212; pyRadPlan 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/scenarios';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyRadPlan.dose.engines package" href="dose.engines.html" />
+    <link rel="prev" title="pyRadPlan.raytracer package" href="raytracer.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyRadPlan 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Api documentation:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ct.html">ct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stf.html">stf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cst.html">cst</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pln.html">plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dij.html">Dij</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">optimization</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="machines.html">Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">pyRadPlan.core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">pyRadPlan.util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">pyRadPlan.io package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="raytracer.html">pyRadPlan.raytracer package</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pyRadPlan.scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dose.engines.html">pyRadPlan.dose.engines package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dose.html">pyRadPlan.dose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">pyRadPlan.geometry package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">api documentation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyRadPlan.scenarios</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pyradplan-scenarios">
+<h1>pyRadPlan.scenarios<a class="headerlink" href="#pyradplan-scenarios" title="Link to this heading">#</a></h1>
+<section id="base-class">
+<h2>Base class<a class="headerlink" href="#base-class" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ScenarioModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_base.html#ScenarioModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyRadPlan.core.datamodel.PyRadPlanBaseModel" title="pyRadPlan.core.datamodel.PyRadPlanBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a></p>
+<p>Abstract base class for scenario models.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.range_rel_sd">
+<span class="sig-name descname"><span class="pre">range_rel_sd</span></span><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.range_rel_sd" title="Link to this definition">#</a></dt>
+<dd><p>The relative standard deviation for range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.range_abs_sd">
+<span class="sig-name descname"><span class="pre">range_abs_sd</span></span><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.range_abs_sd" title="Link to this definition">#</a></dt>
+<dd><p>The absolute standard deviation for range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.shift_sd">
+<span class="sig-name descname"><span class="pre">shift_sd</span></span><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.shift_sd" title="Link to this definition">#</a></dt>
+<dd><p>The standard deviation for shift in x, y, and z directions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.wc_sigma">
+<span class="sig-name descname"><span class="pre">wc_sigma</span></span><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.wc_sigma" title="Link to this definition">#</a></dt>
+<dd><p>The sigma value for the wc_factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.ct_scen_prob">
+<span class="sig-name descname"><span class="pre">ct_scen_prob</span></span><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.ct_scen_prob" title="Link to this definition">#</a></dt>
+<dd><p>The probability of each CT scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[Tuple[int,float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.update_scenarios">
+<span class="sig-name descname"><span class="pre">update_scenarios</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">np.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_base.html#ScenarioModel.update_scenarios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.update_scenarios" title="Link to this definition">#</a></dt>
+<dd><p>Abstract method to update scenarios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.extract_single_scenario">
+<span class="sig-name descname"><span class="pre">extract_single_scenario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scen_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios.ScenarioModel"><span class="pre">ScenarioModel</span></a></span></span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_base.html#ScenarioModel.extract_single_scenario"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.extract_single_scenario" title="Link to this definition">#</a></dt>
+<dd><p>Extracts a single scenario based on its number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.list_all_scenarios">
+<span class="sig-name descname"><span class="pre">list_all_scenarios</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_base.html#ScenarioModel.list_all_scenarios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.list_all_scenarios" title="Link to this definition">#</a></dt>
+<dd><p>Lists all scenarios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.sub2scenIx">
+<span class="sig-name descname"><span class="pre">sub2scenIx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctScen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_scen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_shift_scen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.sub2scenIx" title="Link to this definition">#</a></dt>
+<dd><p>Converts CT scenario, shift scenario, and range shift scenario to scenario index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.scenNum">
+<span class="sig-name descname"><span class="pre">scenNum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fullScenIx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.scenNum" title="Link to this definition">#</a></dt>
+<dd><p>Converts full scenario index to scenario number.</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.abs_range_shift" title="pyRadPlan.scenarios.ScenarioModel.abs_range_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abs_range_shift</span></code></a></dt><dd><p>Absolute range shift value.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.ct_scen_ix" title="pyRadPlan.scenarios.ScenarioModel.ct_scen_ix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ct_scen_ix</span></code></a></dt><dd><p>CT scenario indices of the used CT scenarios.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.iso_shift" title="pyRadPlan.scenarios.ScenarioModel.iso_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iso_shift</span></code></a></dt><dd><p>Isocenter shift values.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.linear_mask" title="pyRadPlan.scenarios.ScenarioModel.linear_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_mask</span></code></a></dt><dd><p>Linear mask matrix for scenario selection.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.max_abs_range_shift" title="pyRadPlan.scenarios.ScenarioModel.max_abs_range_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_abs_range_shift</span></code></a></dt><dd><p>Maximum absolute range shift value.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.max_rel_range_shift" title="pyRadPlan.scenarios.ScenarioModel.max_rel_range_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_rel_range_shift</span></code></a></dt><dd><p>Maximum relative range shift value.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_extra</span></code></dt><dd><p>Get extra fields set during validation.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_fields_set</span></code></dt><dd><p>Returns the set of fields that have been explicitly set on this model instance.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.num_of_available_ct_scen" title="pyRadPlan.scenarios.ScenarioModel.num_of_available_ct_scen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_of_available_ct_scen</span></code></a></dt><dd><p>Number of totally available CT scenarios in the CT.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.num_of_ct_scen" title="pyRadPlan.scenarios.ScenarioModel.num_of_ct_scen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_of_ct_scen</span></code></a></dt><dd><p>Number of CT scenarios in the model.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.rel_range_shift" title="pyRadPlan.scenarios.ScenarioModel.rel_range_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rel_range_shift</span></code></a></dt><dd><p>Relative range shift value.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.scen_for_prob" title="pyRadPlan.scenarios.ScenarioModel.scen_for_prob"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_for_prob</span></code></a></dt><dd><p>Scenarios organized for probability calculation.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.scen_mask" title="pyRadPlan.scenarios.ScenarioModel.scen_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_mask</span></code></a></dt><dd><p>Scenarios mask matrix describing how scenarios should be stored.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.scen_prob" title="pyRadPlan.scenarios.ScenarioModel.scen_prob"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_prob</span></code></a></dt><dd><p>Scenarios probability matrix.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.scen_weight" title="pyRadPlan.scenarios.ScenarioModel.scen_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_weight</span></code></a></dt><dd><p>Scenarios weight matrix.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.tot_num_range_scen" title="pyRadPlan.scenarios.ScenarioModel.tot_num_range_scen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tot_num_range_scen</span></code></a></dt><dd><p>Total number of range shift scenarios.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.tot_num_scen" title="pyRadPlan.scenarios.ScenarioModel.tot_num_scen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tot_num_scen</span></code></a></dt><dd><p>Total number of scenarios.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.tot_num_shift_scen" title="pyRadPlan.scenarios.ScenarioModel.tot_num_shift_scen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tot_num_shift_scen</span></code></a></dt><dd><p>Total number of shift scenarios.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>(*[, include, exclude, update, deep])</p></td>
+<td><p>Returns a copy of the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id1" title="pyRadPlan.scenarios.ScenarioModel.extract_single_scenario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_single_scenario</span></code></a>(scen_num)</p></td>
+<td><p>Extract a single scenario based on its number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id2" title="pyRadPlan.scenarios.ScenarioModel.list_all_scenarios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_all_scenarios</span></code></a>()</p></td>
+<td><p>Print a list of all scenarios.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_construct</span></code>([_fields_set])</p></td>
+<td><p>Creates a new instance of the <cite>Model</cite> class with validated data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_copy</span></code>(*[, update, deep])</p></td>
+<td><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.10/concepts/serialization/#model_copy">https://docs.pydantic.dev/2.10/concepts/serialization/#model_copy</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_dump</span></code>(*[, mode, include, exclude, ...])</p></td>
+<td><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump">https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_dump_json</span></code>(*[, indent, include, ...])</p></td>
+<td><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump_json">https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump_json</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_json_schema</span></code>([by_alias, ref_template, ...])</p></td>
+<td><p>Generates a JSON schema for a model class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_parametrized_name</span></code>(params)</p></td>
+<td><p>Compute the class name for parametrizations of generic classes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.model_post_init" title="pyRadPlan.scenarios.ScenarioModel.model_post_init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_post_init</span></code></a>(context, /)</p></td>
+<td><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_rebuild</span></code>(*[, force, raise_errors, ...])</p></td>
+<td><p>Try to rebuild the pydantic-core schema for the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_validate</span></code>(obj, *[, strict, ...])</p></td>
+<td><p>Validate a pydantic model instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_validate_json</span></code>(json_data, *[, strict, ...])</p></td>
+<td><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.10/concepts/json/#json-parsing">https://docs.pydantic.dev/2.10/concepts/json/#json-parsing</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_validate_strings</span></code>(obj, *[, strict, context])</p></td>
+<td><p>Validate the given object with string data against the Pydantic model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.scen_num" title="pyRadPlan.scenarios.ScenarioModel.scen_num"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_num</span></code></a>(full_scen_ix)</p></td>
+<td><p>Return the scenario number given the scecnario ray index.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel.sub2scen_ix" title="pyRadPlan.scenarios.ScenarioModel.sub2scen_ix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub2scen_ix</span></code></a>(ct_scen, shift_scen, ...)</p></td>
+<td><p>Convert a subscript index to a linear scenario index.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_matrad</span></code>([context])</p></td>
+<td><p>Perform matRad compatible serialization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id6" title="pyRadPlan.scenarios.ScenarioModel.update_scenarios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_scenarios</span></code></a>()</p></td>
+<td><p>Update scenario data from uncertainty model settings.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>construct</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>dict</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>from_orm</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>json</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>parse_file</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>parse_obj</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>parse_raw</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>schema</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>schema_json</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>update_forward_refs</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.abs_range_shift">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">abs_range_shift</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.abs_range_shift" title="Link to this definition">#</a></dt>
+<dd><p>Absolute range shift value.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.ct_scen_ix">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ct_scen_ix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uint16'&gt;)]</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.ct_scen_ix" title="Link to this definition">#</a></dt>
+<dd><p>CT scenario indices of the used CT scenarios.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ct_scen_prob</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><span class="pre">[</span><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[(0,</span> <span class="pre">1.0)]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'ctScenProb')</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><p>The probability of each CT scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_ct_scen_prob</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_model</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_single_scenario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scen_num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_base.html#ScenarioModel.extract_single_scenario"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd><p>Extract a single scenario based on its number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios._base.ScenarioModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScenarioModel</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.iso_shift">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">iso_shift</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float64'&gt;)]</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.iso_shift" title="Link to this definition">#</a></dt>
+<dd><p>Isocenter shift values.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.linear_mask">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">linear_mask</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uint16'&gt;)]</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.linear_mask" title="Link to this definition">#</a></dt>
+<dd><p>Linear mask matrix for scenario selection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">list_all_scenarios</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_base.html#ScenarioModel.list_all_scenarios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd><p>Print a list of all scenarios.</p>
+<p>This method prints the details of all scenarios in a formatted table.
+The table includes the following columns:
+- xShift: The x-axis shift value
+- yShift: The y-axis shift value
+- zShift: The z-axis shift value
+- absRng: The absolute range value
+- relRng: The relative range value
+- prob: The probability value</p>
+<p>Example output:
+#   xShift   yShift   zShift   absRng   relRng   prob.
+1   0.000    0.000    0.000    0.000    0.000    0.000
+2   0.100    0.200    0.300    0.400    0.500    0.600
+3   0.700    0.800    0.900    1.000    1.100    1.200</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.max_abs_range_shift">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_abs_range_shift</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.max_abs_range_shift" title="Link to this definition">#</a></dt>
+<dd><p>Maximum absolute range shift value.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.max_rel_range_shift">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_rel_range_shift</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.max_rel_range_shift" title="Link to this definition">#</a></dt>
+<dd><p>Maximum relative range shift value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'alias_generator':</span> <span class="pre">AliasGenerator(alias=&lt;function</span> <span class="pre">to_camel&gt;,</span> <span class="pre">validation_alias=None,</span> <span class="pre">serialization_alias=None),</span> <span class="pre">'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'from_attributes':</span> <span class="pre">True,</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'validate_assignment':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.model_post_init" title="Link to this definition">#</a></dt>
+<dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
+<p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></span>) – The BaseModel instance.</p></li>
+<li><p><strong>context</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – The context.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.num_of_available_ct_scen">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_of_available_ct_scen</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.num_of_available_ct_scen" title="Link to this definition">#</a></dt>
+<dd><p>Number of totally available CT scenarios in the CT.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.num_of_ct_scen">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_of_ct_scen</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.num_of_ct_scen" title="Link to this definition">#</a></dt>
+<dd><p>Number of CT scenarios in the model.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id3">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">range_abs_sd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'rangeAbsSD')</span></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd><p>The absolute standard deviation for range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ge</strong> = 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Validated by<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_model</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id4">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">range_rel_sd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.5</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'rangeRelSD')</span></em><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<dd><p>The relative standard deviation for range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ge</strong> = 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Validated by<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_model</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.rel_range_shift">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rel_range_shift</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.rel_range_shift" title="Link to this definition">#</a></dt>
+<dd><p>Relative range shift value.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.scen_for_prob">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scen_for_prob</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float64'&gt;)]</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.scen_for_prob" title="Link to this definition">#</a></dt>
+<dd><p>Scenarios organized for probability calculation.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.scen_mask">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scen_mask</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool]</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.scen_mask" title="Link to this definition">#</a></dt>
+<dd><p>Scenarios mask matrix describing how scenarios should be stored.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.scen_num">
+<span class="sig-name descname"><span class="pre">scen_num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_scen_ix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_base.html#ScenarioModel.scen_num"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.scen_num" title="Link to this definition">#</a></dt>
+<dd><p>Return the scenario number given the scecnario ray index.</p>
+<p>This corresponds to the first occurrence of <cite>full_scen_ix</cite> in
+<cite>self.scen_mask</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>full_scen_ix</strong> (<em>int</em>) – The value to search for in <cite>self.scen_mask</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The index of the first occurrence of <cite>full_scen_ix</cite> in <cite>self.scen_mask</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.scen_prob">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scen_prob</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float64'&gt;)]</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.scen_prob" title="Link to this definition">#</a></dt>
+<dd><p>Scenarios probability matrix.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.scen_weight">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scen_weight</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float64'&gt;)]</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.scen_weight" title="Link to this definition">#</a></dt>
+<dd><p>Scenarios weight matrix.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id5">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shift_sd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(2.25,</span> <span class="pre">2.25,</span> <span class="pre">2.25)</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'shiftSD')</span></em><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<dd><p>The standard deviation for shift in x, y, and z directions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_model</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.short_name">
+<span class="sig-name descname"><span class="pre">short_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.short_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.sub2scen_ix">
+<span class="sig-name descname"><span class="pre">sub2scen_ix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct_scen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_scen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_shift_scen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_base.html#ScenarioModel.sub2scen_ix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.sub2scen_ix" title="Link to this definition">#</a></dt>
+<dd><p>Convert a subscript index to a linear scenario index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>int</strong><strong>)</strong> (<em>range_shift_scen</em>)</p></li>
+<li><p><strong>(</strong><strong>int</strong><strong>)</strong></p></li>
+<li><p><strong>(</strong><strong>int</strong><strong>)</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int: The corresponding scenario index.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>None</strong> – </p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p># Example usage
+sub2scenIx(1, 2, 3)  # Returns: 1</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.tot_num_range_scen">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tot_num_range_scen</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.tot_num_range_scen" title="Link to this definition">#</a></dt>
+<dd><p>Total number of range shift scenarios.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.tot_num_scen">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tot_num_scen</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.tot_num_scen" title="Link to this definition">#</a></dt>
+<dd><p>Total number of scenarios.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.ScenarioModel.tot_num_shift_scen">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tot_num_shift_scen</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.scenarios.ScenarioModel.tot_num_shift_scen" title="Link to this definition">#</a></dt>
+<dd><p>Total number of shift scenarios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_scenarios</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_base.html#ScenarioModel.update_scenarios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<dd><p>Update scenario data from uncertainty model settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id7">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wc_sigma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'wcSigma')</span></em><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dd><p>Worst-case definition in multiples of standard deviation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ge</strong> = 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Validated by<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_model</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.NominalScenario">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NominalScenario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_nominal.html#NominalScenario"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.NominalScenario" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios._base.ScenarioModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScenarioModel</span></code></a></p>
+<p>NominalScenario class represents an example scenario.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.NominalScenario.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyRadPlan.scenarios.NominalScenario.name" title="Link to this definition">#</a></dt>
+<dd><p>The name of the scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.NominalScenario.short_name">
+<span class="sig-name descname"><span class="pre">short_name</span></span><a class="headerlink" href="#pyRadPlan.scenarios.NominalScenario.short_name" title="Link to this definition">#</a></dt>
+<dd><p>The short name of the scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.NominalScenario.update_scenarios">
+<span class="sig-name descname"><span class="pre">update_scenarios</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_nominal.html#NominalScenario.update_scenarios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.NominalScenario.update_scenarios" title="Link to this definition">#</a></dt>
+<dd><p>Updates the scenarios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.NominalScenario.extract_single_scenario">
+<span class="sig-name descname"><span class="pre">extract_single_scenario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scen_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios.ScenarioModel"><span class="pre">ScenarioModel</span></a></span></span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_nominal.html#NominalScenario.extract_single_scenario"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.NominalScenario.extract_single_scenario" title="Link to this definition">#</a></dt>
+<dd><p>Extracts a single scenario.</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">abs_range_shift</span></code></dt><dd><p>Absolute range shift value.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ct_scen_ix</span></code></dt><dd><p>CT scenario indices of the used CT scenarios.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">iso_shift</span></code></dt><dd><p>Isocenter shift values.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_mask</span></code></dt><dd><p>Linear mask matrix for scenario selection.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_abs_range_shift</span></code></dt><dd><p>Maximum absolute range shift value.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_rel_range_shift</span></code></dt><dd><p>Maximum relative range shift value.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_extra</span></code></dt><dd><p>Get extra fields set during validation.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_fields_set</span></code></dt><dd><p>Returns the set of fields that have been explicitly set on this model instance.</p>
+</dd>
+<dt><a class="reference internal" href="#pyRadPlan.scenarios.NominalScenario.ndim" title="pyRadPlan.scenarios.NominalScenario.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></dt><dd><p>Dimensionality of the scenario model.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_of_available_ct_scen</span></code></dt><dd><p>Number of totally available CT scenarios in the CT.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_of_ct_scen</span></code></dt><dd><p>Number of CT scenarios in the model.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rel_range_shift</span></code></dt><dd><p>Relative range shift value.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_for_prob</span></code></dt><dd><p>Scenarios organized for probability calculation.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_mask</span></code></dt><dd><p>Scenarios mask matrix describing how scenarios should be stored.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_prob</span></code></dt><dd><p>Scenarios probability matrix.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_weight</span></code></dt><dd><p>Scenarios weight matrix.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">tot_num_range_scen</span></code></dt><dd><p>Total number of range shift scenarios.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">tot_num_scen</span></code></dt><dd><p>Total number of scenarios.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">tot_num_shift_scen</span></code></dt><dd><p>Total number of shift scenarios.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>(*[, include, exclude, update, deep])</p></td>
+<td><p>Returns a copy of the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id8" title="pyRadPlan.scenarios.NominalScenario.extract_single_scenario"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_single_scenario</span></code></a>(scen_num)</p></td>
+<td><p>Extract a single scenario based on its number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_all_scenarios</span></code>()</p></td>
+<td><p>Print a list of all scenarios.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_construct</span></code>([_fields_set])</p></td>
+<td><p>Creates a new instance of the <cite>Model</cite> class with validated data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_copy</span></code>(*[, update, deep])</p></td>
+<td><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.10/concepts/serialization/#model_copy">https://docs.pydantic.dev/2.10/concepts/serialization/#model_copy</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_dump</span></code>(*[, mode, include, exclude, ...])</p></td>
+<td><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump">https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_dump_json</span></code>(*[, indent, include, ...])</p></td>
+<td><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump_json">https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump_json</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_json_schema</span></code>([by_alias, ref_template, ...])</p></td>
+<td><p>Generates a JSON schema for a model class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_parametrized_name</span></code>(params)</p></td>
+<td><p>Compute the class name for parametrizations of generic classes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyRadPlan.scenarios.NominalScenario.model_post_init" title="pyRadPlan.scenarios.NominalScenario.model_post_init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_post_init</span></code></a>(context, /)</p></td>
+<td><p>We need to both initialize private attributes and call the user-defined model_post_init method.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_rebuild</span></code>(*[, force, raise_errors, ...])</p></td>
+<td><p>Try to rebuild the pydantic-core schema for the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_validate</span></code>(obj, *[, strict, ...])</p></td>
+<td><p>Validate a pydantic model instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_validate_json</span></code>(json_data, *[, strict, ...])</p></td>
+<td><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.10/concepts/json/#json-parsing">https://docs.pydantic.dev/2.10/concepts/json/#json-parsing</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_validate_strings</span></code>(obj, *[, strict, context])</p></td>
+<td><p>Validate the given object with string data against the Pydantic model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scen_num</span></code>(full_scen_ix)</p></td>
+<td><p>Return the scenario number given the scecnario ray index.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub2scen_ix</span></code>(ct_scen, shift_scen, ...)</p></td>
+<td><p>Convert a subscript index to a linear scenario index.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_matrad</span></code>([context])</p></td>
+<td><p>Perform matRad compatible serialization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#id11" title="pyRadPlan.scenarios.NominalScenario.update_scenarios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_scenarios</span></code></a>()</p></td>
+<td><p>Update scenario data from uncertainty model settings.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>construct</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>dict</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>from_orm</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>json</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>parse_file</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>parse_obj</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>parse_raw</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>schema</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>schema_json</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>update_forward_refs</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>validate</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">extract_single_scenario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scen_num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_nominal.html#NominalScenario.extract_single_scenario"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
+<dd><p>Extract a single scenario based on its number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios._base.ScenarioModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScenarioModel</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.NominalScenario.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'alias_generator':</span> <span class="pre">AliasGenerator(alias=&lt;function</span> <span class="pre">to_camel&gt;,</span> <span class="pre">validation_alias=None,</span> <span class="pre">serialization_alias=None),</span> <span class="pre">'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'from_attributes':</span> <span class="pre">True,</span> <span class="pre">'populate_by_name':</span> <span class="pre">True,</span> <span class="pre">'validate_assignment':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyRadPlan.scenarios.NominalScenario.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.NominalScenario.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyRadPlan.scenarios.NominalScenario.model_post_init" title="Link to this definition">#</a></dt>
+<dd><p>We need to both initialize private attributes and call the user-defined model_post_init
+method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Nominal</span> <span class="pre">Scenario'</span></em><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.NominalScenario.ndim">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ndim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.scenarios.NominalScenario.ndim" title="Link to this definition">#</a></dt>
+<dd><p>Dimensionality of the scenario model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">short_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'nomScen'</span></em><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">update_scenarios</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios/_nominal.html#NominalScenario.update_scenarios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id11" title="Link to this definition">#</a></dt>
+<dd><p>Update scenario data from uncertainty model settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>Helper functions</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.available_scenario_models">
+<span class="sig-name descname"><span class="pre">available_scenario_models</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios.html#available_scenario_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.available_scenario_models" title="Link to this definition">#</a></dt>
+<dd><p>Return a list of available scenario models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.create_scenario_model">
+<span class="sig-name descname"><span class="pre">create_scenario_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_def</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nomScen'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios.html#create_scenario_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.create_scenario_model" title="Link to this definition">#</a></dt>
+<dd><p>Return a scenario model object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_name</strong> (<em>str</em>) – The name of the scenario model.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scenario model object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios.ScenarioModel">ScenarioModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.scenarios.validate_scenario_model">
+<span class="sig-name descname"><span class="pre">validate_scenario_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_def</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/scenarios.html#validate_scenario_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.scenarios.validate_scenario_model" title="Link to this definition">#</a></dt>
+<dd><p>Validate a scenario model input and returns a scenario model object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_def</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios.ScenarioModel"><em>ScenarioModel</em></a><em>, </em><em>Union</em><em>[</em><em>str</em><em>, </em><em>dict</em><em>]</em><em>]</em>) – The scenario model object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scenario model object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyRadPlan.scenarios.ScenarioModel" title="pyRadPlan.scenarios.ScenarioModel">ScenarioModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="raytracer.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyRadPlan.raytracer package</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dose.engines.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyRadPlan.dose.engines package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-class">Base class</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel"><code class="docutils literal notranslate"><span class="pre">ScenarioModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.range_rel_sd"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.range_rel_sd</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.range_abs_sd"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.range_abs_sd</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.shift_sd"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.shift_sd</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.wc_sigma"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.wc_sigma</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.ct_scen_prob"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.ct_scen_prob</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.update_scenarios"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.update_scenarios()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.extract_single_scenario"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.extract_single_scenario()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.list_all_scenarios"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.list_all_scenarios()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.sub2scenIx"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.sub2scenIx()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.scenNum"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.scenNum()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.abs_range_shift"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.abs_range_shift</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.ct_scen_ix"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.ct_scen_ix</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.ct_scen_prob</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.extract_single_scenario()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.iso_shift"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.iso_shift</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.linear_mask"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.linear_mask</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.list_all_scenarios()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.max_abs_range_shift"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.max_abs_range_shift</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.max_rel_range_shift"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.max_rel_range_shift</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.model_config"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.model_config</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.model_post_init"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.model_post_init()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.name"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.num_of_available_ct_scen"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.num_of_available_ct_scen</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.num_of_ct_scen"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.num_of_ct_scen</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.range_abs_sd</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.range_rel_sd</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.rel_range_shift"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.rel_range_shift</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.scen_for_prob"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.scen_for_prob</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.scen_mask"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.scen_mask</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.scen_num"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.scen_num()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.scen_prob"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.scen_prob</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.scen_weight"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.scen_weight</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.shift_sd</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.short_name"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.short_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.sub2scen_ix"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.sub2scen_ix()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.tot_num_range_scen"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.tot_num_range_scen</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.tot_num_scen"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.tot_num_scen</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.ScenarioModel.tot_num_shift_scen"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.tot_num_shift_scen</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.update_scenarios()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">ScenarioModel.wc_sigma</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.NominalScenario"><code class="docutils literal notranslate"><span class="pre">NominalScenario</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.NominalScenario.name"><code class="docutils literal notranslate"><span class="pre">NominalScenario.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.NominalScenario.short_name"><code class="docutils literal notranslate"><span class="pre">NominalScenario.short_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.NominalScenario.update_scenarios"><code class="docutils literal notranslate"><span class="pre">NominalScenario.update_scenarios()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.NominalScenario.extract_single_scenario"><code class="docutils literal notranslate"><span class="pre">NominalScenario.extract_single_scenario()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">NominalScenario.extract_single_scenario()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.NominalScenario.model_config"><code class="docutils literal notranslate"><span class="pre">NominalScenario.model_config</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.NominalScenario.model_post_init"><code class="docutils literal notranslate"><span class="pre">NominalScenario.model_post_init()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">NominalScenario.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.NominalScenario.ndim"><code class="docutils literal notranslate"><span class="pre">NominalScenario.ndim</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">NominalScenario.short_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><code class="docutils literal notranslate"><span class="pre">NominalScenario.update_scenarios()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.available_scenario_models"><code class="docutils literal notranslate"><span class="pre">available_scenario_models()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.create_scenario_model"><code class="docutils literal notranslate"><span class="pre">create_scenario_model()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.scenarios.validate_scenario_model"><code class="docutils literal notranslate"><span class="pre">validate_scenario_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/scenarios.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, e0404.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

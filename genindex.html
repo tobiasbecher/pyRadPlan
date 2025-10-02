@@ -1,0 +1,2370 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; pyRadPlan 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyRadPlan 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer._perf._fast_compute_all_alphas">_fast_compute_all_alphas() (in module pyRadPlan.raytracer._perf)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer._perf._fast_compute_plane_alphas">_fast_compute_plane_alphas() (in module pyRadPlan.raytracer._perf)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimization.html#id4">abs_obj_tol (NonLinearOptimizer attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer.abs_obj_tol">[1]</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.abs_range_shift">abs_range_shift (ScenarioModel property)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.alpha">alpha (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.alpha_beta_ratio">alpha_beta_ratio (IonPencilBeamKernel property)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.alpha_dose">alpha_dose (Dij attribute)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.alpha_x">alpha_x (ExternalVOI attribute)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.alpha_x">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.alpha_x">(IonPencilBeamKernel attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.alpha_x">(OAR attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.alpha_x">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.alpha_x">(VOI attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.apply_overlap_priorities">apply_overlap_priorities() (StructureSet method)</a>
+</li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.assign_properties_from_pln">assign_properties_from_pln() (DoseEngineBase method)</a>
+</li>
+      <li><a href="api/pln.html#pyRadPlan.plan.IonPlan.available_radiation_modes">available_radiation_modes (IonPlan attribute)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.available_scenario_models">available_scenario_models() (in module pyRadPlan.scenarios)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.bams_to_iso_dist">bams_to_iso_dist (IonAccelerator attribute)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.beam_num">beam_num (Dij attribute)</a>
+</li>
+      <li><a href="api/stf.html#id24">beamlets (Ray attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Ray.beamlets">[1]</a>
+</li>
+      <li><a href="api/stf.html#id29">beams (SteeringInformation attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.SteeringInformation.beams">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.beta">beta (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.beta_x">beta_x (ExternalVOI attribute)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.beta_x">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.beta_x">(IonPencilBeamKernel attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.beta_x">(OAR attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.beta_x">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.beta_x">(VOI attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dose.engines.html#id0">bio_model (DoseEngineBase attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.bio_model">[1]</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.SteeringInformation.bixel_beam_index_map">bixel_beam_index_map (SteeringInformation property)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.SteeringInformation.bixel_index_per_beam_map">bixel_index_per_beam_map (SteeringInformation property)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.bixel_num">bixel_num (Dij attribute)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.SteeringInformation.bixel_ray_index_per_beam_map">bixel_ray_index_per_beam_map (SteeringInformation property)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.bixel_ray_map">bixel_ray_map (Beam property)</a>
+</li>
+      <li><a href="api/stf.html#id0">bixel_width (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.bixel_width">[1]</a>
+</li>
+      <li><a href="api/optimization.html#id18">bounds (SolverBase attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.SolverBase.bounds">[1]</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_forward">calc_dose_forward() (DoseEngineBase method)</a>
+
+      <ul>
+        <li><a href="api/dose.html#pyRadPlan.dose.calc_dose_forward">(in module pyRadPlan.dose)</a>
+</li>
+      </ul></li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_influence">calc_dose_influence() (DoseEngineBase method)</a>
+
+      <ul>
+        <li><a href="api/dose.html#pyRadPlan.dose.calc_dose_influence">(in module pyRadPlan.dose)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.check_cst">check_cst() (StructureSet method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.LateralCutOff.comp_fac">comp_fac (LateralCutOff attribute)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.Objective.compute_gradient">compute_gradient() (Objective method)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.Objective.compute_hessian">compute_hessian() (Objective method)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.Objective.compute_objective">compute_objective() (Objective method)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.compute_result_ct_grid">compute_result_ct_grid() (Dij method)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.compute_result_dose_grid">compute_result_dose_grid() (Dij method)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.compute_wet">compute_wet() (CT method)</a>
+</li>
+      <li><a href="api/optimization.html#id5">constraints (NonLinearOptimizer attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer.constraints">[1]</a>
+</li>
+      <li><a href="api/optimization.html#id6">constraints_jac (NonLinearOptimizer attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer.constraints_jac">[1]</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.construct">construct() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.construct">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.construct">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.construct">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.construct">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.construct">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.copy">copy() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.copy">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.copy">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.copy">(StructureSet method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.copy">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.copy">(VOI method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/stf.html#id1">couch_angle (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.couch_angle">[1]</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cst.html#pyRadPlan.cst.create_cst">create_cst() (in module pyRadPlan.cst)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.create_ct">create_ct() (in module pyRadPlan.ct)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.create_dij">create_dij() (in module pyRadPlan.dij)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Ray.create_matrad_helper_model">create_matrad_helper_model() (Ray class method)</a>
+</li>
+      <li><a href="api/pln.html#pyRadPlan.plan.create_pln">create_pln() (in module pyRadPlan.plan)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.create_scenario_model">create_scenario_model() (in module pyRadPlan.scenarios)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.create_stf">create_stf() (in module pyRadPlan.stf)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.create_voi">create_voi() (cst method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.Machine.created_by">created_by (Machine attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.Machine.created_on">created_on (Machine attribute)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT">CT (class in pyRadPlan.ct)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.ct_from_file">ct_from_file() (in module pyRadPlan.ct)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.ct_grid">ct_grid (Dij attribute)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.ct_image">ct_image (ExternalVOI attribute)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.ct_image">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.ct_image">(OAR attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.ct_image">(StructureSet attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.ct_image">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.ct_image">(VOI attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.ct_scen_ix">ct_scen_ix (ScenarioModel property)</a>
+</li>
+      <li><a href="api/scenarios.html#id0">ct_scen_prob (ScenarioModel attribute)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.ct_scen_prob">[1]</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.cube_dim">cube_dim (CT property)</a>
+</li>
+      <li><a href="api/ct.html#id0">cube_hu (CT attribute)</a>, <a href="api/ct.html#pyRadPlan.ct.CT.cube_hu">[1]</a>
+</li>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerBase.cubes">cubes (RayTracerBase property)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Ray.custom_beamlets_serializer">custom_beamlets_serializer() (Ray method)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.SteeringInformation.custom_beams_serializer">custom_beams_serializer() (SteeringInformation method)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.custom_rays_serializer">custom_rays_serializer() (Beam method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.LateralCutOff.cut_off">cut_off (LateralCutOff attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.Machine.data_type">data_type (Machine attribute)</a>
+</li>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerSiddon.debug_core_performance">debug_core_performance (RayTracerSiddon attribute)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.default_hlut">default_hlut() (in module pyRadPlan.ct)</a>
+</li>
+      <li><a href="api/io.html#pyRadPlan.io.MatlabFileHandler.delete">delete() (MatlabFileHandler method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.depths">depths (IonPencilBeamKernel attribute)</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.LateralCutOff.depths">(LateralCutOff attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#id0">description (Machine attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.Machine.description">[1]</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.dict">dict() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.dict">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.dict">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.dict">(StructureSet method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.dict">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.dict">(VOI method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij">Dij (class in pyRadPlan.dij)</a>
+</li>
+      <li><a href="api/dose.engines.html#id8">dij_sampling (PhotonPencilBeamSVDEngine attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.dij_sampling">[1]</a>
+</li>
+      <li><a href="api/core.html#id0">dimensions (Grid attribute)</a>, <a href="api/core.html#pyRadPlan.core.Grid.dimensions">[1]</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.direction">direction (CT attribute)</a>
+
+      <ul>
+        <li><a href="api/ct.html#id1">(CT property)</a>
+</li>
+        <li><a href="api/core.html#id1">(Grid attribute)</a>, <a href="api/core.html#pyRadPlan.core.Grid.direction">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines._ions.IonBeamFocus.dist">dist (IonBeamFocus attribute)</a>
+</li>
+      <li><a href="api/util.html#pyRadPlan.util.dl2ld">dl2ld() (in module pyRadPlan.util)</a>
+
+      <ul>
+        <li><a href="api/util.html#pyRadPlan.util.helpers.dl2ld">(in module pyRadPlan.util.helpers)</a>
+</li>
+      </ul></li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.dose_grid">dose_grid (Dij attribute)</a>
+
+      <ul>
+        <li><a href="api/dose.engines.html#id1">(DoseEngineBase attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.dose_grid">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase">DoseEngineBase (class in pyRadPlan.dose.engines)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines._ions.IonBeamFocus.emittance">emittance (IonBeamFocus attribute)</a>
+</li>
+      <li><a href="api/dose.engines.html#id9">enable_dij_sampling (PhotonPencilBeamSVDEngine attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.enable_dij_sampling">[1]</a>
+</li>
+      <li><a href="api/machines.html#id2">energies (ExternalBeamMachine attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.ExternalBeamMachine.energies">[1]</a>
+</li>
+      <li><a href="api/stf.html#id13">energy (Beamlet attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beamlet.energy">[1]</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.energy">(IonPencilBeamKernel attribute)</a>
+</li>
+        <li><a href="api/machines.html#id8">(PhotonSVDKernel attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.energy">[1]</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/stf.html#id21">eq_thickness (RangeShifter attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.RangeShifter.eq_thickness">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.ExternalBeamMachine">ExternalBeamMachine (class in pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI">ExternalVOI (class in pyRadPlan.cst)</a>
+</li>
+      <li><a href="api/scenarios.html#id8">extract_single_scenario() (NominalScenario method)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.NominalScenario.extract_single_scenario">[1]</a>
+
+      <ul>
+        <li><a href="api/scenarios.html#id1">(ScenarioModel method)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.extract_single_scenario">[1]</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer._perf.fast_spatial_circle_lookup">fast_spatial_circle_lookup() (in module pyRadPlan.raytracer._perf)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beamlet.field_typing">field_typing() (Beamlet method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.fit_air_offset">fit_air_offset (IonAccelerator attribute)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.fluence_optimization">fluence_optimization() (in module pyRadPlan.optimization)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.foci">foci (IonAccelerator attribute)</a>
+</li>
+      <li><a href="api/stf.html#id14">focus_ix (Beamlet attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beamlet.focus_ix">[1]</a>
+
+      <ul>
+        <li><a href="api/stf.html#pyRadPlan.stf.IonSpot.focus_ix">(IonSpot attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.from_orm">from_orm() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.from_orm">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.from_orm">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.from_orm">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.from_orm">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.from_orm">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/core.html#pyRadPlan.core.Grid.from_sitk_image">from_sitk_image() (Grid class method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines._ions.IonBeamFocus.fwhm_iso">fwhm_iso (IonBeamFocus attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/stf.html#id2">gantry_angle (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.gantry_angle">[1]</a>
+</li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.get_available_engines">get_available_engines() (in module pyRadPlan.dose.engines)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.get_available_generators">get_available_generators() (in module pyRadPlan.stf)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.get_available_solvers">get_available_solvers() (in module pyRadPlan.optimization.solvers)</a>
+</li>
+      <li><a href="api/geometry.html#pyRadPlan.geometry.get_beam_rotation_matrix">get_beam_rotation_matrix() (in module pyRadPlan.geometry)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.ExternalBeamMachine.get_closest_energy_index">get_closest_energy_index() (ExternalBeamMachine method)</a>
+</li>
+      <li><a href="api/geometry.html#pyRadPlan.geometry.get_couch_rotation_matrix">get_couch_rotation_matrix() (in module pyRadPlan.geometry)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.ExternalBeamMachine.get_energy_index">get_energy_index() (ExternalBeamMachine method)</a>
+</li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.get_engine">get_engine() (in module pyRadPlan.dose.engines)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.get_foci_by_index">get_foci_by_index() (IonAccelerator method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.get_focus">get_focus() (IonAccelerator method)</a>
+</li>
+      <li><a href="api/geometry.html#pyRadPlan.geometry.get_gantry_rotation_matrix">get_gantry_rotation_matrix() (in module pyRadPlan.geometry)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.get_generator">get_generator() (in module pyRadPlan.stf)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.get_indices">get_indices() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.get_indices">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.get_indices">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.get_indices">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.get_indices">(VOI method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.get_kernel_by_energy">get_kernel_by_energy() (IonAccelerator method)</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.PhotonLINAC.get_kernel_by_energy">(PhotonLINAC method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.get_kernel_by_index">get_kernel_by_index() (IonAccelerator method)</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.PhotonLINAC.get_kernel_by_index">(PhotonLINAC method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.get_kernels_at_ssd">get_kernels_at_ssd() (PhotonSVDKernel method)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.get_result_arrays_from_intensity">get_result_arrays_from_intensity() (Dij method)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.get_solver">get_solver() (in module pyRadPlan.optimization.solvers)</a>
+</li>
+      <li><a href="api/optimization.html#id7">gradient (NonLinearOptimizer attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer.gradient">[1]</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.grid">grid (CT property)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.grid_serializer">grid_serializer() (Dij method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.has_alpha_beta_kernels">has_alpha_beta_kernels (IonAccelerator property)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.has_double_gaussian_kernel">has_double_gaussian_kernel (IonAccelerator property)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines._ions.IonBeamFocus.has_emittance">has_emittance (IonBeamFocus property)</a>
+</li>
+      <li><a href="api/optimization.html#id2">has_hessian (Objective attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.Objective.has_hessian">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.has_let_kernel">has_let_kernel (IonAccelerator property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.has_multi_gaussian_kernel">has_multi_gaussian_kernel (IonAccelerator property)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.has_pb_kernels">has_pb_kernels (IonAccelerator property)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.has_single_gaussian_kernel">has_single_gaussian_kernel (IonAccelerator property)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI">HelperVOI (class in pyRadPlan.cst)</a>
+</li>
+      <li><a href="api/optimization.html#id8">hessian (NonLinearOptimizer attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer.hessian">[1]</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/stf.html#id22">id (RangeShifter attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.RangeShifter.id">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.idd">idd (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.indices">indices (ExternalVOI property)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.indices">(HelperVOI property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.indices">(OAR property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.indices">(Target property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.indices">(VOI property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.indices_numpy">indices_numpy (ExternalVOI property)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.indices_numpy">(HelperVOI property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.indices_numpy">(OAR property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.indices_numpy">(Target property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.indices_numpy">(VOI property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dose.engines.html#id10">int_conv_resolution (PhotonPencilBeamSVDEngine attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.int_conv_resolution">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator">IonAccelerator (class in pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines._ions.IonBeamFocus">IonBeamFocus (class in pyRadPlan.machines._ions)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel">IonPencilBeamKernel (class in pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/pln.html#pyRadPlan.plan.IonPlan">IonPlan (class in pyRadPlan.plan)</a>
+</li>
+      <li><a href="api/pln.html#pyRadPlan.plan.IonPlan.ionType">ionType (IonPlan attribute)</a>
+</li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.is_available">is_available() (DoseEngineBase static method)</a>
+
+      <ul>
+        <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.is_available">(ParticleHongPencilBeamEngine static method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/dose.engines.html#id2">is_dose_engine (DoseEngineBase attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.is_dose_engine">[1]</a>
+</li>
+      <li><a href="api/stf.html#id3">iso_center (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.iso_center">[1]</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.iso_shift">iso_shift (ScenarioModel property)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer.iter_func">iter_func() (NonLinearOptimizer method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.json">json() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.json">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.json">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.json">(StructureSet method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.json">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.json">(VOI method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.kernel_betas">kernel_betas (PhotonSVDKernel attribute)</a>
+</li>
+      <li><a href="api/dose.engines.html#id11">kernel_cutoff (PhotonPencilBeamSVDEngine attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.kernel_cutoff">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.kernel_data">kernel_data (PhotonSVDKernel attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.kernel_interpolator">kernel_interpolator() (PhotonSVDKernel method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.kernel_pos">kernel_pos (PhotonSVDKernel attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.kernel_ssds">kernel_ssds (PhotonSVDKernel attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.Machine.last_modified">last_modified (Machine attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.Machine.last_modified_by">last_modified_by (Machine attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.lateral_cut_off">lateral_cut_off (IonPencilBeamKernel attribute)</a>
+
+      <ul>
+        <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerBase.lateral_cut_off">(RayTracerBase attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.LateralCutOff">LateralCutOff (class in pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/util.html#pyRadPlan.util.ld2dl">ld2dl() (in module pyRadPlan.util)</a>
+
+      <ul>
+        <li><a href="api/util.html#pyRadPlan.util.helpers.ld2dl">(in module pyRadPlan.util.helpers)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.let">let (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.let_dose">let_dose (Dij attribute)</a>
+</li>
+      <li><a href="api/core.html#pyRadPlan.core.np2sitk.linear_indices_to_grid_coordinates">linear_indices_to_grid_coordinates() (in module pyRadPlan.core.np2sitk)</a>
+</li>
+      <li><a href="api/core.html#pyRadPlan.core.np2sitk.linear_indices_to_image_coordinates">linear_indices_to_image_coordinates() (in module pyRadPlan.core.np2sitk)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/core.html#pyRadPlan.core.np2sitk.linear_indices_to_sitk_mask">linear_indices_to_sitk_mask() (in module pyRadPlan.core.np2sitk)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.linear_mask">linear_mask (ScenarioModel property)</a>
+</li>
+      <li><a href="api/scenarios.html#id2">list_all_scenarios() (ScenarioModel method)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.list_all_scenarios">[1]</a>
+</li>
+      <li><a href="api/io.html#pyRadPlan.io.MatlabFileHandler.load">load() (MatlabFileHandler method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.load_from_name">load_from_name() (in module pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.load_machine">load_machine() (DoseEngineBase static method)</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.load_machine">(in module pyRadPlan.machines)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.load_machine_from_mat">load_machine_from_mat() (in module pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/io.html#pyRadPlan.io.load_patient">load_patient() (in module pyRadPlan.io)</a>
+</li>
+      <li><a href="api/io.html#pyRadPlan.io.load_tg119">load_tg119() (in module pyRadPlan.io)</a>
+</li>
+      <li><a href="api/stf.html#id4">longitudinal_spot_spacing (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.longitudinal_spot_spacing">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.lut_spot_size">lut_spot_size (IonAccelerator attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.m">m (PhotonSVDKernel attribute)</a>
+</li>
+      <li><a href="api/stf.html#id5">machine (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.machine">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.Machine">Machine (class in pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.Machine.machine">machine (Machine attribute)</a>
+
+      <ul>
+        <li><a href="api/pln.html#id0">(Plan attribute)</a>, <a href="api/pln.html#pyRadPlan.plan.Plan.machine">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.mask">mask (ExternalVOI attribute)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.mask">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.mask">(OAR attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.mask">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.mask">(VOI attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.masked_ct">masked_ct() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.masked_ct">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.masked_ct">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.masked_ct">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.masked_ct">(VOI method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/io.html#pyRadPlan.io.MatlabFileHandler">MatlabFileHandler (class in pyRadPlan.io)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.max_abs_range_shift">max_abs_range_shift (ScenarioModel property)</a>
+</li>
+      <li><a href="api/optimization.html#id13">max_iter (NonLinearOptimizer attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer.max_iter">[1]</a>
+</li>
+      <li><a href="api/stf.html#id15">max_mu (Beamlet attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beamlet.max_mu">[1]</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.max_rel_range_shift">max_rel_range_shift (ScenarioModel property)</a>
+</li>
+      <li><a href="api/optimization.html#id19">max_time (SolverBase attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.SolverBase.max_time">[1]</a>
+</li>
+      <li><a href="api/optimization.html#id16">method (OptimizerSciPy attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.OptimizerSciPy.method">[1]</a>
+</li>
+      <li><a href="api/stf.html#id16">min_mu (Beamlet attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beamlet.min_mu">[1]</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_computed_fields">model_computed_fields (ExternalVOI attribute)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_computed_fields">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_computed_fields">(OAR attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_computed_fields">(StructureSet attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_computed_fields">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_computed_fields">(VOI attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.model_config">model_config (CT attribute)</a>
+
+      <ul>
+        <li><a href="api/dij.html#pyRadPlan.dij.Dij.model_config">(Dij attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.ExternalBeamMachine.model_config">(ExternalBeamMachine attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_config">(ExternalVOI attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_config">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.model_config">(IonAccelerator attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines._ions.IonBeamFocus.model_config">(IonBeamFocus attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.model_config">(IonPencilBeamKernel attribute)</a>
+</li>
+        <li><a href="api/pln.html#pyRadPlan.plan.IonPlan.model_config">(IonPlan attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.LateralCutOff.model_config">(LateralCutOff attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.Machine.model_config">(Machine attribute)</a>
+</li>
+        <li><a href="api/scenarios.html#pyRadPlan.scenarios.NominalScenario.model_config">(NominalScenario attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_config">(OAR attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.PhotonLINAC.model_config">(PhotonLINAC attribute)</a>
+</li>
+        <li><a href="api/pln.html#pyRadPlan.plan.PhotonPlan.model_config">(PhotonPlan attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.model_config">(PhotonSVDKernel attribute)</a>
+</li>
+        <li><a href="api/pln.html#pyRadPlan.plan.Plan.model_config">(Plan attribute)</a>
+</li>
+        <li><a href="api/core.html#pyRadPlan.core.PyRadPlanBaseModel.model_config">(PyRadPlanBaseModel attribute)</a>, <a href="api/core.html#pyRadPlan.core.datamodel.PyRadPlanBaseModel.model_config">[1]</a>
+</li>
+        <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.model_config">(ScenarioModel attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_config">(StructureSet attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_config">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_config">(VOI attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_construct">model_construct() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_construct">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_construct">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_construct">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_construct">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_construct">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_copy">model_copy() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_copy">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_copy">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_copy">(StructureSet method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_copy">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_copy">(VOI method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_dump">model_dump() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_dump">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_dump">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_dump">(StructureSet method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_dump">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_dump">(VOI method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_dump_json">model_dump_json() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_dump_json">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_dump_json">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_dump_json">(StructureSet method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_dump_json">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_dump_json">(VOI method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_extra">model_extra (ExternalVOI property)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_extra">(HelperVOI property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_extra">(OAR property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_extra">(StructureSet property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_extra">(Target property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_extra">(VOI property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_fields">model_fields (ExternalVOI attribute)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_fields">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_fields">(OAR attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_fields">(StructureSet attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_fields">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_fields">(VOI attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_fields_set">model_fields_set (ExternalVOI property)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_fields_set">(HelperVOI property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_fields_set">(OAR property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_fields_set">(StructureSet property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_fields_set">(Target property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_fields_set">(VOI property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_json_schema">model_json_schema() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_json_schema">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_json_schema">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_json_schema">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_json_schema">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_json_schema">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_parametrized_name">model_parametrized_name() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_parametrized_name">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_parametrized_name">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_parametrized_name">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_parametrized_name">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_parametrized_name">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_post_init">model_post_init() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_post_init">(HelperVOI method)</a>
+</li>
+        <li><a href="api/scenarios.html#pyRadPlan.scenarios.NominalScenario.model_post_init">(NominalScenario method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_post_init">(OAR method)</a>
+</li>
+        <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.model_post_init">(ScenarioModel method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_post_init">(StructureSet method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_post_init">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_post_init">(VOI method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_rebuild">model_rebuild() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_rebuild">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_rebuild">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_rebuild">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_rebuild">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_rebuild">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_validate">model_validate() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_validate">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_validate">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_validate">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_validate">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_validate">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_validate_json">model_validate_json() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_validate_json">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_validate_json">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_validate_json">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_validate_json">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_validate_json">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.model_validate_strings">model_validate_strings() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.model_validate_strings">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.model_validate_strings">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.model_validate_strings">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.model_validate_strings">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.model_validate_strings">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/util.html#pyRadPlan.util.models2recarray">models2recarray() (in module pyRadPlan.util)</a>
+
+      <ul>
+        <li><a href="api/util.html#pyRadPlan.util.helpers.models2recarray">(in module pyRadPlan.util.helpers)</a>
+</li>
+      </ul></li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="api/core.html#module-pyRadPlan.core">pyRadPlan.core</a>
+</li>
+        <li><a href="api/core.html#module-pyRadPlan.core.datamodel">pyRadPlan.core.datamodel</a>
+</li>
+        <li><a href="api/core.html#module-pyRadPlan.core.np2sitk">pyRadPlan.core.np2sitk</a>
+</li>
+        <li><a href="api/core.html#module-pyRadPlan.core.resample">pyRadPlan.core.resample</a>
+</li>
+        <li><a href="api/dose.engines.html#module-pyRadPlan.dose.engines">pyRadPlan.dose.engines</a>
+</li>
+        <li><a href="api/io.html#module-pyRadPlan.io">pyRadPlan.io</a>
+</li>
+        <li><a href="api/optimization.html#module-pyRadPlan.optimization">pyRadPlan.optimization</a>
+</li>
+        <li><a href="api/optimization.html#module-pyRadPlan.optimization.solvers">pyRadPlan.optimization.solvers</a>
+</li>
+        <li><a href="api/stf.html#module-pyRadPlan.stf">pyRadPlan.stf</a>
+</li>
+        <li><a href="api/util.html#module-pyRadPlan.util">pyRadPlan.util</a>
+</li>
+        <li><a href="api/util.html#module-pyRadPlan.util.helpers">pyRadPlan.util.helpers</a>
+</li>
+      </ul></li>
+      <li><a href="api/dose.engines.html#id3">mult_scen (DoseEngineBase attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.mult_scen">[1]</a>
+
+      <ul>
+        <li><a href="api/pln.html#pyRadPlan.plan.Plan.mult_scen">(Plan attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dose.engines.html#id4">name (DoseEngineBase attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.name">[1]</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.name">(ExternalVOI attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.name">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.Machine.name">(Machine attribute)</a>
+</li>
+        <li><a href="api/scenarios.html#id9">(NominalScenario attribute)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.NominalScenario.name">[1]</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.name">(OAR attribute)</a>
+</li>
+        <li><a href="api/optimization.html#id3">(Objective attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.Objective.name">[1]</a>
+</li>
+        <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.OptimizerSciPy.name">(OptimizerSciPy attribute)</a>
+</li>
+        <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.name">(ParticleHongPencilBeamEngine attribute)</a>
+</li>
+        <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.name">(PhotonPencilBeamSVDEngine attribute)</a>
+</li>
+        <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.name">(ScenarioModel attribute)</a>
+</li>
+        <li><a href="api/optimization.html#id20">(SolverBase attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.SolverBase.name">[1]</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.name">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.name">(VOI attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.NominalScenario.ndim">ndim (NominalScenario property)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.NominalScenario">NominalScenario (class in pyRadPlan.scenarios)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer">NonLinearOptimizer (class in pyRadPlan.optimization.solvers)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.num_kernel_components">num_kernel_components (PhotonSVDKernel property)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.num_of_available_ct_scen">num_of_available_ct_scen (ScenarioModel property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.num_of_beams">num_of_beams (Dij attribute)</a>
+
+      <ul>
+        <li><a href="api/stf.html#pyRadPlan.stf.SteeringInformation.num_of_beams">(SteeringInformation property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.num_of_bixels_per_ray">num_of_bixels_per_ray (Beam attribute)</a>
+
+      <ul>
+        <li><a href="api/stf.html#id10">(Beam property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.num_of_ct_scen">num_of_ct_scen (CT property)</a>
+
+      <ul>
+        <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.num_of_ct_scen">(ScenarioModel property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/pln.html#id1">num_of_fractions (Plan attribute)</a>, <a href="api/pln.html#pyRadPlan.plan.Plan.num_of_fractions">[1]</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.num_of_rays">num_of_rays (Beam attribute)</a>
+
+      <ul>
+        <li><a href="api/stf.html#id11">(Beam property)</a>
+</li>
+        <li><a href="api/stf.html#pyRadPlan.stf.SteeringInformation.num_of_rays">(SteeringInformation property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.num_of_scenarios">num_of_scenarios (ExternalVOI property)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.num_of_scenarios">(HelperVOI property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.num_of_scenarios">(OAR property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.num_of_scenarios">(Target property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.num_of_scenarios">(VOI property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.num_of_voxels">num_of_voxels (Dij attribute)</a>
+
+      <ul>
+        <li><a href="api/dij.html#id0">(Dij property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/stf.html#id17">num_particles_per_mu (Beamlet attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beamlet.num_particles_per_mu">[1]</a>
+</li>
+      <li><a href="api/core.html#pyRadPlan.core.Grid.num_voxels">num_voxels (Grid property)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.numbering_arrays_serializer">numbering_arrays_serializer() (Dij method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cst.html#pyRadPlan.cst.OAR">OAR (class in pyRadPlan.cst)</a>
+</li>
+      <li><a href="api/optimization.html#id14">objective (NonLinearOptimizer attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer.objective">[1]</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.objectives">objectives (ExternalVOI attribute)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.objectives">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.objectives">(OAR attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.objectives">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.objectives">(VOI attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#id4">of (PhotonLINAC attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.PhotonLINAC.of">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.offset">offset (IonPencilBeamKernel attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.OptimizerSciPy">OptimizerSciPy (class in pyRadPlan.optimization.solvers)</a>
+</li>
+      <li><a href="api/optimization.html#id17">options (OptimizerSciPy attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.OptimizerSciPy.options">[1]</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.origin">origin (CT attribute)</a>
+
+      <ul>
+        <li><a href="api/ct.html#id2">(CT property)</a>
+</li>
+        <li><a href="api/core.html#id2">(Grid attribute)</a>, <a href="api/core.html#pyRadPlan.core.Grid.origin">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.overlap_priority">overlap_priority (ExternalVOI attribute)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.overlap_priority">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.overlap_priority">(OAR attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.overlap_priority">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.overlap_priority">(VOI attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.Objective.parameter_names">parameter_names (Objective property)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.Objective.parameter_types">parameter_types (Objective property)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.Objective.parameters">parameters (Objective property)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.parse_file">parse_file() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.parse_file">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.parse_file">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.parse_file">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.parse_file">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.parse_file">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.parse_obj">parse_obj() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.parse_obj">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.parse_obj">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.parse_obj">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.parse_obj">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.parse_obj">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.parse_raw">parse_raw() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.parse_raw">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.parse_raw">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.parse_raw">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.parse_raw">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.parse_raw">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine">ParticleHongPencilBeamEngine (class in pyRadPlan.dose.engines)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.patient_mask">patient_mask() (StructureSet method)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.patient_voxels">patient_voxels() (StructureSet method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.pb_kernels">pb_kernels (IonAccelerator attribute)</a>
+
+      <ul>
+        <li><a href="api/machines.html#id5">(PhotonLINAC attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.PhotonLINAC.pb_kernels">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.pb_kernels_have_let">pb_kernels_have_let (IonAccelerator property)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.peak_pos">peak_pos (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.peak_positions">peak_positions (IonAccelerator attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.penumbra">penumbra (PhotonSVDKernel attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonLINAC">PhotonLINAC (class in pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine">PhotonPencilBeamSVDEngine (class in pyRadPlan.dose.engines)</a>
+</li>
+      <li><a href="api/pln.html#pyRadPlan.plan.PhotonPlan">PhotonPlan (class in pyRadPlan.plan)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel">PhotonSVDKernel (class in pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/dij.html#id1">physical_dose (Dij attribute)</a>, <a href="api/dij.html#pyRadPlan.dij.Dij.physical_dose">[1]</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.physical_dose_serializer">physical_dose_serializer() (Dij method)</a>
+</li>
+      <li><a href="api/pln.html#pyRadPlan.plan.Plan">Plan (class in pyRadPlan.plan)</a>
+</li>
+      <li><a href="api/dose.engines.html#id5">possible_radiation_modes (DoseEngineBase attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.possible_radiation_modes">[1]</a>
+
+      <ul>
+        <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.possible_radiation_modes">(ParticleHongPencilBeamEngine attribute)</a>
+</li>
+        <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.possible_radiation_modes">(PhotonPencilBeamSVDEngine attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerBase.precision">precision (RayTracerBase attribute)</a>
+</li>
+      <li><a href="api/pln.html#id2">prescribed_dose (Plan attribute)</a>, <a href="api/pln.html#pyRadPlan.plan.Plan.prescribed_dose">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.primary_fluence">primary_fluence (PhotonSVDKernel attribute)</a>
+</li>
+      <li><a href="api/optimization.html#id0">priority (Objective attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.Objective.priority">[1]</a>
+</li>
+      <li><a href="api/pln.html#id3">prop_dose_calc (Plan attribute)</a>, <a href="api/pln.html#pyRadPlan.plan.Plan.prop_dose_calc">[1]</a>
+</li>
+      <li><a href="api/pln.html#id4">prop_opt (Plan attribute)</a>, <a href="api/pln.html#pyRadPlan.plan.Plan.prop_opt">[1]</a>
+</li>
+      <li><a href="api/pln.html#id5">prop_seq (Plan attribute)</a>, <a href="api/pln.html#pyRadPlan.plan.Plan.prop_seq">[1]</a>
+</li>
+      <li><a href="api/pln.html#id6">prop_stf (Plan attribute)</a>, <a href="api/pln.html#pyRadPlan.plan.Plan.prop_stf">[1]</a>
+</li>
+      <li>
+    pyRadPlan.core
+
+      <ul>
+        <li><a href="api/core.html#module-pyRadPlan.core">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.core.datamodel
+
+      <ul>
+        <li><a href="api/core.html#module-pyRadPlan.core.datamodel">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.core.np2sitk
+
+      <ul>
+        <li><a href="api/core.html#module-pyRadPlan.core.np2sitk">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.core.resample
+
+      <ul>
+        <li><a href="api/core.html#module-pyRadPlan.core.resample">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.dose.engines
+
+      <ul>
+        <li><a href="api/dose.engines.html#module-pyRadPlan.dose.engines">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.io
+
+      <ul>
+        <li><a href="api/io.html#module-pyRadPlan.io">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.optimization
+
+      <ul>
+        <li><a href="api/optimization.html#module-pyRadPlan.optimization">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.optimization.solvers
+
+      <ul>
+        <li><a href="api/optimization.html#module-pyRadPlan.optimization.solvers">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.stf
+
+      <ul>
+        <li><a href="api/stf.html#module-pyRadPlan.stf">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.util
+
+      <ul>
+        <li><a href="api/util.html#module-pyRadPlan.util">module</a>
+</li>
+      </ul></li>
+      <li>
+    pyRadPlan.util.helpers
+
+      <ul>
+        <li><a href="api/util.html#module-pyRadPlan.util.helpers">module</a>
+</li>
+      </ul></li>
+      <li><a href="api/core.html#pyRadPlan.core.PyRadPlanError">PyRadPlanError</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.quantities">quantities (Dij property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/optimization.html#id1">quantity (Objective attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.Objective.quantity">[1]</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.rad_depth_cubes">rad_depth_cubes (Dij attribute)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.rad_depth_cubes_serializer">rad_depth_cubes_serializer() (Dij method)</a>
+</li>
+      <li><a href="api/stf.html#id6">radiation_mode (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.radiation_mode">[1]</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.radiation_mode">(IonAccelerator attribute)</a>
+</li>
+        <li><a href="api/pln.html#pyRadPlan.plan.IonPlan.radiation_mode">(IonPlan attribute)</a>
+</li>
+        <li><a href="api/machines.html#id1">(Machine attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.Machine.radiation_mode">[1]</a>
+</li>
+        <li><a href="api/machines.html#pyRadPlan.machines.PhotonLINAC.radiation_mode">(PhotonLINAC attribute)</a>
+</li>
+        <li><a href="api/pln.html#pyRadPlan.plan.PhotonPlan.radiation_mode">(PhotonPlan attribute)</a>
+</li>
+        <li><a href="api/pln.html#id7">(Plan attribute)</a>, <a href="api/pln.html#pyRadPlan.plan.Plan.radiation_mode">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/dose.engines.html#id12">random_seed (PhotonPencilBeamSVDEngine attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.random_seed">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.range">range (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/scenarios.html#id3">range_abs_sd (ScenarioModel attribute)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.range_abs_sd">[1]</a>
+</li>
+      <li><a href="api/scenarios.html#id4">range_rel_sd (ScenarioModel attribute)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.range_rel_sd">[1]</a>
+</li>
+      <li><a href="api/stf.html#id18">range_shifter (Beamlet attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beamlet.range_shifter">[1]</a>
+
+      <ul>
+        <li><a href="api/stf.html#pyRadPlan.stf.IonSpot.range_shifter">(IonSpot attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.ray">ray (Beam attribute)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.ray_num">ray_num (Dij attribute)</a>
+</li>
+      <li><a href="api/stf.html#id25">ray_pos (Ray attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Ray.ray_pos">[1]</a>
+</li>
+      <li><a href="api/stf.html#id26">ray_pos_bev (Ray attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Ray.ray_pos_bev">[1]</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.rays">rays (Beam attribute)</a>
+</li>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerBase">RayTracerBase (class in pyRadPlan.raytracer)</a>
+</li>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerSiddon">RayTracerSiddon (class in pyRadPlan.raytracer)</a>
+</li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.register_engine">register_engine() (in module pyRadPlan.dose.engines)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/stf.html#pyRadPlan.stf.register_generator">register_generator() (in module pyRadPlan.stf)</a>
+</li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.register_solver">register_solver() (in module pyRadPlan.optimization.solvers)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.rel_range_shift">rel_range_shift (ScenarioModel property)</a>
+</li>
+      <li><a href="api/stf.html#id19">relative_fluence (Beamlet attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beamlet.relative_fluence">[1]</a>
+
+      <ul>
+        <li><a href="api/stf.html#pyRadPlan.stf.PhotonBixel.relative_fluence">(PhotonBixel attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/core.html#pyRadPlan.core.Grid.resample">resample() (Grid method)</a>
+</li>
+      <li><a href="api/core.html#pyRadPlan.core.resample_image">resample_image() (in module pyRadPlan.core)</a>
+
+      <ul>
+        <li><a href="api/core.html#pyRadPlan.core.resample.resample_image">(in module pyRadPlan.core.resample)</a>
+</li>
+      </ul></li>
+      <li><a href="api/core.html#pyRadPlan.core.resample_numpy_array">resample_numpy_array() (in module pyRadPlan.core)</a>
+
+      <ul>
+        <li><a href="api/core.html#pyRadPlan.core.resample.resample_numpy_array">(in module pyRadPlan.core.resample)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.resample_on_new_ct">resample_on_new_ct() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.resample_on_new_ct">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.resample_on_new_ct">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.resample_on_new_ct">(StructureSet method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.resample_on_new_ct">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.resample_on_new_ct">(VOI method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.resample_to_grid">resample_to_grid() (CT method)</a>
+</li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.resize_cst_to_grid">resize_cst_to_grid() (DoseEngineBase method)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.resolution">resolution (CT attribute)</a>
+
+      <ul>
+        <li><a href="api/ct.html#id3">(CT property)</a>
+</li>
+        <li><a href="api/dij.html#pyRadPlan.dij.Dij.resolution">(Dij attribute)</a>
+</li>
+        <li><a href="api/core.html#id3">(Grid attribute)</a>, <a href="api/core.html#pyRadPlan.core.Grid.resolution">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/core.html#pyRadPlan.core.Grid.resolution_vector">resolution_vector (Grid property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/stf.html#id7">sad (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.sad">[1]</a>
+
+      <ul>
+        <li><a href="api/machines.html#id3">(ExternalBeamMachine attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.ExternalBeamMachine.sad">[1]</a>
+</li>
+        <li><a href="api/machines.html#id9">(IonAccelerator attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.IonAccelerator.sad">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Ray.sanitize_beamlet_structure">sanitize_beamlet_structure() (Ray class method)</a>
+</li>
+      <li><a href="api/io.html#pyRadPlan.io.MatlabFileHandler.save">save() (MatlabFileHandler method)</a>
+</li>
+      <li><a href="api/machines.html#id6">scd (PhotonLINAC attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.PhotonLINAC.scd">[1]</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.scen_for_prob">scen_for_prob (ScenarioModel property)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.scen_mask">scen_mask (ScenarioModel property)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.scen_num">scen_num() (ScenarioModel method)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.scen_prob">scen_prob (ScenarioModel property)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.scen_weight">scen_weight (ScenarioModel property)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.scenario_ct_data">scenario_ct_data (ExternalVOI property)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.scenario_ct_data">(HelperVOI property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.scenario_ct_data">(OAR property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.scenario_ct_data">(Target property)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.scenario_ct_data">(VOI property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.scenario_indices">scenario_indices() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.scenario_indices">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.scenario_indices">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.scenario_indices">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.scenario_indices">(VOI method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel">ScenarioModel (class in pyRadPlan.scenarios)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.scenNum">scenNum() (ScenarioModel method)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.schema">schema() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.schema">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.schema">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.schema">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.schema">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.schema">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.schema_json">schema_json() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.schema_json">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.schema_json">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.schema_json">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.schema_json">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.schema_json">(VOI class method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.select_voxels_from_cst">select_voxels_from_cst() (DoseEngineBase method)</a>
+</li>
+      <li><a href="api/dose.engines.html#id6">select_voxels_in_scenarios (DoseEngineBase attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.select_voxels_in_scenarios">[1]</a>
+</li>
+      <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.set_overlap_priorities">set_overlap_priorities() (DoseEngineBase method)</a>
+</li>
+      <li><a href="api/scenarios.html#id5">shift_sd (ScenarioModel attribute)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.shift_sd">[1]</a>
+</li>
+      <li><a href="api/dose.engines.html#id7">short_name (DoseEngineBase attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.short_name">[1]</a>
+
+      <ul>
+        <li><a href="api/scenarios.html#id10">(NominalScenario attribute)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.NominalScenario.short_name">[1]</a>
+</li>
+        <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.OptimizerSciPy.short_name">(OptimizerSciPy attribute)</a>
+</li>
+        <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.ParticleHongPencilBeamEngine.short_name">(ParticleHongPencilBeamEngine attribute)</a>
+</li>
+        <li><a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.short_name">(PhotonPencilBeamSVDEngine attribute)</a>
+</li>
+        <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.short_name">(ScenarioModel attribute)</a>
+</li>
+        <li><a href="api/optimization.html#id21">(SolverBase attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.SolverBase.short_name">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines._ions.IonBeamFocus.sigma">sigma (IonBeamFocus attribute)</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.sigma">(IonPencilBeamKernel attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.sigma_1">sigma_1 (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.sigma_2">sigma_2 (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.sigma_multi">sigma_multi (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/core.html#pyRadPlan.core.np2sitk.sitk_mask_to_linear_indices">sitk_mask_to_linear_indices() (in module pyRadPlan.core.np2sitk)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.size">size (CT attribute)</a>
+
+      <ul>
+        <li><a href="api/ct.html#id4">(CT property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.OptimizerSciPy.solve">solve() (OptimizerSciPy method)</a>
+
+      <ul>
+        <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.SolverBase.solve">(SolverBase method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/optimization.html#pyRadPlan.optimization.solvers.SolverBase">SolverBase (class in pyRadPlan.optimization.solvers)</a>
+</li>
+      <li><a href="api/stf.html#id8">source_point (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.source_point">[1]</a>
+</li>
+      <li><a href="api/stf.html#id9">source_point_bev (Beam attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beam.source_point_bev">[1]</a>
+</li>
+      <li><a href="api/stf.html#id23">source_rashi_distance (RangeShifter attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.RangeShifter.source_rashi_distance">[1]</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.spectra">spectra (IonAccelerator attribute)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.sqrt_beta_dose">sqrt_beta_dose (Dij attribute)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet">StructureSet (class in pyRadPlan.cst)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.sub2scen_ix">sub2scen_ix() (ScenarioModel method)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.sub2scenIx">sub2scenIx() (ScenarioModel method)</a>
+</li>
+      <li><a href="api/optimization.html#id15">supply_iter_func (NonLinearOptimizer attribute)</a>, <a href="api/optimization.html#pyRadPlan.optimization.solvers.NonLinearOptimizer.supply_iter_func">[1]</a>
+</li>
+      <li><a href="api/util.html#pyRadPlan.util.swap_orientation_sparse_matrix">swap_orientation_sparse_matrix() (in module pyRadPlan.util)</a>
+
+      <ul>
+        <li><a href="api/util.html#pyRadPlan.util.helpers.swap_orientation_sparse_matrix">(in module pyRadPlan.util.helpers)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cst.html#pyRadPlan.cst.Target">Target (class in pyRadPlan.cst)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.target_center_of_mass">target_center_of_mass() (StructureSet method)</a>
+</li>
+      <li><a href="api/stf.html#id27">target_point (Ray attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Ray.target_point">[1]</a>
+</li>
+      <li><a href="api/stf.html#id28">target_point_bev (Ray attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Ray.target_point_bev">[1]</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.target_union_mask">target_union_mask() (StructureSet method)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.target_union_voxels">target_union_voxels() (StructureSet method)</a>
+</li>
+      <li><a href="api/ct.html#id5">to_matrad() (CT method)</a>, <a href="api/ct.html#pyRadPlan.ct.CT.to_matrad">[1]</a>
+
+      <ul>
+        <li><a href="api/dij.html#pyRadPlan.dij.Dij.to_matrad">(Dij method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.to_matrad">(ExternalVOI method)</a>
+</li>
+        <li><a href="api/core.html#pyRadPlan.core.Grid.to_matrad">(Grid method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.to_matrad">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.to_matrad">(OAR method)</a>
+</li>
+        <li><a href="api/pln.html#pyRadPlan.plan.Plan.to_matrad">(Plan method)</a>
+</li>
+        <li><a href="api/core.html#pyRadPlan.core.PyRadPlanBaseModel.to_matrad">(PyRadPlanBaseModel method)</a>, <a href="api/core.html#pyRadPlan.core.datamodel.PyRadPlanBaseModel.to_matrad">[1]</a>
+</li>
+        <li><a href="api/stf.html#pyRadPlan.stf.Ray.to_matrad">(Ray method)</a>
+</li>
+        <li><a href="api/stf.html#id31">(SteeringInformation method)</a>, <a href="api/stf.html#pyRadPlan.stf.SteeringInformation.to_matrad">[1]</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.to_matrad">(StructureSet method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.to_matrad">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.to_matrad">(VOI method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.tot_num_range_scen">tot_num_range_scen (ScenarioModel property)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.tot_num_scen">tot_num_scen (ScenarioModel property)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.tot_num_shift_scen">tot_num_shift_scen (ScenarioModel property)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.total_num_of_bixels">total_num_of_bixels (Dij attribute)</a>
+
+      <ul>
+        <li><a href="api/dij.html#id2">(Dij property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.total_number_of_bixels">total_number_of_bixels (Beam attribute)</a>
+
+      <ul>
+        <li><a href="api/stf.html#id12">(Beam property)</a>
+</li>
+        <li><a href="api/stf.html#pyRadPlan.stf.SteeringInformation.total_number_of_bixels">(SteeringInformation property)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#id7">tpr (PhotonLINAC attribute)</a>, <a href="api/machines.html#pyRadPlan.machines.PhotonLINAC.tpr">[1]</a>
+</li>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerBase.trace_cubes">trace_cubes() (RayTracerBase method)</a>
+</li>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerBase.trace_ray">trace_ray() (RayTracerBase method)</a>
+
+      <ul>
+        <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerSiddon.trace_ray">(RayTracerSiddon method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerBase.trace_rays">trace_rays() (RayTracerBase method)</a>
+
+      <ul>
+        <li><a href="api/raytracer.html#pyRadPlan.raytracer.RayTracerSiddon.trace_rays">(RayTracerSiddon method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.update_forward_refs">update_forward_refs() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.update_forward_refs">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.update_forward_refs">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.update_forward_refs">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.update_forward_refs">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.update_forward_refs">(VOI class method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.update_kernel_at_index">update_kernel_at_index() (IonAccelerator method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.update_kernel_for_energy">update_kernel_for_energy() (IonAccelerator method)</a>
+</li>
+      <li><a href="api/scenarios.html#id11">update_scenarios() (NominalScenario method)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.NominalScenario.update_scenarios">[1]</a>
+
+      <ul>
+        <li><a href="api/scenarios.html#id6">(ScenarioModel method)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.update_scenarios">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="api/dose.engines.html#id13">use_custom_primary_photon_fluence (PhotonPencilBeamSVDEngine attribute)</a>, <a href="api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine.use_custom_primary_photon_fluence">[1]</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.validate">validate() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.validate">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.validate">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.validate">(StructureSet class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.validate">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.validate">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.validate_alpha_beta">validate_alpha_beta() (IonPencilBeamKernel class method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines._ions.IonBeamFocus.validate_arrays">validate_arrays() (IonBeamFocus class method)</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.LateralCutOff.validate_arrays">(LateralCutOff class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.LateralCutOff.validate_comp_fac">validate_comp_fac() (LateralCutOff class method)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.validate_cst">validate_cst() (in module pyRadPlan.cst)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.validate_ct">validate_ct() (in module pyRadPlan.ct)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.validate_cube_hu">validate_cube_hu() (CT class method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.Machine.validate_datetime_variants">validate_datetime_variants() (Machine class method)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.validate_dij">validate_dij() (in module pyRadPlan.dij)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.validate_grid">validate_grid() (Dij class method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.validate_kernel_data">validate_kernel_data() (PhotonSVDKernel method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonSVDKernel.validate_kernel_data_shapes">validate_kernel_data_shapes() (PhotonSVDKernel class method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.validate_kernel_lengths">validate_kernel_lengths() (IonPencilBeamKernel class method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.validate_machine">validate_machine() (in module pyRadPlan.machines)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.ExternalBeamMachine.validate_machine_input">validate_machine_input() (ExternalBeamMachine class method)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.validate_mask">validate_mask() (ExternalVOI method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.validate_mask">(HelperVOI method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.validate_mask">(OAR method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.validate_mask">(Target method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.validate_mask">(VOI method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.validate_mask_type">validate_mask_type() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.validate_mask_type">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.validate_mask_type">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.validate_mask_type">(Target class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.validate_mask_type">(VOI class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/io.html#pyRadPlan.io.validate_matrad_patient">validate_matrad_patient() (in module pyRadPlan.io)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.validate_matrices">validate_matrices() (Dij class method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.validate_model_input">validate_model_input() (Beam class method)</a>
+
+      <ul>
+        <li><a href="api/stf.html#id30">(SteeringInformation class method)</a>
+</li>
+        <li><a href="api/stf.html#pyRadPlan.stf.SteeringInformation.validate_model_input">(SteeringInformation method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.validate_multi_gaussian_kernel">validate_multi_gaussian_kernel() (IonPencilBeamKernel class method)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.validate_nparray_dtype">validate_nparray_dtype() (Beam class method)</a>
+
+      <ul>
+        <li><a href="api/stf.html#pyRadPlan.stf.Ray.validate_nparray_dtype">(Ray class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.validate_numbering_arrays">validate_numbering_arrays() (Dij class method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.PhotonLINAC.validate_pb_kernels">validate_pb_kernels() (PhotonLINAC class method)</a>
+</li>
+      <li><a href="api/pln.html#pyRadPlan.plan.validate_pln">validate_pln() (in module pyRadPlan.plan)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.validate_possible_cast">validate_possible_cast() (IonPencilBeamKernel class method)</a>
+</li>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonAccelerator.validate_possible_cast_array">validate_possible_cast_array() (IonAccelerator class method)</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.validate_possible_cast_array">(IonPencilBeamKernel class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/pln.html#pyRadPlan.plan.Plan.validate_prop">validate_prop() (Plan class method)</a>
+</li>
+      <li><a href="api/pln.html#pyRadPlan.plan.IonPlan.validate_radiation_mode">validate_radiation_mode() (IonPlan class method)</a>
+
+      <ul>
+        <li><a href="api/pln.html#pyRadPlan.plan.PhotonPlan.validate_radiation_mode">(PhotonPlan class method)</a>
+</li>
+        <li><a href="api/pln.html#pyRadPlan.plan.Plan.validate_radiation_mode">(Plan class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/stf.html#pyRadPlan.stf.Beam.validate_rays">validate_rays() (Beam class method)</a>
+</li>
+      <li><a href="api/scenarios.html#pyRadPlan.scenarios.validate_scenario_model">validate_scenario_model() (in module pyRadPlan.scenarios)</a>
+</li>
+      <li><a href="api/stf.html#pyRadPlan.stf.validate_stf">validate_stf() (in module pyRadPlan.stf)</a>
+</li>
+      <li><a href="api/dij.html#pyRadPlan.dij.Dij.validate_unique_indices_in_beam_num">validate_unique_indices_in_beam_num() (Dij class method)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.validate_voi">validate_voi() (in module pyRadPlan.cst)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.validate_voi_type">validate_voi_type() (ExternalVOI class method)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.validate_voi_type">(HelperVOI class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.validate_voi_type">(OAR class method)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.validate_voi_type">(Target class method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/machines.html#pyRadPlan.machines.Machine.version">version (Machine attribute)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.VOI">VOI (class in pyRadPlan.cst)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.ExternalVOI.voi_type">voi_type (ExternalVOI attribute)</a>
+
+      <ul>
+        <li><a href="api/cst.html#pyRadPlan.cst.HelperVOI.voi_type">(HelperVOI attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.OAR.voi_type">(OAR attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.Target.voi_type">(Target attribute)</a>
+</li>
+        <li><a href="api/cst.html#pyRadPlan.cst.VOI.voi_type">(VOI attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.voi_types">voi_types (StructureSet property)</a>
+</li>
+      <li><a href="api/cst.html#pyRadPlan.cst.StructureSet.vois">vois (StructureSet attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/scenarios.html#id7">wc_sigma (ScenarioModel attribute)</a>, <a href="api/scenarios.html#pyRadPlan.scenarios.ScenarioModel.wc_sigma">[1]</a>
+</li>
+      <li><a href="api/stf.html#id20">weight (Beamlet attribute)</a>, <a href="api/stf.html#pyRadPlan.stf.Beamlet.weight">[1]</a>
+
+      <ul>
+        <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.weight">(IonPencilBeamKernel attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/machines.html#pyRadPlan.machines.IonPencilBeamKernel.weight_multi">weight_multi (IonPencilBeamKernel attribute)</a>
+</li>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.world_to_cube_coords">world_to_cube_coords() (CT method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.x">x (CT property)</a>
+
+      <ul>
+        <li><a href="api/core.html#pyRadPlan.core.Grid.x">(Grid property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.y">y (CT property)</a>
+
+      <ul>
+        <li><a href="api/core.html#pyRadPlan.core.Grid.y">(Grid property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/ct.html#pyRadPlan.ct.CT.z">z (CT property)</a>
+
+      <ul>
+        <li><a href="api/core.html#pyRadPlan.core.Grid.z">(Grid property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, e0404.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

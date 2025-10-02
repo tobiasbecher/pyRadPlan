@@ -1,0 +1,769 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyRadPlan.dose.engines._svdpb &#8212; pyRadPlan 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyRadPlan/dose/engines/_svdpb';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyRadPlan 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyRadPlan.dose.engines._svdpb</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyRadPlan.dose.engines._svdpb</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implementation of a pencil beam dose calculation engine for photon beams</span>
+<span class="sd">based on the Singular-value</span>
+<span class="sd">decomposition (SVD) method by Bortfeld.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">fft</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegularGridInterpolator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.plan</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhotonPlan</span>
+
+<span class="c1"># from pyRadPlan.stf import Beam</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.machines</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhotonLINAC</span><span class="p">,</span> <span class="n">PhotonSVDKernel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._base_pencilbeam</span><span class="w"> </span><span class="kn">import</span> <span class="n">PencilBeamEngineAbstract</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DijSamplingConfig</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Properties for Dij sampling configuration.&quot;&quot;&quot;</span>
+
+    <span class="n">rel_dose_threshold</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">lat_cut_off</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">]</span>
+    <span class="n">delta_rad_depth</span><span class="p">:</span> <span class="nb">float</span>
+
+
+<div class="viewcode-block" id="PhotonPencilBeamSVDEngine">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.PhotonPencilBeamSVDEngine">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PhotonPencilBeamSVDEngine</span><span class="p">(</span><span class="n">PencilBeamEngineAbstract</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implementation of a pencil beam dose calculation engine for photons.</span>
+
+<span class="sd">    The implementation is based on the Singular-value decomposition (SVD)</span>
+<span class="sd">    method by Bortfeld, Schlegel &amp; Rhein (1993).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pln : PhotonPlan</span>
+<span class="sd">        A photon plan object.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    use_custom_primary_photon_fluence : bool</span>
+<span class="sd">        Use custom primary photon fluence.</span>
+<span class="sd">    kernel_cutoff : float</span>
+<span class="sd">        Kernel cutoff.</span>
+<span class="sd">    random_seed : int</span>
+<span class="sd">        Random seed.</span>
+<span class="sd">    int_conv_resolution : float</span>
+<span class="sd">        Intensity convolution resolution.</span>
+<span class="sd">    enable_dij_sampling : bool</span>
+<span class="sd">        Enable Dij sampling.</span>
+<span class="sd">    dij_sampling : DijSamplingConfig</span>
+<span class="sd">        Dij sampling configuration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">short_name</span> <span class="o">=</span> <span class="s2">&quot;SVDPB&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;SVD Pencil Beam&quot;</span>
+    <span class="n">possible_radiation_modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;photons&quot;</span><span class="p">]</span>
+
+    <span class="n">use_custom_primary_photon_fluence</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">kernel_cutoff</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">random_seed</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">int_conv_resolution</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">enable_dij_sampling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">dij_sampling</span><span class="p">:</span> <span class="n">DijSamplingConfig</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pln</span><span class="p">:</span> <span class="n">PhotonPlan</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_custom_primary_photon_fluence</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel_cutoff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_dij_sampling</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dij_sampling</span> <span class="o">=</span> <span class="n">DijSamplingConfig</span><span class="p">(</span>
+            <span class="n">rel_dose_threshold</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">lat_cut_off</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;radius&quot;</span><span class="p">,</span> <span class="n">delta_rad_depth</span><span class="o">=</span><span class="mi">5</span>
+        <span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">pln</span><span class="p">)</span>
+
+        <span class="c1"># Protected/Private attributes (equivalent to SetAccess = protected)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_field_based_dose_calc</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># will be set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field_width</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># will be obtained during calculation</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collimation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># collimation structure from DICOM import</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init_dose_calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ct</span><span class="p">,</span> <span class="n">cst</span><span class="p">,</span> <span class="n">stf</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="c1"># TODO: What is &quot;s&quot; here?</span>
+        <span class="c1"># self._is_field_based_dose_calc = any(str(s[&#39;bixelWidth&#39;]) == &#39;field&#39; for s in stf)</span>
+
+        <span class="n">dij</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_init_dose_calc</span><span class="p">(</span><span class="n">ct</span><span class="p">,</span> <span class="n">cst</span><span class="p">,</span> <span class="n">stf</span><span class="p">)</span>
+
+        <span class="c1"># dij = []</span>
+
+        <span class="c1"># checks of values</span>
+        <span class="c1"># matrad here tests the kernel cutoff against the tabulated kernels</span>
+        <span class="c1"># pyRadPlan, however, is more flexible and allows energy-specific kernels,</span>
+        <span class="c1"># so we can&#39;t check this here but only when we load the energy-kernel?</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_cutoff</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometric_lateral_cutoff</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Kernel cutoff smaller than the geometric lateral cutoff. Using geometric cutoff.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># matRad does the gaussian filter here, but can we do that here?</span>
+        <span class="c1"># We should be as flexible as to allow beams with different energies / penumbras / kernels</span>
+        <span class="c1"># moved the kernel filtering to beam initialization</span>
+
+        <span class="c1"># Initialize random number generator</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dij</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init_beam</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beam_info</span><span class="p">,</span> <span class="n">ct</span><span class="p">,</span> <span class="n">cst</span><span class="p">,</span> <span class="n">stf</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a beam for pencil beam dose calculation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        beam_info : dict</span>
+<span class="sd">            Beam information struct.</span>
+<span class="sd">        ct : np.ndarray</span>
+<span class="sd">            MatRad CT struct.</span>
+<span class="sd">        cst : np.ndarray</span>
+<span class="sd">            MatRad steering information struct.</span>
+<span class="sd">        stf : np.ndarray</span>
+<span class="sd">            MatRad steering information struct.</span>
+<span class="sd">        i : int</span>
+<span class="sd">            Index of beam.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Updated beam information struct.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">beam_info</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_init_beam</span><span class="p">(</span><span class="n">beam_info</span><span class="p">,</span> <span class="n">ct</span><span class="p">,</span> <span class="n">cst</span><span class="p">,</span> <span class="n">stf</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="n">field_based_dose_calc</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_field_based_dose_calc</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Enabling field-based dose calculation for beam </span><span class="si">%d</span><span class="s2">!&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collimation</span><span class="p">[</span><span class="s2">&quot;conv_resolution&quot;</span><span class="p">]</span>
+            <span class="n">field_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collimation</span><span class="p">[</span><span class="s2">&quot;field_width&quot;</span><span class="p">]</span>
+            <span class="n">field_based_dose_calc</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Enabling bixel-based dose calculation for beam </span><span class="si">%d</span><span class="s2">!&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">field_width</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;beam&quot;</span><span class="p">][</span><span class="s2">&quot;bixel_width&quot;</span><span class="p">]</span>
+
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;field_based_dose_calc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_based_dose_calc</span>
+
+        <span class="c1"># TODO: obtain maximum field limits</span>
+
+        <span class="n">field_limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">field_width</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span><span class="p">))</span>
+        <span class="c1"># TODO: should this be +1 as end or is it correct? In matRad it is equivalent to no +1</span>
+        <span class="n">field_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">field_limit</span><span class="p">,</span> <span class="n">field_limit</span><span class="p">)</span>
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;f_x&quot;</span><span class="p">],</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;f_z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">field_grid</span><span class="p">,</span> <span class="n">field_grid</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Get the kernel</span>
+        <span class="n">beamlets</span> <span class="o">=</span> <span class="p">[</span><span class="n">beamlet</span> <span class="k">for</span> <span class="n">ray</span> <span class="ow">in</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;beam&quot;</span><span class="p">][</span><span class="s2">&quot;rays&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">beamlet</span> <span class="ow">in</span> <span class="n">ray</span><span class="p">[</span><span class="s2">&quot;beamlets&quot;</span><span class="p">]]</span>
+
+        <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">([</span><span class="n">beamlet</span><span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">beamlet</span> <span class="ow">in</span> <span class="n">beamlets</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Different energies in one photon beam not supported yet.&quot;</span><span class="p">)</span>
+
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">energies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">PhotonLINAC</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_machine</span><span class="p">)</span><span class="o">.</span><span class="n">get_kernel_by_energy</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_cutoff</span> <span class="o">&gt;</span> <span class="n">kernel</span><span class="o">.</span><span class="n">kernel_pos</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Kernel cutoff (</span><span class="si">%f</span><span class="s2"> mm) is larger than the beam&#39;s kernel range (</span><span class="si">%f</span><span class="s2"> mm).&quot;</span>
+                <span class="s2">&quot; Using kernel range.&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">kernel_cutoff</span><span class="p">,</span>
+                <span class="n">kernel</span><span class="o">.</span><span class="n">kernel_pos</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="n">kernel_cutoff</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">kernel_pos</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kernel_cutoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_cutoff</span>
+
+        <span class="n">sigma_gauss</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">penumbra</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>  <span class="c1"># [mm]</span>
+
+        <span class="c1"># use 5 times sigma as the limits for the gaussian convolution</span>
+        <span class="n">gauss_limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">sigma_gauss</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span><span class="p">)</span>
+        <span class="n">gauss_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">gauss_limit</span><span class="p">,</span> <span class="n">gauss_limit</span><span class="p">)</span>
+
+        <span class="n">gauss_filter_x</span><span class="p">,</span> <span class="n">gauss_filter_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">gauss_grid</span><span class="p">,</span> <span class="n">gauss_grid</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">)</span>
+        <span class="n">gauss_filter</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">1.0</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">sigma_gauss</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">gauss_filter_x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">gauss_filter_z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_gauss</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="p">)</span>
+
+        <span class="n">gauss_conv_size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">field_limit</span> <span class="o">+</span> <span class="n">gauss_limit</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;gauss_conv_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gauss_conv_size</span>
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;gauss_filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gauss_filter</span>
+
+        <span class="c1"># get kernel size and distances</span>
+        <span class="n">kernel_limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">kernel_cutoff</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span><span class="p">)</span>
+        <span class="n">kernel_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">kernel_limit</span><span class="p">,</span> <span class="n">kernel_limit</span><span class="p">)</span>
+
+        <span class="n">kernel_x</span><span class="p">,</span> <span class="n">kernel_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">kernel_grid</span><span class="p">,</span> <span class="n">kernel_grid</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">)</span>
+
+        <span class="c1"># calculate also the total size and distance as we need this during convolution extensively</span>
+        <span class="n">kernel_conv_limit</span> <span class="o">=</span> <span class="n">field_limit</span> <span class="o">+</span> <span class="n">gauss_limit</span> <span class="o">+</span> <span class="n">kernel_limit</span>
+        <span class="n">kernel_conv_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+            <span class="o">-</span><span class="n">kernel_conv_limit</span><span class="p">,</span> <span class="n">kernel_conv_limit</span>
+        <span class="p">)</span>
+        <span class="n">conv_mx_x</span><span class="p">,</span> <span class="n">conv_mx_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">kernel_conv_grid</span><span class="p">,</span> <span class="n">kernel_conv_grid</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">)</span>
+
+        <span class="n">kernel_conv_size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">kernel_conv_limit</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="n">effective_lateral_cut_off</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometric_lateral_cutoff</span> <span class="o">+</span> <span class="n">field_width</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;effective_lateral_cut_off&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">effective_lateral_cut_off</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">field_based_dose_calc</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">field_width</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_conv_resolution</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">f_pre</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_custom_primary_photon_fluence</span><span class="p">:</span>
+                <span class="n">f_pre</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifft2</span><span class="p">(</span>
+                    <span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">f_pre</span><span class="p">,</span> <span class="p">(</span><span class="n">gauss_conv_size</span><span class="p">,</span> <span class="n">gauss_conv_size</span><span class="p">))</span>
+                    <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">gauss_filter</span><span class="p">,</span> <span class="p">(</span><span class="n">gauss_conv_size</span><span class="p">,</span> <span class="n">gauss_conv_size</span><span class="p">))</span>
+                <span class="p">)</span>
+                <span class="n">f_pre</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">f_pre</span><span class="p">)</span>
+
+        <span class="c1"># get index of central ray or closest to the central ray</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ray</span><span class="p">[</span><span class="s2">&quot;ray_pos_bev&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">ray</span> <span class="ow">in</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;beam&quot;</span><span class="p">][</span><span class="s2">&quot;rays&quot;</span><span class="p">]])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">center_ssd</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;beam&quot;</span><span class="p">][</span><span class="s2">&quot;rays&quot;</span><span class="p">][</span><span class="n">center</span><span class="p">][</span><span class="s2">&quot;SSD&quot;</span><span class="p">]</span>
+
+        <span class="c1"># get correct kernel for given SSD at central ray</span>
+        <span class="n">kernels_at_ssd</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">get_kernels_at_ssd</span><span class="p">(</span><span class="n">center_ssd</span><span class="p">)</span>
+
+        <span class="c1"># Display console message</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Kernel SSD = </span><span class="si">%g</span><span class="s2"> mm using </span><span class="si">%d</span><span class="s2"> components&quot;</span><span class="p">,</span> <span class="n">center_ssd</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">num_kernel_components</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Get Interpolators</span>
+        <span class="c1"># TODO: need scipy interpolate here probably</span>
+        <span class="n">kernel_mxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">kernel_x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">kernel_z</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">kernel</span><span class="o">.</span><span class="n">kernel_pos</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.0</span>
+            <span class="p">),</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">arr</span><span class="o">=</span><span class="n">kernels_at_ssd</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel</span>
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel_mxs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_mxs</span>
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;f_pre&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f_pre</span>
+        <span class="c1"># beam_info[&quot;kernel_xz&quot;] = (kernel_x.ravel(), kernel_z.ravel())</span>
+        <span class="c1"># beam_info[&quot;conv_mx_xz&quot;] = (conv_mx_x, conv_mx_z)</span>
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel_conv_grid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_conv_grid</span>
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel_conv_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_conv_size</span>
+
+        <span class="n">kernel_interpolators</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_kernel_interpolators</span><span class="p">(</span><span class="n">beam_info</span><span class="p">,</span> <span class="n">f_pre</span><span class="p">)</span>
+        <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel_interpolators&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_interpolators</span>
+
+        <span class="k">return</span> <span class="n">beam_info</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_bixel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_ray</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        PyRadPlan photon dose calculation for a single bixel.</span>
+
+<span class="sd">        call</span>
+<span class="sd">            bixel = self.computeBixel(currRay,k)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bixel</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">PhotonSVDKernel</span><span class="p">,</span> <span class="n">curr_ray</span><span class="p">[</span><span class="s2">&quot;kernel&quot;</span><span class="p">])</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">betas</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">kernel_betas</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">rd</span> <span class="o">=</span> <span class="n">curr_ray</span><span class="p">[</span><span class="s2">&quot;rad_depths&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">interpolators</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="n">RegularGridInterpolator</span><span class="p">],</span> <span class="n">curr_ray</span><span class="p">[</span><span class="s2">&quot;kernel_interpolators&quot;</span><span class="p">])</span>
+        <span class="n">iso_lat_dists</span> <span class="o">=</span> <span class="n">curr_ray</span><span class="p">[</span><span class="s2">&quot;iso_lat_dists&quot;</span><span class="p">]</span>
+        <span class="n">geo_depths</span> <span class="o">=</span> <span class="n">curr_ray</span><span class="p">[</span><span class="s2">&quot;geo_depths&quot;</span><span class="p">]</span>
+        <span class="n">sad</span> <span class="o">=</span> <span class="n">curr_ray</span><span class="p">[</span><span class="s2">&quot;sad&quot;</span><span class="p">]</span>
+
+        <span class="n">dose_component</span> <span class="o">=</span> <span class="n">betas</span> <span class="o">/</span> <span class="p">(</span><span class="n">betas</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">m</span> <span class="o">*</span> <span class="n">rd</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">betas</span> <span class="o">*</span> <span class="n">rd</span><span class="p">))</span>
+
+        <span class="n">interpolated_kernels</span> <span class="o">=</span> <span class="p">[</span><span class="n">interp</span><span class="p">(</span><span class="n">iso_lat_dists</span><span class="p">)</span> <span class="k">for</span> <span class="n">interp</span> <span class="ow">in</span> <span class="n">interpolators</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">interp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">interpolated_kernels</span><span class="p">):</span>
+            <span class="n">dose_component</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*=</span> <span class="n">interp</span>
+
+        <span class="n">bixel_dose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dose_component</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">bixel_dose</span> <span class="o">*=</span> <span class="p">((</span><span class="n">sad</span><span class="p">)</span> <span class="o">/</span> <span class="n">geo_depths</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+        <span class="n">bixel</span><span class="p">[</span><span class="s2">&quot;physical_dose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bixel_dose</span>
+        <span class="n">bixel</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">curr_ray</span><span class="p">[</span><span class="s2">&quot;beamlets&quot;</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span>
+        <span class="n">bixel</span><span class="p">[</span><span class="s2">&quot;ix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">curr_ray</span><span class="p">[</span><span class="s2">&quot;ix&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">bixel</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_kernel_interpolators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beam_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">f</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get kernel interpolator for photon dose calculation.&quot;&quot;&quot;</span>
+
+        <span class="n">num_kernels</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">PhotonSVDKernel</span><span class="p">,</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">num_kernel_components</span>
+        <span class="n">conv_size</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel_conv_size&quot;</span><span class="p">]</span>
+        <span class="n">kernel_mxs</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel_mxs&quot;</span><span class="p">]</span>
+        <span class="n">conv_grid</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel_conv_grid&quot;</span><span class="p">]</span>
+
+        <span class="n">interpolators</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_kernels</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_kernels</span><span class="p">):</span>
+            <span class="n">conv_mx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span>
+                <span class="n">fft</span><span class="o">.</span><span class="n">ifft2</span><span class="p">(</span>
+                    <span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">conv_size</span><span class="p">,</span> <span class="n">conv_size</span><span class="p">))</span>
+                    <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">kernel_mxs</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="p">(</span><span class="n">conv_size</span><span class="p">,</span> <span class="n">conv_size</span><span class="p">))</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">interpolators</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">((</span><span class="n">conv_grid</span><span class="p">,</span> <span class="n">conv_grid</span><span class="p">),</span> <span class="n">conv_mx</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">interpolators</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sample_dij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ix</span><span class="p">,</span> <span class="n">bixel_dose</span><span class="p">,</span> <span class="n">rad_depth_v</span><span class="p">,</span> <span class="n">rad_distances_sq</span><span class="p">,</span> <span class="n">bixel_width</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform lateral sampling of the beam.&quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;This method is not implemented yet.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init_ray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beam_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the current ray.&quot;&quot;&quot;</span>
+
+        <span class="n">ray</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_init_ray</span><span class="p">(</span><span class="n">beam_info</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+
+        <span class="n">ray</span><span class="p">[</span><span class="s2">&quot;kernel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_custom_primary_photon_fluence</span> <span class="ow">or</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;field_based_dose_calc&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;field_based_dose_calc&quot;</span><span class="p">]:</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">ray</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;f_pre&quot;</span><span class="p">]</span>
+
+            <span class="n">f</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>  <span class="c1"># Typing</span>
+
+            <span class="n">primary_fluence</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">PhotonSVDKernel</span><span class="p">,</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">primary_fluence</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;f_x&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ray</span><span class="p">[</span><span class="s2">&quot;ray_pos_bev&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="o">+</span> <span class="p">(</span><span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;f_x&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">ray</span><span class="p">[</span><span class="s2">&quot;ray_pos_bev&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="p">)</span>
+            <span class="n">fx</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">primary_fluence</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">primary_fluence</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+
+            <span class="n">n</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;gauss_conv_size&quot;</span><span class="p">]</span>
+            <span class="n">gauss_filter</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;gauss_filter&quot;</span><span class="p">]</span>
+
+            <span class="n">fx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft2</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">*</span> <span class="n">fft</span><span class="o">.</span><span class="n">fft2</span><span class="p">(</span><span class="n">gauss_filter</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))))</span>
+
+            <span class="n">ray</span><span class="p">[</span><span class="s2">&quot;kernel_interpolators&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_kernel_interpolators</span><span class="p">(</span><span class="n">beam_info</span><span class="p">,</span> <span class="n">fx</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ray</span><span class="p">[</span><span class="s2">&quot;kernel_interpolators&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">beam_info</span><span class="p">[</span><span class="s2">&quot;kernel_interpolators&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">ray</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, e0404.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

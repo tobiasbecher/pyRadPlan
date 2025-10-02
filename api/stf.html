@@ -1,0 +1,1707 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>stf &#8212; pyRadPlan 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/stf';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cst" href="cst.html" />
+    <link rel="prev" title="ct" href="ct.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyRadPlan 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Api documentation:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ct.html">ct</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">stf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cst.html">cst</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pln.html">plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dij.html">Dij</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">optimization</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="machines.html">Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">pyRadPlan.core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">pyRadPlan.util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">pyRadPlan.io package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="raytracer.html">pyRadPlan.raytracer package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenarios.html">pyRadPlan.scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dose.engines.html">pyRadPlan.dose.engines package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dose.html">pyRadPlan.dose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">pyRadPlan.geometry package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">api documentation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">stf</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-pyRadPlan.stf">
+<span id="stf"></span><h1>stf<a class="headerlink" href="#module-pyRadPlan.stf" title="Link to this heading">#</a></h1>
+<p>Provides classes and methods for creating irradiation geometries (stf).</p>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Beam</span></span><a class="reference internal" href="../_modules/pyRadPlan/stf/_beam.html#Beam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Beam" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyRadPlan.core.datamodel.PyRadPlanBaseModel" title="pyRadPlan.core.datamodel.PyRadPlanBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a></p>
+<p>A class representing a single beam.</p>
+<p>This class extends PyRadPlanBaseModel (Pydantic) and provides functionality to
+handle the steering information, including properties like gantry angle, couch angle, etc.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.gantry_angle">
+<span class="sig-name descname"><span class="pre">gantry_angle</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.gantry_angle" title="Link to this definition">#</a></dt>
+<dd><p>The gantry angle of the beam in (°).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.couch_angle">
+<span class="sig-name descname"><span class="pre">couch_angle</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.couch_angle" title="Link to this definition">#</a></dt>
+<dd><p>The couch angle of the beam in (°).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.bixel_width">
+<span class="sig-name descname"><span class="pre">bixel_width</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.bixel_width" title="Link to this definition">#</a></dt>
+<dd><p>The width of the bixels in (mm).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.radiation_mode">
+<span class="sig-name descname"><span class="pre">radiation_mode</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.radiation_mode" title="Link to this definition">#</a></dt>
+<dd><p>The radiation mode of the beam (e.g. photon, proton, carbon).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.machine">
+<span class="sig-name descname"><span class="pre">machine</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.machine" title="Link to this definition">#</a></dt>
+<dd><p>The machine used for the beam. (e.g. ‘Generic’)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.sad">
+<span class="sig-name descname"><span class="pre">sad</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.sad" title="Link to this definition">#</a></dt>
+<dd><p>The source to axis distance in (mm).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.iso_center">
+<span class="sig-name descname"><span class="pre">iso_center</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.iso_center" title="Link to this definition">#</a></dt>
+<dd><p>The isocenter of the beam in (x, y, z) coordinates.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.num_of_rays">
+<span class="sig-name descname"><span class="pre">num_of_rays</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.num_of_rays" title="Link to this definition">#</a></dt>
+<dd><p>The number of rays in the beam.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.ray">
+<span class="sig-name descname"><span class="pre">ray</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.ray" title="Link to this definition">#</a></dt>
+<dd><p>dict containing the properties of each ray.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.source_point_bev">
+<span class="sig-name descname"><span class="pre">source_point_bev</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.source_point_bev" title="Link to this definition">#</a></dt>
+<dd><p>The source point in BEV coordinates.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.source_point">
+<span class="sig-name descname"><span class="pre">source_point</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.source_point" title="Link to this definition">#</a></dt>
+<dd><p>The source point in (x, y, z) coordinates.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.num_of_bixels_per_ray">
+<span class="sig-name descname"><span class="pre">num_of_bixels_per_ray</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.num_of_bixels_per_ray" title="Link to this definition">#</a></dt>
+<dd><p>The number of bixels per ray in an array (1 x num_of_rays).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.longitudinal_spot_spacing">
+<span class="sig-name descname"><span class="pre">longitudinal_spot_spacing</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.longitudinal_spot_spacing" title="Link to this definition">#</a></dt>
+<dd><p>The longitudinal spot spacing in (mm).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.total_number_of_bixels">
+<span class="sig-name descname"><span class="pre">total_number_of_bixels</span></span><a class="headerlink" href="#pyRadPlan.stf.Beam.total_number_of_bixels" title="Link to this definition">#</a></dt>
+<dd><p>The total number of bixels in the beam.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">create_beam():</span></span></dt>
+<dd><p>Validate and create a Beam object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">validate_beam():</span></span></dt>
+<dd><p>Validate and create a Beam object.</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Fields<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bixel_width</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">couch_angle</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gantry_angle</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">iso_center</span> <span class="pre">(numpydantic.vendor.nptyping.base_meta_classes.NDArray[numpydantic.vendor.nptyping.base_meta_classes.Shape[3],</span> <span class="pre">numpy.float64])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">longitudinal_spot_spacing</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">machine</span> <span class="pre">(str)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">radiation_mode</span> <span class="pre">(str)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rays</span> <span class="pre">(list[pyRadPlan.stf._ray.Ray])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sad</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">source_point</span> <span class="pre">(numpydantic.vendor.nptyping.base_meta_classes.NDArray[numpydantic.vendor.nptyping.base_meta_classes.Shape[3],</span> <span class="pre">numpy.float64])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">source_point_bev</span> <span class="pre">(numpydantic.vendor.nptyping.base_meta_classes.NDArray[numpydantic.vendor.nptyping.base_meta_classes.Shape[3],</span> <span class="pre">numpy.float64])</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Validators<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">iso_center</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">source_point</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">source_point_bev</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rays</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">rays</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bixel_width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'bixelWidth')</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id1">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">couch_angle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'couchAngle')</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id2">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gantry_angle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'gantryAngle')</span></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id3">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">iso_center</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code><span class="pre">[3],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code><span class="pre">]</span></em><em class="property"> <span class="pre">[Required]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'isoCenter')</span></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id4">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">longitudinal_spot_spacing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2.0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'longitudinalSpotSpacing')</span></em><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id5">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">machine</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Generic'</span></em><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id6">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radiation_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'protons'</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'radiationMode')</span></em><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.rays">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rays</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><span class="pre">[</span><a class="reference internal" href="#pyRadPlan.stf.Ray" title="pyRadPlan.stf._ray.Ray"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ray</span></code></a><span class="pre">]</span></em><em class="property"> <span class="pre">[Required]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'ray')</span></em><a class="headerlink" href="#pyRadPlan.stf.Beam.rays" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_rays</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id7">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sad</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">100000</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'SAD')</span></em><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id8">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_point</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code><span class="pre">[3],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'sourcePoint')</span></em><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id9">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_point_bev</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code><span class="pre">[3],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0,</span> <span class="pre">-10000,</span> <span class="pre">0]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'sourcePoint_bev')</span></em><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.validate_model_input">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_model_input</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../_modules/pyRadPlan/stf/_beam.html#Beam.validate_model_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Beam.validate_model_input" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.validate_nparray_dtype">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_nparray_dtype</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">iso_center</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">source_point</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">source_point_bev</span></em><a class="reference internal" href="../_modules/pyRadPlan/stf/_beam.html#Beam.validate_nparray_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Beam.validate_nparray_dtype" title="Link to this definition">#</a></dt>
+<dd><p>Validate arrays to have floating point values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.validate_rays">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_rays</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">rays</span></em><a class="reference internal" href="../_modules/pyRadPlan/stf/_beam.html#Beam.validate_rays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Beam.validate_rays" title="Link to this definition">#</a></dt>
+<dd><p>Validate the rays attribute.</p>
+<p>Pydantic will validate that it is a list but will also allow list of dicts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<a class="reference internal" href="#pyRadPlan.stf.Ray" title="pyRadPlan.stf._ray.Ray"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ray</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.custom_rays_serializer">
+<span class="sig-name descname"><span class="pre">custom_rays_serializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/_beam.html#Beam.custom_rays_serializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Beam.custom_rays_serializer" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beam.bixel_ray_map">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bixel_ray_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int64]</span></em><a class="headerlink" href="#pyRadPlan.stf.Beam.bixel_ray_map" title="Link to this definition">#</a></dt>
+<dd><p>Map providing ray index in the beam for each bixel.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id10">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_of_bixels_per_ray</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id11">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_of_rays</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id11" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id12">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_number_of_bixels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id12" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Beamlet</span></span><a class="reference internal" href="../_modules/pyRadPlan/stf/_beamlet.html#Beamlet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Beamlet" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyRadPlan.core.datamodel.PyRadPlanBaseModel" title="pyRadPlan.core.datamodel.PyRadPlanBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a></p>
+<p>A class representing a single beamlet.</p>
+<p>This class extends PyRadPlanBaseModel (pydantic) and provides functionality to
+handle the bemamlet information, including properties like
+energy &amp; monitor units.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><a class="headerlink" href="#pyRadPlan.stf.Beamlet.energy" title="Link to this definition">#</a></dt>
+<dd><p>The energy value for the beamlet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet.num_particles_per_mu">
+<span class="sig-name descname"><span class="pre">num_particles_per_mu</span></span><a class="headerlink" href="#pyRadPlan.stf.Beamlet.num_particles_per_mu" title="Link to this definition">#</a></dt>
+<dd><p>The number of particles per monitor unit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet.relative_fluence">
+<span class="sig-name descname"><span class="pre">relative_fluence</span></span><a class="headerlink" href="#pyRadPlan.stf.Beamlet.relative_fluence" title="Link to this definition">#</a></dt>
+<dd><p>The fluence of this beamlet relative to the central primary fluence.
+For example, due to a non-uniform primary fluence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet.weight">
+<span class="sig-name descname"><span class="pre">weight</span></span><a class="headerlink" href="#pyRadPlan.stf.Beamlet.weight" title="Link to this definition">#</a></dt>
+<dd><p>The applied fluence weight of the beamlet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet.min_mu">
+<span class="sig-name descname"><span class="pre">min_mu</span></span><a class="headerlink" href="#pyRadPlan.stf.Beamlet.min_mu" title="Link to this definition">#</a></dt>
+<dd><p>The minimum monitor unit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet.max_mu">
+<span class="sig-name descname"><span class="pre">max_mu</span></span><a class="headerlink" href="#pyRadPlan.stf.Beamlet.max_mu" title="Link to this definition">#</a></dt>
+<dd><p>The maximum monitor unit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet.range_shifter">
+<span class="sig-name descname"><span class="pre">range_shifter</span></span><a class="headerlink" href="#pyRadPlan.stf.Beamlet.range_shifter" title="Link to this definition">#</a></dt>
+<dd><p>The range shifter applied for the beamlet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyRadPlan.stf.RangeShifter" title="pyRadPlan.stf.RangeShifter">RangeShifter</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet.focus_ix">
+<span class="sig-name descname"><span class="pre">focus_ix</span></span><a class="headerlink" href="#pyRadPlan.stf.Beamlet.focus_ix" title="Link to this definition">#</a></dt>
+<dd><p>The focus index identifying the focus setting for the beamlet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Fields<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_ix</span> <span class="pre">(int)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_mu</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_mu</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_particles_per_mu</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">range_shifter</span> <span class="pre">(pyRadPlan.stf._rangeshifter.RangeShifter)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_fluence</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">weight</span> <span class="pre">(float)</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id13">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">energy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#id13" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id14">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">focus_ix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'focusIx')</span></em><a class="headerlink" href="#id14" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id15">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_mu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">inf</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'maxMU')</span></em><a class="headerlink" href="#id15" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id16">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_mu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'minMU')</span></em><a class="headerlink" href="#id16" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id17">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_particles_per_mu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1000000.0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'numParticlesPerMU')</span></em><a class="headerlink" href="#id17" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id18">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">range_shifter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyRadPlan.stf.RangeShifter" title="pyRadPlan.stf._rangeshifter.RangeShifter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RangeShifter</span></code></a></em><em class="property"> <span class="pre">[Optional]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'rangeShifter')</span></em><a class="headerlink" href="#id18" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id19">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">relative_fluence</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'relativeFluence')</span></em><a class="headerlink" href="#id19" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id20">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weight</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></em><a class="headerlink" href="#id20" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Beamlet.field_typing">
+<span class="sig-name descname"><span class="pre">field_typing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/_beamlet.html#Beamlet.field_typing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Beamlet.field_typing" title="Link to this definition">#</a></dt>
+<dd><p>Ensure correct serialization in various contexts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.stf.IonSpot">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IonSpot</span></span><a class="reference internal" href="../_modules/pyRadPlan/stf/_beamlet.html#IonSpot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.IonSpot" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyRadPlan.stf.Beamlet" title="pyRadPlan.stf._beamlet.Beamlet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Beamlet</span></code></a></p>
+<p>A class representing a single beamlet.</p>
+<p>This class extends PyRadPlanBaseModel (pydantic) and provides functionality to
+handle the beamlet information specific to particles, including properties like
+range shifter and focus index.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.IonSpot.range_shifter">
+<span class="sig-name descname"><span class="pre">range_shifter</span></span><a class="headerlink" href="#pyRadPlan.stf.IonSpot.range_shifter" title="Link to this definition">#</a></dt>
+<dd><p>The range shifter applied for the beamlet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyRadPlan.stf.RangeShifter" title="pyRadPlan.stf.RangeShifter">RangeShifter</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.IonSpot.focus_ix">
+<span class="sig-name descname"><span class="pre">focus_ix</span></span><a class="headerlink" href="#pyRadPlan.stf.IonSpot.focus_ix" title="Link to this definition">#</a></dt>
+<dd><p>The focus index identifying the focus setting for the beamlet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Fields<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.stf.PhotonBixel">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PhotonBixel</span></span><a class="reference internal" href="../_modules/pyRadPlan/stf/_beamlet.html#PhotonBixel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.PhotonBixel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyRadPlan.stf.Beamlet" title="pyRadPlan.stf._beamlet.Beamlet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Beamlet</span></code></a></p>
+<p>A class representing a single photon beamlet.</p>
+<p>This class extends PyRadPlanBaseModel (pydantic) and provides functionality to
+handle the beamlet information for photons. Mainly the relative fluence of the beamlet /
+bixel due to its lateral position is stored in here.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.PhotonBixel.relative_fluence">
+<span class="sig-name descname"><span class="pre">relative_fluence</span></span><a class="headerlink" href="#pyRadPlan.stf.PhotonBixel.relative_fluence" title="Link to this definition">#</a></dt>
+<dd><p>The fluence of this beamlet relative to the central primary fluence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Fields<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.stf.RangeShifter">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RangeShifter</span></span><a class="reference internal" href="../_modules/pyRadPlan/stf/_rangeshifter.html#RangeShifter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.RangeShifter" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyRadPlan.core.datamodel.PyRadPlanBaseModel" title="pyRadPlan.core.datamodel.PyRadPlanBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a></p>
+<p>A class representing a range shifter.</p>
+<p>This class extends Pydantic’s BaseModel and provides functionality to
+handle the range shifter information, including properties like id, equivalent thickness,
+and source to range shifter distance.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.RangeShifter.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#pyRadPlan.stf.RangeShifter.id" title="Link to this definition">#</a></dt>
+<dd><p>The identifier for the range shifter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.RangeShifter.eq_thickness">
+<span class="sig-name descname"><span class="pre">eq_thickness</span></span><a class="headerlink" href="#pyRadPlan.stf.RangeShifter.eq_thickness" title="Link to this definition">#</a></dt>
+<dd><p>The equivalent thickness of the range shifter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.RangeShifter.source_rashi_distance">
+<span class="sig-name descname"><span class="pre">source_rashi_distance</span></span><a class="headerlink" href="#pyRadPlan.stf.RangeShifter.source_rashi_distance" title="Link to this definition">#</a></dt>
+<dd><p>The distance from the source to the range shifter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Fields<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eq_thickness</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(int)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">source_rashi_distance</span> <span class="pre">(float)</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id21">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eq_thickness</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'eqThickness')</span></em><a class="headerlink" href="#id21" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id22">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'ID')</span></em><a class="headerlink" href="#id22" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id23">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_rashi_distance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'sourceRashiDistance')</span></em><a class="headerlink" href="#id23" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Ray</span></span><a class="reference internal" href="../_modules/pyRadPlan/stf/_ray.html#Ray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Ray" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyRadPlan.core.datamodel.PyRadPlanBaseModel" title="pyRadPlan.core.datamodel.PyRadPlanBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a></p>
+<p>A class representing a single ray.</p>
+<p>This class extends PyRadPlanBaseModel (pydantic) and provides functionality to
+handle the ray information, including properties like ray positions, energy, focus index, etc.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.ray_pos_bev">
+<span class="sig-name descname"><span class="pre">ray_pos_bev</span></span><a class="headerlink" href="#pyRadPlan.stf.Ray.ray_pos_bev" title="Link to this definition">#</a></dt>
+<dd><p>The ray positions in BEV coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.ray_pos">
+<span class="sig-name descname"><span class="pre">ray_pos</span></span><a class="headerlink" href="#pyRadPlan.stf.Ray.ray_pos" title="Link to this definition">#</a></dt>
+<dd><p>The ray positions in (x, y, z) coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.target_point_bev">
+<span class="sig-name descname"><span class="pre">target_point_bev</span></span><a class="headerlink" href="#pyRadPlan.stf.Ray.target_point_bev" title="Link to this definition">#</a></dt>
+<dd><p>The target point in BEV coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.target_point">
+<span class="sig-name descname"><span class="pre">target_point</span></span><a class="headerlink" href="#pyRadPlan.stf.Ray.target_point" title="Link to this definition">#</a></dt>
+<dd><p>The target point in (x, y, z) coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.beamlets">
+<span class="sig-name descname"><span class="pre">beamlets</span></span><a class="headerlink" href="#pyRadPlan.stf.Ray.beamlets" title="Link to this definition">#</a></dt>
+<dd><p>The beamlets in the ray.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="#pyRadPlan.stf.Beamlet" title="pyRadPlan.stf.Beamlet">Beamlet</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Fields<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">beamlets</span> <span class="pre">(list[pyRadPlan.stf._beamlet.Beamlet])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ray_pos</span> <span class="pre">(numpydantic.vendor.nptyping.base_meta_classes.NDArray[numpydantic.vendor.nptyping.base_meta_classes.Shape[3],</span> <span class="pre">numpy.float64])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ray_pos_bev</span> <span class="pre">(numpydantic.vendor.nptyping.base_meta_classes.NDArray[numpydantic.vendor.nptyping.base_meta_classes.Shape[3],</span> <span class="pre">numpy.float64])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">target_point</span> <span class="pre">(numpydantic.vendor.nptyping.base_meta_classes.NDArray[numpydantic.vendor.nptyping.base_meta_classes.Shape[3],</span> <span class="pre">numpy.float64]</span> <span class="pre">|</span> <span class="pre">None)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">target_point_bev</span> <span class="pre">(numpydantic.vendor.nptyping.base_meta_classes.NDArray[numpydantic.vendor.nptyping.base_meta_classes.Shape[3],</span> <span class="pre">numpy.float64]</span> <span class="pre">|</span> <span class="pre">None)</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Validators<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sanitize_beamlet_structure</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">ray_pos</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">ray_pos_bev</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">target_point</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">target_point_bev</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id24">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">beamlets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><span class="pre">[</span><a class="reference internal" href="#pyRadPlan.stf.Beamlet" title="pyRadPlan.stf._beamlet.Beamlet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Beamlet</span></code></a><span class="pre">]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#id24" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sanitize_beamlet_structure</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id25">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ray_pos</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code><span class="pre">[3],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code><span class="pre">]</span></em><em class="property"> <span class="pre">[Required]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'rayPos')</span></em><a class="headerlink" href="#id25" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sanitize_beamlet_structure</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id26">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ray_pos_bev</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code><span class="pre">[3],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code><span class="pre">]</span></em><em class="property"> <span class="pre">[Required]</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'rayPos_bev')</span></em><a class="headerlink" href="#id26" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sanitize_beamlet_structure</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id27">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target_point</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code><span class="pre">[3],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'targetPoint')</span></em><a class="headerlink" href="#id27" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sanitize_beamlet_structure</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id28">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target_point_bev</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code><span class="pre">[3],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'targetPoint_bev')</span></em><a class="headerlink" href="#id28" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sanitize_beamlet_structure</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_nparray_dtype</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.create_matrad_helper_model">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_matrad_helper_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/_ray.html#Ray.create_matrad_helper_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Ray.create_matrad_helper_model" title="Link to this definition">#</a></dt>
+<dd><p>Create a helper model for matRad serialization.</p>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.sanitize_beamlet_structure">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sanitize_beamlet_structure</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../_modules/pyRadPlan/stf/_ray.html#Ray.sanitize_beamlet_structure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Ray.sanitize_beamlet_structure" title="Link to this definition">#</a></dt>
+<dd><p>Sanitize the beamlet structure in the ray.</p>
+<p>It may be structured differently (e.g. when coming from matRad.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.validate_nparray_dtype">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_nparray_dtype</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">ray_pos_bev</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">ray_pos</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">target_point</span></em><em class="property"><span class="pre">,</span> </em><em class="xref py py-obj"><span class="pre">target_point_bev</span></em><a class="reference internal" href="../_modules/pyRadPlan/stf/_ray.html#Ray.validate_nparray_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Ray.validate_nparray_dtype" title="Link to this definition">#</a></dt>
+<dd><p>Validate / convert arrays to have floating point values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code>[3], <code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.custom_beamlets_serializer">
+<span class="sig-name descname"><span class="pre">custom_beamlets_serializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/_ray.html#Ray.custom_beamlets_serializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Ray.custom_beamlets_serializer" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.stf.Ray.to_matrad">
+<span class="sig-name descname"><span class="pre">to_matrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mat-file'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/_ray.html#Ray.to_matrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.Ray.to_matrad" title="Link to this definition">#</a></dt>
+<dd><p>Serialize rays for matRad structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SteeringInformation</span></span><a class="reference internal" href="../_modules/pyRadPlan/stf/_steeringinformation.html#SteeringInformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyRadPlan.core.datamodel.PyRadPlanBaseModel" title="pyRadPlan.core.datamodel.PyRadPlanBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a></p>
+<p>A class representing the Steering Information (stf).</p>
+<p>This class extends PyRadPlanBaseModel (based on pydantic) and provides functionality to
+handle single beams, including their properties.
+These are defined in the corresponding class (_Beam.py).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.beams">
+<span class="sig-name descname"><span class="pre">beams</span></span><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.beams" title="Link to this definition">#</a></dt>
+<dd><p>beam class object containing the properties of the beam.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#pyRadPlan.stf.Beam" title="pyRadPlan.stf.Beam">Beam</a>] - list consisting of Beam objects (pydantic)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.validate_model_input">
+<span class="sig-name descname"><span class="pre">validate_model_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/pyRadPlan/stf/_steeringinformation.html#SteeringInformation.validate_model_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.validate_model_input" title="Link to this definition">#</a></dt>
+<dd><p>Validates the input data before creating the model instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.to_matrad">
+<span class="sig-name descname"><span class="pre">to_matrad</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/pyRadPlan/stf/_steeringinformation.html#SteeringInformation.to_matrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.to_matrad" title="Link to this definition">#</a></dt>
+<dd><p>Creates a dictionary ready to save the stf model to a mat-file that can be read.</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Fields<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">beams</span> <span class="pre">(list[pyRadPlan.stf._beam.Beam])</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Validators<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id29">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">beams</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><span class="pre">[</span><a class="reference internal" href="#pyRadPlan.stf.Beam" title="pyRadPlan.stf._beam.Beam"><code class="xref py py-class docutils literal notranslate"><span class="pre">Beam</span></code></a><span class="pre">]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#id29" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_model_input</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="id30">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_model_input</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="reference internal" href="../_modules/pyRadPlan/stf/_steeringinformation.html#SteeringInformation.validate_model_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id30" title="Link to this definition">#</a></dt>
+<dd><p>Validate the input data for creating the model instance.</p>
+<p>Will first try to run pydantics handler, and if it fails with a
+ValidationError, it will
+try to convert the data to the right format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.custom_beams_serializer">
+<span class="sig-name descname"><span class="pre">custom_beams_serializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/_steeringinformation.html#SteeringInformation.custom_beams_serializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.custom_beams_serializer" title="Link to this definition">#</a></dt>
+<dd><p>Serialize the beams fields in various contexts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id31">
+<span class="sig-name descname"><span class="pre">to_matrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mat-file'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/_steeringinformation.html#SteeringInformation.to_matrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id31" title="Link to this definition">#</a></dt>
+<dd><p>Perform matRad compatible serialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context</strong> (<em>str</em><em>, </em><em>optional</em>) – The context in which the datastructure should be serialized,
+by default ‘mat-file’.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A datastructre compatible with matRad in the given context</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Currently, the only supported context is ‘mat-file’. In the future,
+this could be extended to support other contexts, such as direct
+calling via the matlab engine or oct2py.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.bixel_beam_index_map">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bixel_beam_index_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int64]</span></em><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.bixel_beam_index_map" title="Link to this definition">#</a></dt>
+<dd><p>Mapping of bixels to their respective beam index.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.bixel_index_per_beam_map">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bixel_index_per_beam_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int64]</span></em><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.bixel_index_per_beam_map" title="Link to this definition">#</a></dt>
+<dd><p>Mapping of bixels to their bixel index in the respective beam.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.bixel_ray_index_per_beam_map">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bixel_ray_index_per_beam_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int64]</span></em><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.bixel_ray_index_per_beam_map" title="Link to this definition">#</a></dt>
+<dd><p>Mapping of bixels to the ray index in the individual beams.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.num_of_beams">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_of_beams</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.num_of_beams" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.num_of_rays">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_of_rays</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.num_of_rays" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.stf.SteeringInformation.total_number_of_bixels">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_number_of_bixels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.stf.SteeringInformation.total_number_of_bixels" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.stf.create_stf">
+<span class="sig-name descname"><span class="pre">create_stf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/_steeringinformation.html#create_stf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.create_stf" title="Link to this definition">#</a></dt>
+<dd><p>Create a Steering Information object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stf</strong> (<em>Union</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>None</em><em>]</em>) – dictionary containing the data to create the stf object.</p></li>
+<li><p><strong>**kwargs</strong> – Arbitrary keyword arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A SteeringInformation class object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyRadPlan.stf.SteeringInformation" title="pyRadPlan.stf.SteeringInformation">SteeringInformation</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the radiation mode is unknown or empty.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.stf.get_available_generators">
+<span class="sig-name descname"><span class="pre">get_available_generators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/generators/_factory.html#get_available_generators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.get_available_generators" title="Link to this definition">#</a></dt>
+<dd><p>Get a list of available stf generators based on the plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pln</strong> (<em>Union</em><em>[</em><a class="reference internal" href="pln.html#pyRadPlan.plan.Plan" title="pyRadPlan.plan.Plan"><em>Plan</em></a><em>,</em><em>dict</em><em>]</em>) – A Plan object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of available generators.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.stf.get_generator">
+<span class="sig-name descname"><span class="pre">get_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pln</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/generators/_factory.html#get_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.get_generator" title="Link to this definition">#</a></dt>
+<dd><p>Get the appropriate generator based on the plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pln</strong> (<a class="reference internal" href="pln.html#pyRadPlan.plan.Plan" title="pyRadPlan.plan.Plan"><em>Plan</em></a>) – A Plan object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Dose Generator object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.stf.register_generator">
+<span class="sig-name descname"><span class="pre">register_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generator_cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/generators/_factory.html#register_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.register_generator" title="Link to this definition">#</a></dt>
+<dd><p>Register a new stf generator for irradiation geometry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>generator_cls</strong> (<em>type</em>) – A Generator class.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.stf.validate_stf">
+<span class="sig-name descname"><span class="pre">validate_stf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/stf/_steeringinformation.html#validate_stf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.stf.validate_stf" title="Link to this definition">#</a></dt>
+<dd><p>Validate a Steering Information object.</p>
+<p>Synonym to create_stf but should be used in validation context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stf</strong> (<em>Union</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>None</em><em>]</em>) – dictionary containing the data to create the stf object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A validated SteeringInformation class object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyRadPlan.stf.SteeringInformation" title="pyRadPlan.stf.SteeringInformation">SteeringInformation</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ct.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">ct</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cst.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">cst</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam"><code class="docutils literal notranslate"><span class="pre">Beam</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.gantry_angle"><code class="docutils literal notranslate"><span class="pre">Beam.gantry_angle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.couch_angle"><code class="docutils literal notranslate"><span class="pre">Beam.couch_angle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.bixel_width"><code class="docutils literal notranslate"><span class="pre">Beam.bixel_width</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.radiation_mode"><code class="docutils literal notranslate"><span class="pre">Beam.radiation_mode</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.machine"><code class="docutils literal notranslate"><span class="pre">Beam.machine</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.sad"><code class="docutils literal notranslate"><span class="pre">Beam.sad</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.iso_center"><code class="docutils literal notranslate"><span class="pre">Beam.iso_center</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.num_of_rays"><code class="docutils literal notranslate"><span class="pre">Beam.num_of_rays</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.ray"><code class="docutils literal notranslate"><span class="pre">Beam.ray</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.source_point_bev"><code class="docutils literal notranslate"><span class="pre">Beam.source_point_bev</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.source_point"><code class="docutils literal notranslate"><span class="pre">Beam.source_point</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.num_of_bixels_per_ray"><code class="docutils literal notranslate"><span class="pre">Beam.num_of_bixels_per_ray</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.longitudinal_spot_spacing"><code class="docutils literal notranslate"><span class="pre">Beam.longitudinal_spot_spacing</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.total_number_of_bixels"><code class="docutils literal notranslate"><span class="pre">Beam.total_number_of_bixels</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Beam.bixel_width</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Beam.couch_angle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Beam.gantry_angle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Beam.iso_center</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Beam.longitudinal_spot_spacing</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Beam.machine</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">Beam.radiation_mode</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.rays"><code class="docutils literal notranslate"><span class="pre">Beam.rays</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">Beam.sad</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">Beam.source_point</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">Beam.source_point_bev</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.validate_model_input"><code class="docutils literal notranslate"><span class="pre">Beam.validate_model_input</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.validate_nparray_dtype"><code class="docutils literal notranslate"><span class="pre">Beam.validate_nparray_dtype</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.validate_rays"><code class="docutils literal notranslate"><span class="pre">Beam.validate_rays</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.custom_rays_serializer"><code class="docutils literal notranslate"><span class="pre">Beam.custom_rays_serializer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beam.bixel_ray_map"><code class="docutils literal notranslate"><span class="pre">Beam.bixel_ray_map</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">Beam.num_of_bixels_per_ray</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><code class="docutils literal notranslate"><span class="pre">Beam.num_of_rays</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">Beam.total_number_of_bixels</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet"><code class="docutils literal notranslate"><span class="pre">Beamlet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet.energy"><code class="docutils literal notranslate"><span class="pre">Beamlet.energy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet.num_particles_per_mu"><code class="docutils literal notranslate"><span class="pre">Beamlet.num_particles_per_mu</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet.relative_fluence"><code class="docutils literal notranslate"><span class="pre">Beamlet.relative_fluence</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet.weight"><code class="docutils literal notranslate"><span class="pre">Beamlet.weight</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet.min_mu"><code class="docutils literal notranslate"><span class="pre">Beamlet.min_mu</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet.max_mu"><code class="docutils literal notranslate"><span class="pre">Beamlet.max_mu</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet.range_shifter"><code class="docutils literal notranslate"><span class="pre">Beamlet.range_shifter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet.focus_ix"><code class="docutils literal notranslate"><span class="pre">Beamlet.focus_ix</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">Beamlet.energy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">Beamlet.focus_ix</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">Beamlet.max_mu</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><code class="docutils literal notranslate"><span class="pre">Beamlet.min_mu</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><code class="docutils literal notranslate"><span class="pre">Beamlet.num_particles_per_mu</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><code class="docutils literal notranslate"><span class="pre">Beamlet.range_shifter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><code class="docutils literal notranslate"><span class="pre">Beamlet.relative_fluence</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><code class="docutils literal notranslate"><span class="pre">Beamlet.weight</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Beamlet.field_typing"><code class="docutils literal notranslate"><span class="pre">Beamlet.field_typing()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.IonSpot"><code class="docutils literal notranslate"><span class="pre">IonSpot</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.IonSpot.range_shifter"><code class="docutils literal notranslate"><span class="pre">IonSpot.range_shifter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.IonSpot.focus_ix"><code class="docutils literal notranslate"><span class="pre">IonSpot.focus_ix</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.PhotonBixel"><code class="docutils literal notranslate"><span class="pre">PhotonBixel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.PhotonBixel.relative_fluence"><code class="docutils literal notranslate"><span class="pre">PhotonBixel.relative_fluence</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.RangeShifter"><code class="docutils literal notranslate"><span class="pre">RangeShifter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.RangeShifter.id"><code class="docutils literal notranslate"><span class="pre">RangeShifter.id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.RangeShifter.eq_thickness"><code class="docutils literal notranslate"><span class="pre">RangeShifter.eq_thickness</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.RangeShifter.source_rashi_distance"><code class="docutils literal notranslate"><span class="pre">RangeShifter.source_rashi_distance</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21"><code class="docutils literal notranslate"><span class="pre">RangeShifter.eq_thickness</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22"><code class="docutils literal notranslate"><span class="pre">RangeShifter.id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><code class="docutils literal notranslate"><span class="pre">RangeShifter.source_rashi_distance</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray"><code class="docutils literal notranslate"><span class="pre">Ray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.ray_pos_bev"><code class="docutils literal notranslate"><span class="pre">Ray.ray_pos_bev</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.ray_pos"><code class="docutils literal notranslate"><span class="pre">Ray.ray_pos</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.target_point_bev"><code class="docutils literal notranslate"><span class="pre">Ray.target_point_bev</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.target_point"><code class="docutils literal notranslate"><span class="pre">Ray.target_point</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.beamlets"><code class="docutils literal notranslate"><span class="pre">Ray.beamlets</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><code class="docutils literal notranslate"><span class="pre">Ray.beamlets</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25"><code class="docutils literal notranslate"><span class="pre">Ray.ray_pos</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26"><code class="docutils literal notranslate"><span class="pre">Ray.ray_pos_bev</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27"><code class="docutils literal notranslate"><span class="pre">Ray.target_point</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28"><code class="docutils literal notranslate"><span class="pre">Ray.target_point_bev</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.create_matrad_helper_model"><code class="docutils literal notranslate"><span class="pre">Ray.create_matrad_helper_model()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.sanitize_beamlet_structure"><code class="docutils literal notranslate"><span class="pre">Ray.sanitize_beamlet_structure</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.validate_nparray_dtype"><code class="docutils literal notranslate"><span class="pre">Ray.validate_nparray_dtype</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.custom_beamlets_serializer"><code class="docutils literal notranslate"><span class="pre">Ray.custom_beamlets_serializer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.Ray.to_matrad"><code class="docutils literal notranslate"><span class="pre">Ray.to_matrad()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation"><code class="docutils literal notranslate"><span class="pre">SteeringInformation</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.beams"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.beams</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.validate_model_input"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.validate_model_input()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.to_matrad"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.to_matrad()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.beams</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.validate_model_input</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.custom_beams_serializer"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.custom_beams_serializer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.to_matrad()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.bixel_beam_index_map"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.bixel_beam_index_map</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.bixel_index_per_beam_map"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.bixel_index_per_beam_map</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.bixel_ray_index_per_beam_map"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.bixel_ray_index_per_beam_map</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.num_of_beams"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.num_of_beams</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.num_of_rays"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.num_of_rays</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.SteeringInformation.total_number_of_bixels"><code class="docutils literal notranslate"><span class="pre">SteeringInformation.total_number_of_bixels</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.create_stf"><code class="docutils literal notranslate"><span class="pre">create_stf()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.get_available_generators"><code class="docutils literal notranslate"><span class="pre">get_available_generators()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.get_generator"><code class="docutils literal notranslate"><span class="pre">get_generator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.register_generator"><code class="docutils literal notranslate"><span class="pre">register_generator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.stf.validate_stf"><code class="docutils literal notranslate"><span class="pre">validate_stf()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/stf.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, e0404.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

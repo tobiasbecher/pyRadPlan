@@ -1,0 +1,1166 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>optimization &#8212; pyRadPlan 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/optimization';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Machines" href="machines.html" />
+    <link rel="prev" title="Dij" href="dij.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyRadPlan 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Api documentation:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ct.html">ct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stf.html">stf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cst.html">cst</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pln.html">plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dij.html">Dij</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">optimization</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="machines.html">Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">pyRadPlan.core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">pyRadPlan.util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">pyRadPlan.io package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="raytracer.html">pyRadPlan.raytracer package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenarios.html">pyRadPlan.scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dose.engines.html">pyRadPlan.dose.engines package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dose.html">pyRadPlan.dose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">pyRadPlan.geometry package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">api documentation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">optimization</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="optimization">
+<h1>optimization<a class="headerlink" href="#optimization" title="Link to this heading">#</a></h1>
+</section>
+<section id="module-pyRadPlan.optimization">
+<span id="pyradplan-optimization"></span><h1>pyRadPlan.optimization<a class="headerlink" href="#module-pyRadPlan.optimization" title="Link to this heading">#</a></h1>
+<p>The :mod: ‘pyanno4rt.optimization’ module implements all classes related to
+dose optimization, including objective and constraint functions, solvers and
+backprojection classes.</p>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Objective</span></span><a class="reference internal" href="../_modules/pyRadPlan/optimization/objectives/_objective.html#Objective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.Objective" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyRadPlan.core.datamodel.PyRadPlanBaseModel" title="pyRadPlan.core.datamodel.PyRadPlanBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a></p>
+<p>Base class for objective functions in the optimization problem.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyRadPlan.optimization.Objective.name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the objective function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ClassVar[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.has_hessian">
+<span class="sig-name descname"><span class="pre">has_hessian</span></span><a class="headerlink" href="#pyRadPlan.optimization.Objective.has_hessian" title="Link to this definition">#</a></dt>
+<dd><p>Whether the objective function has a Hessian implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ClassVar[bool]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.priority">
+<span class="sig-name descname"><span class="pre">priority</span></span><a class="headerlink" href="#pyRadPlan.optimization.Objective.priority" title="Link to this definition">#</a></dt>
+<dd><p>Weight/Priority assigned to the objective function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.quantity">
+<span class="sig-name descname"><span class="pre">quantity</span></span><a class="headerlink" href="#pyRadPlan.optimization.Objective.quantity" title="Link to this definition">#</a></dt>
+<dd><p>The quantity this objective is connected to (e.g. ‘physical_dose’, ‘RBExDose’).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Fields<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">priority</span> <span class="pre">(float)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantity</span> <span class="pre">(str)</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Validators<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_model</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_quantity</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">quantity</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">priority</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'penalty')</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ge</strong> = 0.0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Validated by<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_model</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id1">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">quantity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'physical_dose'</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_model</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_quantity</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.compute_gradient">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/objectives/_objective.html#Objective.compute_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.Objective.compute_gradient" title="Link to this definition">#</a></dt>
+<dd><p>Computes the objective gradient.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.compute_hessian">
+<span class="sig-name descname"><span class="pre">compute_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/objectives/_objective.html#Objective.compute_hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.Objective.compute_hessian" title="Link to this definition">#</a></dt>
+<dd><p>Computes the objective Hessian.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.compute_objective">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/objectives/_objective.html#Objective.compute_objective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.Objective.compute_objective" title="Link to this definition">#</a></dt>
+<dd><p>Computes the objective function.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">has_hessian</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">ClassVar</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.parameter_names">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameter_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyRadPlan.optimization.Objective.parameter_names" title="Link to this definition">#</a></dt>
+<dd><p>Parameter names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.parameter_types">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameter_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'reference'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'numeric'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'relative_volume'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyRadPlan.optimization.Objective.parameter_types" title="Link to this definition">#</a></dt>
+<dd><p>Parameter types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.Objective.parameters">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyRadPlan.optimization.Objective.parameters" title="Link to this definition">#</a></dt>
+<dd><p>Parameter values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.fluence_optimization">
+<span class="sig-name descname"><span class="pre">fluence_optimization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dij</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pln</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/_fluence_optimization.html#fluence_optimization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.fluence_optimization" title="Link to this definition">#</a></dt>
+<dd><p>Trigger fluence optimization using the configuration stored in the pln object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ct</strong> (<a class="reference internal" href="ct.html#pyRadPlan.ct.CT" title="pyRadPlan.ct.CT"><em>CT</em></a>) – CT object.</p></li>
+<li><p><strong>cst</strong> (<a class="reference internal" href="cst.html#pyRadPlan.cst.StructureSet" title="pyRadPlan.cst.StructureSet"><em>StructureSet</em></a>) – StructureSet object.</p></li>
+<li><p><strong>stf</strong> (<a class="reference internal" href="stf.html#pyRadPlan.stf.SteeringInformation" title="pyRadPlan.stf.SteeringInformation"><em>SteeringInformation</em></a>) – SteeringInformation object.</p></li>
+<li><p><strong>dij</strong> (<a class="reference internal" href="dij.html#pyRadPlan.dij.Dij" title="pyRadPlan.dij.Dij"><em>Dij</em></a>) – Dij object.</p></li>
+<li><p><strong>pln</strong> (<a class="reference internal" href="pln.html#pyRadPlan.plan.Plan" title="pyRadPlan.plan.Plan"><em>Plan</em></a>) – Plan object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The optimized fluence map.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyRadPlan.optimization.solvers">
+<span id="components"></span><h1>Components<a class="headerlink" href="#module-pyRadPlan.optimization.solvers" title="Link to this heading">#</a></h1>
+<p>Solvers module providing different solvers for pyRadPlan.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NonLinearOptimizer</span></span><a class="reference internal" href="../_modules/pyRadPlan/optimization/solvers/_base_solvers.html#NonLinearOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyRadPlan.optimization.solvers.SolverBase" title="pyRadPlan.optimization.solvers._base_solvers.SolverBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolverBase</span></code></a></p>
+<p>Non-Linear Optimization Solver Base Class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer.max_iter">
+<span class="sig-name descname"><span class="pre">max_iter</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.max_iter" title="Link to this definition">#</a></dt>
+<dd><p>Maximum number of iterations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer.abs_obj_tol">
+<span class="sig-name descname"><span class="pre">abs_obj_tol</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.abs_obj_tol" title="Link to this definition">#</a></dt>
+<dd><p>Absolute objective tolerance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer.objective">
+<span class="sig-name descname"><span class="pre">objective</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.objective" title="Link to this definition">#</a></dt>
+<dd><p>Objective function handle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer.gradient">
+<span class="sig-name descname"><span class="pre">gradient</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.gradient" title="Link to this definition">#</a></dt>
+<dd><p>Gradient function handle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer.hessian">
+<span class="sig-name descname"><span class="pre">hessian</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.hessian" title="Link to this definition">#</a></dt>
+<dd><p>Hessian function handle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable, default=None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer.constraints">
+<span class="sig-name descname"><span class="pre">constraints</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.constraints" title="Link to this definition">#</a></dt>
+<dd><p>Constraints function handle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable, default=None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer.constraints_jac">
+<span class="sig-name descname"><span class="pre">constraints_jac</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.constraints_jac" title="Link to this definition">#</a></dt>
+<dd><p>Constraints Jacobian function handle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable, default=None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer.supply_iter_func">
+<span class="sig-name descname"><span class="pre">supply_iter_func</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.supply_iter_func" title="Link to this definition">#</a></dt>
+<dd><p>Whether to supply an iteration callback function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.iter_func" title="pyRadPlan.optimization.solvers.NonLinearOptimizer.iter_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_func</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Get or set solver information as iteration callback.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve</span></code>(x0)</p></td>
+<td><p>Interface method to solve the problem.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>name</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>short_name</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">abs_obj_tol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">constraints</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></em><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">constraints_jac</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></em><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">gradient</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></em><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">hessian</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></em><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.NonLinearOptimizer.iter_func">
+<span class="sig-name descname"><span class="pre">iter_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/solvers/_base_solvers.html#NonLinearOptimizer.iter_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.iter_func" title="Link to this definition">#</a></dt>
+<dd><p>Get or set solver information as iteration callback.</p>
+<p>Agnostic signature with <a href="#id9"><span class="problematic" id="id10">*</span></a>args and <a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs to be able to accomodate
+various solvers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> – Additional arguments</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether to continue the optimization</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">max_iter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id13" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">objective</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></em><a class="headerlink" href="#id14" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">supply_iter_func</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></em><a class="headerlink" href="#id15" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.OptimizerSciPy">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OptimizerSciPy</span></span><a class="reference internal" href="../_modules/pyRadPlan/optimization/solvers/_scipy_solver.html#OptimizerSciPy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.solvers.OptimizerSciPy" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer" title="pyRadPlan.optimization.solvers._base_solvers.NonLinearOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonLinearOptimizer</span></code></a></p>
+<p>SciPy solver configuration class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.OptimizerSciPy.options">
+<span class="sig-name descname"><span class="pre">options</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.options" title="Link to this definition">#</a></dt>
+<dd><p>Options for the solver</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.OptimizerSciPy.method">
+<span class="sig-name descname"><span class="pre">method</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.method" title="Link to this definition">#</a></dt>
+<dd><p>The solver method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[str, Callable]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_func</span></code>(*args, **kwargs)</p></td>
+<td><p>Get or set solver information as iteration callback.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.solve" title="pyRadPlan.optimization.solvers.OptimizerSciPy.solve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve</span></code></a>(x0)</p></td>
+<td><p>Solve the problem.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">method</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">,</span> <code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code><span class="pre">]</span></em><a class="headerlink" href="#id16" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.OptimizerSciPy.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SciPy</span> <span class="pre">minimize'</span></em><a class="headerlink" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">options</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><a class="headerlink" href="#id17" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.OptimizerSciPy.short_name">
+<span class="sig-name descname"><span class="pre">short_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scipy'</span></em><a class="headerlink" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.short_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.OptimizerSciPy.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/solvers/_scipy_solver.html#OptimizerSciPy.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.solve" title="Link to this definition">#</a></dt>
+<dd><p>Solve the problem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x0</strong> (<em>np.ndarray</em>) – Initial guess for the decision variables.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>result</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.SolverBase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SolverBase</span></span><a class="reference internal" href="../_modules/pyRadPlan/optimization/solvers/_base_solvers.html#SolverBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.solvers.SolverBase" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract Base Class for Solver Implementations / Interfaces.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.SolverBase.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.SolverBase.name" title="Link to this definition">#</a></dt>
+<dd><p>Full name of the solver</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ClassVar[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.SolverBase.short_name">
+<span class="sig-name descname"><span class="pre">short_name</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.SolverBase.short_name" title="Link to this definition">#</a></dt>
+<dd><p>Short name of the solver</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ClassVar[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.SolverBase.max_time">
+<span class="sig-name descname"><span class="pre">max_time</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.SolverBase.max_time" title="Link to this definition">#</a></dt>
+<dd><p>Maximum time for the solver to run in seconds</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, default=3600</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.SolverBase.bounds">
+<span class="sig-name descname"><span class="pre">bounds</span></span><a class="headerlink" href="#pyRadPlan.optimization.solvers.SolverBase.bounds" title="Link to this definition">#</a></dt>
+<dd><p>Bounds for the variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ArrayLike, default=[0.0, np.inf]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyRadPlan.optimization.solvers.SolverBase.solve" title="pyRadPlan.optimization.solvers.SolverBase.solve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve</span></code></a>(x0)</p></td>
+<td><p>Interface method to solve the problem.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>name</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>short_name</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">_Buffer</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">_SupportsArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code><span class="pre">[</span><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code><span class="pre">]],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">_NestedSequence</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">_SupportsArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code><span class="pre">[</span><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code><span class="pre">]]],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">complex</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">_NestedSequence</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">complex</span></code> <span class="pre">|</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> <span class="pre">|</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]]</span></em><a class="headerlink" href="#id18" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id19">
+<span class="sig-name descname"><span class="pre">max_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#id19" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id20">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#id20" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">ClassVar</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">short_name</span></span><a class="headerlink" href="#id21" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">ClassVar</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.SolverBase.solve">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/solvers/_base_solvers.html#SolverBase.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.solvers.SolverBase.solve" title="Link to this definition">#</a></dt>
+<dd><p>Interface method to solve the problem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x0</strong> (<em>ArrayLike</em>) – Initial guess for the solution</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Solution vector and additional information as dictionary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[np.ndarray, dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.get_available_solvers">
+<span class="sig-name descname"><span class="pre">get_available_solvers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/solvers/_factory.html#get_available_solvers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.solvers.get_available_solvers" title="Link to this definition">#</a></dt>
+<dd><p>Get a list of available solvers based on the plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of available solvers.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.get_solver">
+<span class="sig-name descname"><span class="pre">get_solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver_desc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/solvers/_factory.html#get_solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.solvers.get_solver" title="Link to this definition">#</a></dt>
+<dd><p>Returns a solver instance based on a descriptive parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solver_desc</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>dict</em><em>, </em><a class="reference internal" href="#pyRadPlan.optimization.solvers.SolverBase" title="pyRadPlan.optimization.solvers.SolverBase"><em>SolverBase</em></a><em>]</em>) – A string with the solver name, a dictionary with the solver configuration or a solver
+instance</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A solver instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyRadPlan.optimization.solvers.SolverBase" title="pyRadPlan.optimization.solvers.SolverBase">SolverBase</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.optimization.solvers.register_solver">
+<span class="sig-name descname"><span class="pre">register_solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver_cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/optimization/solvers/_factory.html#register_solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.optimization.solvers.register_solver" title="Link to this definition">#</a></dt>
+<dd><p>Register a new solver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solver_cls</strong> (<em>type</em>) – A Dose Solver class.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="dij.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Dij</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="machines.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Machines</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">optimization</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyRadPlan.optimization">pyRadPlan.optimization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective"><code class="docutils literal notranslate"><span class="pre">Objective</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.name"><code class="docutils literal notranslate"><span class="pre">Objective.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.has_hessian"><code class="docutils literal notranslate"><span class="pre">Objective.has_hessian</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.priority"><code class="docutils literal notranslate"><span class="pre">Objective.priority</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.quantity"><code class="docutils literal notranslate"><span class="pre">Objective.quantity</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Objective.priority</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Objective.quantity</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.compute_gradient"><code class="docutils literal notranslate"><span class="pre">Objective.compute_gradient()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.compute_hessian"><code class="docutils literal notranslate"><span class="pre">Objective.compute_hessian()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.compute_objective"><code class="docutils literal notranslate"><span class="pre">Objective.compute_objective()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Objective.has_hessian</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Objective.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.parameter_names"><code class="docutils literal notranslate"><span class="pre">Objective.parameter_names</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.parameter_types"><code class="docutils literal notranslate"><span class="pre">Objective.parameter_types</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.Objective.parameters"><code class="docutils literal notranslate"><span class="pre">Objective.parameters</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.fluence_optimization"><code class="docutils literal notranslate"><span class="pre">fluence_optimization()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyRadPlan.optimization.solvers">Components</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.max_iter"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.max_iter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.abs_obj_tol"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.abs_obj_tol</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.objective"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.objective</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.gradient"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.gradient</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.hessian"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.hessian</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.constraints"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.constraints</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.constraints_jac"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.constraints_jac</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.supply_iter_func"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.supply_iter_func</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.abs_obj_tol</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.constraints</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.constraints_jac</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.gradient</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.hessian</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.NonLinearOptimizer.iter_func"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.iter_func()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.max_iter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.objective</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">NonLinearOptimizer.supply_iter_func</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.OptimizerSciPy"><code class="docutils literal notranslate"><span class="pre">OptimizerSciPy</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.options"><code class="docutils literal notranslate"><span class="pre">OptimizerSciPy.options</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.method"><code class="docutils literal notranslate"><span class="pre">OptimizerSciPy.method</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><code class="docutils literal notranslate"><span class="pre">OptimizerSciPy.method</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.name"><code class="docutils literal notranslate"><span class="pre">OptimizerSciPy.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><code class="docutils literal notranslate"><span class="pre">OptimizerSciPy.options</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.short_name"><code class="docutils literal notranslate"><span class="pre">OptimizerSciPy.short_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.OptimizerSciPy.solve"><code class="docutils literal notranslate"><span class="pre">OptimizerSciPy.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.SolverBase"><code class="docutils literal notranslate"><span class="pre">SolverBase</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.SolverBase.name"><code class="docutils literal notranslate"><span class="pre">SolverBase.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.SolverBase.short_name"><code class="docutils literal notranslate"><span class="pre">SolverBase.short_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.SolverBase.max_time"><code class="docutils literal notranslate"><span class="pre">SolverBase.max_time</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.SolverBase.bounds"><code class="docutils literal notranslate"><span class="pre">SolverBase.bounds</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><code class="docutils literal notranslate"><span class="pre">SolverBase.bounds</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><code class="docutils literal notranslate"><span class="pre">SolverBase.max_time</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><code class="docutils literal notranslate"><span class="pre">SolverBase.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21"><code class="docutils literal notranslate"><span class="pre">SolverBase.short_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.SolverBase.solve"><code class="docutils literal notranslate"><span class="pre">SolverBase.solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.get_available_solvers"><code class="docutils literal notranslate"><span class="pre">get_available_solvers()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.get_solver"><code class="docutils literal notranslate"><span class="pre">get_solver()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.optimization.solvers.register_solver"><code class="docutils literal notranslate"><span class="pre">register_solver()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/optimization.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, e0404.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

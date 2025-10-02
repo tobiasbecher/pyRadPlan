@@ -1,0 +1,1099 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyRadPlan.core package &#8212; pyRadPlan 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/core';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyRadPlan.util package" href="util.html" />
+    <link rel="prev" title="Machines" href="machines.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyRadPlan 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Api documentation:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ct.html">ct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stf.html">stf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cst.html">cst</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pln.html">plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dij.html">Dij</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">optimization</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="machines.html">Machines</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pyRadPlan.core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">pyRadPlan.util package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">pyRadPlan.io package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="raytracer.html">pyRadPlan.raytracer package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenarios.html">pyRadPlan.scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dose.engines.html">pyRadPlan.dose.engines package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dose.html">pyRadPlan.dose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">pyRadPlan.geometry package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">api documentation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyRadPlan.core package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pyradplan-core-package">
+<h1>pyRadPlan.core package<a class="headerlink" href="#pyradplan-core-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-pyRadPlan.core.datamodel">
+<span id="pyradplan-core-datamodel-module"></span><h2>pyRadPlan.core.datamodel module<a class="headerlink" href="#module-pyRadPlan.core.datamodel" title="Link to this heading">#</a></h2>
+<p>Basic Model for all pyRadPlan Datastructures.</p>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.core.datamodel.PyRadPlanBaseModel">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyRadPlanBaseModel</span></span><a class="reference internal" href="../_modules/pyRadPlan/core/datamodel.html#PyRadPlanBaseModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.datamodel.PyRadPlanBaseModel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Base class for all pyRadPlan data structures.</p>
+<p>Especially useful for structures that should be matRad compatible.
+Extends Pydantic’s BaseModel to use pydantic validation and serialization.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.core.datamodel.PyRadPlanBaseModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><a class="headerlink" href="#pyRadPlan.core.datamodel.PyRadPlanBaseModel.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, including alias generation, population by
+name, arbitrary types allowed, assignment validation, and attribute
+creation from dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ConfigDict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.core.datamodel.PyRadPlanBaseModel.to_matrad">
+<span class="sig-name descname"><span class="pre">to_matrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mat-file'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/datamodel.html#PyRadPlanBaseModel.to_matrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.datamodel.PyRadPlanBaseModel.to_matrad" title="Link to this definition">#</a></dt>
+<dd><p>Perform matRad compatible serialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context</strong> (<em>str</em><em>, </em><em>optional</em>) – The context in which the datastructure should be serialized,
+by default ‘mat-file’.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A datastructre compatible with matRad in the given context</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Currently, the only supported context is ‘mat-file’. In the future,
+this could be extended to support other contexts, such as direct
+calling via the matlab engine or oct2py.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyRadPlan.core.np2sitk">
+<span id="pyradplan-core-np2sitk-module"></span><h2>pyRadPlan.core.np2sitk module<a class="headerlink" href="#module-pyRadPlan.core.np2sitk" title="Link to this heading">#</a></h2>
+<p>Helpers for conversion between numpy and SimpleITK.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.core.np2sitk.linear_indices_to_grid_coordinates">
+<span class="sig-name descname"><span class="pre">linear_indices_to_grid_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_type='numpy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/np2sitk.html#linear_indices_to_grid_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.np2sitk.linear_indices_to_grid_coordinates" title="Link to this definition">#</a></dt>
+<dd><p>Convert linear indices to gridcoordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indices</strong> (<em>np.ndarray</em>) – A 1D numpy array of linear indices where the mask is non-zero.</p></li>
+<li><p><strong>grid</strong> (<a class="reference internal" href="#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid"><em>Grid</em></a>) – The image grid on which the indices lie.</p></li>
+<li><p><strong>index_type</strong> (<em>Literal</em><em>[</em><em>&quot;numpy&quot;</em><em>, </em><em>&quot;sitk&quot;</em><em>]</em><em>, </em><em>optional</em>) – The ordering of the indices. Can be ‘sitk’ for Fortran-like index
+ordering or ‘numpy’ for C-like index ordering. Default is ‘numpy’.</p></li>
+<li><p><strong>dtype</strong> (<em>np.dtype</em><em>, </em><em>optional</em>) – The data type of the output coordinates. Default is np.float64.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2D numpy array of image coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.core.np2sitk.linear_indices_to_image_coordinates">
+<span class="sig-name descname"><span class="pre">linear_indices_to_image_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_type='numpy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/np2sitk.html#linear_indices_to_image_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.np2sitk.linear_indices_to_image_coordinates" title="Link to this definition">#</a></dt>
+<dd><p>Convert linear indices to image coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indices</strong> (<em>np.ndarray</em>) – A 1D numpy array of linear indices where the mask is non-zero.</p></li>
+<li><p><strong>image</strong> (<em>sitk.Image</em>) – The reference image on which the mask is defined.</p></li>
+<li><p><strong>index_type</strong> (<em>Literal</em><em>[</em><em>&quot;numpy&quot;</em><em>, </em><em>&quot;sitk&quot;</em><em>]</em><em>, </em><em>optional</em>) – The ordering of the indices. Can be ‘sitk’ for Fortran-like index
+ordering or ‘numpy’ for C-like index ordering. Default is ‘numpy’.</p></li>
+<li><p><strong>dtype</strong> (<em>np.dtype</em><em>, </em><em>optional</em>) – The data type of the output coordinates. Default is np.float64.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2D numpy array of image coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.core.np2sitk.linear_indices_to_sitk_mask">
+<span class="sig-name descname"><span class="pre">linear_indices_to_sitk_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sitk'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/np2sitk.html#linear_indices_to_sitk_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.np2sitk.linear_indices_to_sitk_mask" title="Link to this definition">#</a></dt>
+<dd><p>Convert linear indices to a SimpleITK mask.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indices</strong> (<em>np.ndarray</em>) – A 1D numpy array of linear indices where the mask is non-zero.</p></li>
+<li><p><strong>ref_image</strong> (<em>sitk.Image</em>) – The reference image on which the mask is defined.</p></li>
+<li><p><strong>order</strong> (<em>str</em><em>, </em><em>optional</em>) – The ordering of the indices. Can be ‘sitk’ for Fortran-like index
+ordering or ‘numpy’ for C-like index ordering. Default is ‘sitk’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A SimpleITK image mask with the indices set to non-zero.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sitk.Image</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the ordering is not ‘sitk’ or ‘numpy’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.core.np2sitk.sitk_mask_to_linear_indices">
+<span class="sig-name descname"><span class="pre">sitk_mask_to_linear_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sitk'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/np2sitk.html#sitk_mask_to_linear_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.np2sitk.sitk_mask_to_linear_indices" title="Link to this definition">#</a></dt>
+<dd><p>Convert a SimpleITK mask to linear indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mask</strong> (<em>sitk.Image</em>) – The SimpleITK image mask to be converted.</p></li>
+<li><p><strong>order</strong> (<em>str</em><em>, </em><em>optional</em>) – The ordering of the indices. Can be ‘sitk’ for Fortran-like index
+ordering or ‘numpy’ for C-like index ordering. Default is ‘sitk’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 1D numpy array of linear indices where the mask is non-zero.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the ordering is not ‘sitk’ or ‘numpy’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyRadPlan.core.resample">
+<span id="pyradplan-core-resample-module"></span><h2>pyRadPlan.core.resample module<a class="headerlink" href="#module-pyRadPlan.core.resample" title="Link to this heading">#</a></h2>
+<p>Image / Grid Resampling.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.core.resample.resample_image">
+<span class="sig-name descname"><span class="pre">resample_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">23</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_grid_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/resample.html#resample_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.resample.resample_image" title="Link to this definition">#</a></dt>
+<dd><p>Resample an sitk Image.</p>
+<p>Use target resolution, reference image, dimensions, or Grid as input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_image</strong> (<em>sitk.Image</em>) – The input image to be resampled.</p></li>
+<li><p><strong>interpolator</strong> (<em>sitk.InterpolatorEnum</em><em>, </em><em>optional</em>) – The interpolator to use for resampling. Default is sitk.sitkBSpline.</p></li>
+<li><p><strong>target_image</strong> (<em>sitk.Image</em><em>, </em><em>optional</em>) – The reference image to resample to. Default is None.</p></li>
+<li><p><strong>target_grid_spacing</strong> (<em>tuple</em><em>[</em><em>float</em><em>,</em><em>float</em><em>,</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – The target grid spacing to resample to. Default is None.</p></li>
+<li><p><strong>target_grid</strong> (<a class="reference internal" href="#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid"><em>Grid</em></a><em>, </em><em>optional</em>) – The target grid to resample to. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resampled image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sitk.Image</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Exactly one of target_image, target_grid_spacing, or target_grid must be provided.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.core.resample.resample_numpy_array">
+<span class="sig-name descname"><span class="pre">resample_numpy_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">23</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_grid_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/resample.html#resample_numpy_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.resample.resample_numpy_array" title="Link to this definition">#</a></dt>
+<dd><p>Resample a numpy grid.</p>
+<p>Use target resolution, reference image, dimensions, or Grid as input.</p>
+<p>We convert the numpy array to an sitk.Image, so the dimensions will be
+switched. More exactly,
+the numpy array will be index i,j,k &lt;-&gt; z,y,x, which will converted to
+j,i,k &lt;-&gt; y,x,z in sitk.
+This is to be considered when supplying the reference grid  or image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_image</strong> (<em>sitk.Image</em>) – The input image to be resampled.</p></li>
+<li><p><strong>reference_image</strong> (<em>sitk.Image</em><em>, </em><em>optional</em>) – The reference image providing spatial information of the array. Default is None.
+Be wary of sitk &lt;-&gt; numpy indexing conventions.</p></li>
+<li><p><strong>reference_grid</strong> (<a class="reference internal" href="#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid"><em>Grid</em></a><em>, </em><em>optional</em>) – The reference grid of the resampled array. Default is None.
+Be wary of sitk &lt;-&gt; numpy indexing conventions.</p></li>
+<li><p><strong>interpolator</strong> (<em>sitk.InterpolatorEnum</em><em>, </em><em>optional</em>) – The interpolator to use for resampling. Default is sitk.sitkBSpline.</p></li>
+<li><p><strong>target_image</strong> (<em>sitk.Image</em><em>, </em><em>optional</em>) – The reference image to resample to. Default is None.</p></li>
+<li><p><strong>target_grid_spacing</strong> (<em>tuple</em><em>[</em><em>float</em><em>,</em><em>float</em><em>,</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – The target grid spacing to resample to. Default is None.</p></li>
+<li><p><strong>target_grid</strong> (<a class="reference internal" href="#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid"><em>Grid</em></a><em>, </em><em>optional</em>) – The target grid to resample to. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resampled image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sitk.Image</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Exactly one of target_image, target_grid_spacing, or target_grid must be provided.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyRadPlan.core">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyRadPlan.core" title="Link to this heading">#</a></h2>
+<p>Core module with fundamental classes and functions for pyRadPlan.</p>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Grid</span></span><a class="reference internal" href="../_modules/pyRadPlan/core/_grids.html#Grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.Grid" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyRadPlan.core.datamodel.PyRadPlanBaseModel" title="pyRadPlan.core.datamodel.PyRadPlanBaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a></p>
+<p>Class representing image grids in the LPS world system.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.resolution">
+<span class="sig-name descname"><span class="pre">resolution</span></span><a class="headerlink" href="#pyRadPlan.core.Grid.resolution" title="Link to this definition">#</a></dt>
+<dd><p>The resolution of the grid in the x, y, and z directions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.dimensions">
+<span class="sig-name descname"><span class="pre">dimensions</span></span><a class="headerlink" href="#pyRadPlan.core.Grid.dimensions" title="Link to this definition">#</a></dt>
+<dd><p>The dimensions of the grid in the x, y, and z directions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.origin">
+<span class="sig-name descname"><span class="pre">origin</span></span><a class="headerlink" href="#pyRadPlan.core.Grid.origin" title="Link to this definition">#</a></dt>
+<dd><p>The origin of the grid in the LPS world system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.direction">
+<span class="sig-name descname"><span class="pre">direction</span></span><a class="headerlink" href="#pyRadPlan.core.Grid.direction" title="Link to this definition">#</a></dt>
+<dd><p>The direction cosines of the grid in the LPS world system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Fields<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dimensions</span> <span class="pre">(tuple[int,</span> <span class="pre">int,</span> <span class="pre">int])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span> <span class="pre">(numpydantic.vendor.nptyping.base_meta_classes.NDArray[numpydantic.vendor.nptyping.base_meta_classes.Shape[3,</span> <span class="pre">3],</span> <span class="pre">numpy.floating])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin</span> <span class="pre">(numpydantic.vendor.nptyping.base_meta_classes.NDArray[numpydantic.vendor.nptyping.base_meta_classes.Shape[3],</span> <span class="pre">numpy.floating])</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolution</span> <span class="pre">(dict[str,</span> <span class="pre">float])</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Validators<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_dimensions</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">dimensions</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_direction</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_origin</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">origin</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_resolution</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">resolution</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dimensions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_dimensions</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id1">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">direction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code><span class="pre">[3,</span> <span class="pre">3],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">floating</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">array([[1.,</span> <span class="pre">0.,</span> <span class="pre">0.],</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">[0.,</span> <span class="pre">1.,</span> <span class="pre">0.],</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">[0.,</span> <span class="pre">0.,</span> <span class="pre">1.]])</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_direction</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id2">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">origin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">NDArray</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code><span class="pre">[3],</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">floating</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'cubeCoordOffset')</span></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_origin</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="id3">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resolution</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">,</span> <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code><span class="pre">]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_resolution</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.from_sitk_image">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_sitk_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sitk_image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/_grids.html#Grid.from_sitk_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.Grid.from_sitk_image" title="Link to this definition">#</a></dt>
+<dd><p>Create a Grid object from a SimpleITK image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sitk_image</strong> (<em>sitk.Image</em>) – The SimpleITK image to create the Grid object from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Grid object created from the SimpleITK image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid">Grid</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.resample">
+<span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_resolution</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/_grids.html#Grid.resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.Grid.resample" title="Link to this definition">#</a></dt>
+<dd><p>Create a resampled grid covering the original grid in new resolution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target_resolution</strong> (<em>Union</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>,</em><em>float</em><em>]</em><em>, </em><em>np.ndarray</em><em>]</em>) – The target resolution of the resampled grid.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resampled grid object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid">Grid</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.to_matrad">
+<span class="sig-name descname"><span class="pre">to_matrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mat-file'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/_grids.html#Grid.to_matrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.Grid.to_matrad" title="Link to this definition">#</a></dt>
+<dd><p>Perform matRad compatible serialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context</strong> (<em>str</em><em>, </em><em>optional</em>) – The context in which the datastructure should be serialized,
+by default ‘mat-file’.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A datastructre compatible with matRad in the given context</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Currently, the only supported context is ‘mat-file’. In the future,
+this could be extended to support other contexts, such as direct
+calling via the matlab engine or oct2py.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.num_voxels">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_voxels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyRadPlan.core.Grid.num_voxels" title="Link to this definition">#</a></dt>
+<dd><p>Number of voxels in the grid.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.resolution_vector">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resolution_vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#pyRadPlan.core.Grid.resolution_vector" title="Link to this definition">#</a></dt>
+<dd><p>Return the resolution as a vector.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.x">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#pyRadPlan.core.Grid.x" title="Link to this definition">#</a></dt>
+<dd><p>Return the x coordinates in the LPS world system.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.y">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#pyRadPlan.core.Grid.y" title="Link to this definition">#</a></dt>
+<dd><p>Return the y coordinates in the LPS world system.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyRadPlan.core.Grid.z">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#pyRadPlan.core.Grid.z" title="Link to this definition">#</a></dt>
+<dd><p>Return the z coordinates in the LPS world system.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="pyRadPlan.core.PyRadPlanBaseModel">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyRadPlanBaseModel</span></span><a class="reference internal" href="../_modules/pyRadPlan/core/datamodel.html#PyRadPlanBaseModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.PyRadPlanBaseModel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Base class for all pyRadPlan data structures.</p>
+<p>Especially useful for structures that should be matRad compatible.
+Extends Pydantic’s BaseModel to use pydantic validation and serialization.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyRadPlan.core.PyRadPlanBaseModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><a class="headerlink" href="#pyRadPlan.core.PyRadPlanBaseModel.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, including alias generation, population by
+name, arbitrary types allowed, assignment validation, and attribute
+creation from dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ConfigDict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Config<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alias_generator</strong>: <em>AliasGenerator = AliasGenerator(alias=&lt;function to_camel at 0x7feae3917e20&gt;, validation_alias=None, serialization_alias=None)</em></p></li>
+<li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_assignment</strong>: <em>bool = True</em></p></li>
+<li><p><strong>from_attributes</strong>: <em>bool = True</em></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyRadPlan.core.PyRadPlanBaseModel.to_matrad">
+<span class="sig-name descname"><span class="pre">to_matrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mat-file'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/datamodel.html#PyRadPlanBaseModel.to_matrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.PyRadPlanBaseModel.to_matrad" title="Link to this definition">#</a></dt>
+<dd><p>Perform matRad compatible serialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context</strong> (<em>str</em><em>, </em><em>optional</em>) – The context in which the datastructure should be serialized,
+by default ‘mat-file’.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A datastructre compatible with matRad in the given context</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Currently, the only supported context is ‘mat-file’. In the future,
+this could be extended to support other contexts, such as direct
+calling via the matlab engine or oct2py.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyRadPlan.core.PyRadPlanError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyRadPlanError</span></span><a class="reference internal" href="../_modules/pyRadPlan/core/_exceptions.html#PyRadPlanError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.PyRadPlanError" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception for errors specifically thrown by PyRadPlan.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.core.resample_image">
+<span class="sig-name descname"><span class="pre">resample_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">23</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_grid_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/resample.html#resample_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.resample_image" title="Link to this definition">#</a></dt>
+<dd><p>Resample an sitk Image.</p>
+<p>Use target resolution, reference image, dimensions, or Grid as input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_image</strong> (<em>sitk.Image</em>) – The input image to be resampled.</p></li>
+<li><p><strong>interpolator</strong> (<em>sitk.InterpolatorEnum</em><em>, </em><em>optional</em>) – The interpolator to use for resampling. Default is sitk.sitkBSpline.</p></li>
+<li><p><strong>target_image</strong> (<em>sitk.Image</em><em>, </em><em>optional</em>) – The reference image to resample to. Default is None.</p></li>
+<li><p><strong>target_grid_spacing</strong> (<em>tuple</em><em>[</em><em>float</em><em>,</em><em>float</em><em>,</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – The target grid spacing to resample to. Default is None.</p></li>
+<li><p><strong>target_grid</strong> (<a class="reference internal" href="#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid"><em>Grid</em></a><em>, </em><em>optional</em>) – The target grid to resample to. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resampled image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sitk.Image</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Exactly one of target_image, target_grid_spacing, or target_grid must be provided.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyRadPlan.core.resample_numpy_array">
+<span class="sig-name descname"><span class="pre">resample_numpy_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">23</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_grid_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyRadPlan/core/resample.html#resample_numpy_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyRadPlan.core.resample_numpy_array" title="Link to this definition">#</a></dt>
+<dd><p>Resample a numpy grid.</p>
+<p>Use target resolution, reference image, dimensions, or Grid as input.</p>
+<p>We convert the numpy array to an sitk.Image, so the dimensions will be
+switched. More exactly,
+the numpy array will be index i,j,k &lt;-&gt; z,y,x, which will converted to
+j,i,k &lt;-&gt; y,x,z in sitk.
+This is to be considered when supplying the reference grid  or image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_image</strong> (<em>sitk.Image</em>) – The input image to be resampled.</p></li>
+<li><p><strong>reference_image</strong> (<em>sitk.Image</em><em>, </em><em>optional</em>) – The reference image providing spatial information of the array. Default is None.
+Be wary of sitk &lt;-&gt; numpy indexing conventions.</p></li>
+<li><p><strong>reference_grid</strong> (<a class="reference internal" href="#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid"><em>Grid</em></a><em>, </em><em>optional</em>) – The reference grid of the resampled array. Default is None.
+Be wary of sitk &lt;-&gt; numpy indexing conventions.</p></li>
+<li><p><strong>interpolator</strong> (<em>sitk.InterpolatorEnum</em><em>, </em><em>optional</em>) – The interpolator to use for resampling. Default is sitk.sitkBSpline.</p></li>
+<li><p><strong>target_image</strong> (<em>sitk.Image</em><em>, </em><em>optional</em>) – The reference image to resample to. Default is None.</p></li>
+<li><p><strong>target_grid_spacing</strong> (<em>tuple</em><em>[</em><em>float</em><em>,</em><em>float</em><em>,</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – The target grid spacing to resample to. Default is None.</p></li>
+<li><p><strong>target_grid</strong> (<a class="reference internal" href="#pyRadPlan.core.Grid" title="pyRadPlan.core.Grid"><em>Grid</em></a><em>, </em><em>optional</em>) – The target grid to resample to. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resampled image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sitk.Image</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Exactly one of target_image, target_grid_spacing, or target_grid must be provided.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="machines.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Machines</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="util.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyRadPlan.util package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyRadPlan.core.datamodel">pyRadPlan.core.datamodel module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.datamodel.PyRadPlanBaseModel"><code class="docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.datamodel.PyRadPlanBaseModel.model_config"><code class="docutils literal notranslate"><span class="pre">PyRadPlanBaseModel.model_config</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.datamodel.PyRadPlanBaseModel.to_matrad"><code class="docutils literal notranslate"><span class="pre">PyRadPlanBaseModel.to_matrad()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyRadPlan.core.np2sitk">pyRadPlan.core.np2sitk module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.np2sitk.linear_indices_to_grid_coordinates"><code class="docutils literal notranslate"><span class="pre">linear_indices_to_grid_coordinates()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.np2sitk.linear_indices_to_image_coordinates"><code class="docutils literal notranslate"><span class="pre">linear_indices_to_image_coordinates()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.np2sitk.linear_indices_to_sitk_mask"><code class="docutils literal notranslate"><span class="pre">linear_indices_to_sitk_mask()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.np2sitk.sitk_mask_to_linear_indices"><code class="docutils literal notranslate"><span class="pre">sitk_mask_to_linear_indices()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyRadPlan.core.resample">pyRadPlan.core.resample module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.resample.resample_image"><code class="docutils literal notranslate"><span class="pre">resample_image()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.resample.resample_numpy_array"><code class="docutils literal notranslate"><span class="pre">resample_numpy_array()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyRadPlan.core">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid"><code class="docutils literal notranslate"><span class="pre">Grid</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.resolution"><code class="docutils literal notranslate"><span class="pre">Grid.resolution</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.dimensions"><code class="docutils literal notranslate"><span class="pre">Grid.dimensions</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.origin"><code class="docutils literal notranslate"><span class="pre">Grid.origin</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.direction"><code class="docutils literal notranslate"><span class="pre">Grid.direction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Grid.dimensions</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Grid.direction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Grid.origin</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Grid.resolution</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.from_sitk_image"><code class="docutils literal notranslate"><span class="pre">Grid.from_sitk_image()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.resample"><code class="docutils literal notranslate"><span class="pre">Grid.resample()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.to_matrad"><code class="docutils literal notranslate"><span class="pre">Grid.to_matrad()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.num_voxels"><code class="docutils literal notranslate"><span class="pre">Grid.num_voxels</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.resolution_vector"><code class="docutils literal notranslate"><span class="pre">Grid.resolution_vector</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.x"><code class="docutils literal notranslate"><span class="pre">Grid.x</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.y"><code class="docutils literal notranslate"><span class="pre">Grid.y</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.Grid.z"><code class="docutils literal notranslate"><span class="pre">Grid.z</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.PyRadPlanBaseModel"><code class="docutils literal notranslate"><span class="pre">PyRadPlanBaseModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.PyRadPlanBaseModel.model_config"><code class="docutils literal notranslate"><span class="pre">PyRadPlanBaseModel.model_config</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.PyRadPlanBaseModel.to_matrad"><code class="docutils literal notranslate"><span class="pre">PyRadPlanBaseModel.to_matrad()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.PyRadPlanError"><code class="docutils literal notranslate"><span class="pre">PyRadPlanError</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.resample_image"><code class="docutils literal notranslate"><span class="pre">resample_image()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyRadPlan.core.resample_numpy_array"><code class="docutils literal notranslate"><span class="pre">resample_numpy_array()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/core.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, e0404.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

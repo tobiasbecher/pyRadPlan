@@ -1,0 +1,1053 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyRadPlan.dose.engines._base &#8212; pyRadPlan 0.2.8 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=b01fafc3"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyRadPlan/dose/engines/_base';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.8" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyRadPlan 0.2.8 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/index.html">
+    api documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../installation/index.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../help/help.html">
+    Help and support
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyRadPlan.dose.engines._base</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyRadPlan.dose.engines._base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base class for all dose engines.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">importlib_resources</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">resources</span>  <span class="c1"># Backport for older versions</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">importlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">resources</span>  <span class="c1"># Standard from Python 3.9+</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">SimpleITK</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sitk</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValidationError</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Grid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.core.np2sitk</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear_indices_to_grid_coordinates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.core.resample</span><span class="w"> </span><span class="kn">import</span> <span class="n">resample_numpy_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.ct</span><span class="w"> </span><span class="kn">import</span> <span class="n">CT</span><span class="p">,</span> <span class="n">resample_ct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.cst</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructureSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.stf</span><span class="w"> </span><span class="kn">import</span> <span class="n">SteeringInformation</span><span class="p">,</span> <span class="n">validate_stf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.plan</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plan</span><span class="p">,</span> <span class="n">validate_pln</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.dij</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dij</span><span class="p">,</span> <span class="n">validate_dij</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.scenarios</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_scenario_model</span><span class="p">,</span> <span class="n">ScenarioModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyRadPlan.machines</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_machine_from_mat</span><span class="p">,</span> <span class="n">validate_machine</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># from dose.calcDoseInit import init_dose_calc</span>
+
+
+<div class="viewcode-block" id="DoseEngineBase">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DoseEngineBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Interface for all dose engines.</span>
+
+<span class="sd">    All dose engines should inherit from this class.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pln : Plan</span>
+<span class="sd">        The Plan object to assign properties from.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    short_name : str</span>
+<span class="sd">        The short name of the dose engine.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the dose engine.</span>
+<span class="sd">    possible_radiation_modes : list[str]</span>
+<span class="sd">        The possible radiation modes for the dose engine.</span>
+<span class="sd">    is_dose_engine : bool = True</span>
+<span class="sd">        Helper class variable telling you that this is a dose engine</span>
+<span class="sd">    select_voxels_in_scenarios : bool</span>
+<span class="sd">        Whether to select voxels in scenarios.</span>
+<span class="sd">    mult_scen : Union[str, ScenarioModel]</span>
+<span class="sd">        The scenario model.</span>
+<span class="sd">    bio_model : Union[str, dict]</span>
+<span class="sd">        The biological model.</span>
+<span class="sd">    dose_grid : Union[Grid,dict]</span>
+<span class="sd">        The dose grid to use (struct with at least doseGrid.resolution.x/y/z set).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Constant, Abstract properties</span>
+    <span class="n">short_name</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">possible_radiation_modes</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">NotImplemented</span>
+    <span class="n">is_dose_engine</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Helper variable</span>
+
+    <span class="n">mult_scen</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ScenarioModel</span><span class="p">]</span>
+    <span class="n">bio_model</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+    <span class="n">dose_grid</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Grid</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+
+    <span class="n">select_voxels_in_scenarios</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="c1"># Public properties</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pln</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Plan</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Assign default parameters from Matrad_Config or manually</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mult_scen</span> <span class="o">=</span> <span class="s2">&quot;nomScen&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">select_voxels_in_scenarios</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voxel_sub_ix</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># selection of where to calculate / store dose, empty by default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">pln</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assign_properties_from_pln</span><span class="p">(</span><span class="n">pln</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ct_grid</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Protected properties with public get access</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_machine</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># base data defined in machine file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timers</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># timers of dose calc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_of_columns_dij</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># number of columns in the dij struct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vox_world_coords</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># ct voxel coordinates in world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vox_world_coords_dose_grid</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># dose grid voxel coordinates in world</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># voxel grid inside patient</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># voxel dose grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid_scen_ix</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># logical subindexes of scenarios in ct grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid_scen_ix</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># logical subindexes of scenarios in dose grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid_mask</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># voxel grid inside patient as logical mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid_mask</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># voxel dose grid inside patient as logical mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_robust_voxels_on_grid</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># voxels to be computed in robustness scenarios</span>
+
+        <span class="c1"># Protected properties with private get access</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_progress_update</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calc_dose_direct</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># initializing super() class (here: ABC)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="c1"># Public methods</span>
+<div class="viewcode-block" id="DoseEngineBase.assign_properties_from_pln">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.assign_properties_from_pln">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assign_properties_from_pln</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pln</span><span class="p">:</span> <span class="n">Plan</span><span class="p">,</span> <span class="n">warn_when_property_changed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assign properties from a Plan object to the Dose Engine.</span>
+
+<span class="sd">        This includes the Scenario Model and the Biological Model, and any</span>
+<span class="sd">        other properties that</span>
+<span class="sd">        can be stored in the prop_dose_calc dictionary within the Plan object.</span>
+<span class="sd">        This function will check if a property exists for the dose engine and,</span>
+<span class="sd">        if yes, set it.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pln : Plan</span>
+<span class="sd">            The Plan object to assign properties from.</span>
+<span class="sd">        warn_when_property_changed : bool</span>
+<span class="sd">            Whether to warn when properties are changed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pln</span> <span class="o">=</span> <span class="n">validate_pln</span><span class="p">(</span><span class="n">pln</span><span class="p">)</span>
+
+        <span class="c1"># Set Scenario Model</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">pln</span><span class="p">,</span> <span class="s2">&quot;mult_scen&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mult_scen</span> <span class="o">=</span> <span class="n">pln</span><span class="o">.</span><span class="n">mult_scen</span>
+
+        <span class="c1"># Assign Biologival Model</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">pln</span><span class="p">,</span> <span class="s2">&quot;bio_param&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bio_param</span> <span class="o">=</span> <span class="n">pln</span><span class="o">.</span><span class="n">bio_param</span>  <span class="c1"># TODO: No bio_param yet</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">warn_when_property_changed</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="n">warn_when_property_changed</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Overwrite default properties within the engine</span>
+        <span class="c1"># with the ones given in the prop_dose_calc dict</span>
+        <span class="k">if</span> <span class="n">pln</span><span class="o">.</span><span class="n">prop_dose_calc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prop_dict</span> <span class="o">=</span> <span class="n">pln</span><span class="o">.</span><span class="n">prop_dose_calc</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="s2">&quot;engine&quot;</span> <span class="ow">in</span> <span class="n">prop_dict</span>
+                <span class="ow">and</span> <span class="n">prop_dict</span><span class="p">[</span><span class="s2">&quot;engine&quot;</span><span class="p">]</span>
+                <span class="ow">and</span> <span class="n">prop_dict</span><span class="p">[</span><span class="s2">&quot;engine&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">short_name</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Inconsistent dose engines given! pln asks for &#39;</span><span class="si">{</span><span class="n">prop_dict</span><span class="p">[</span><span class="s1">&#39;engine&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;but you are using &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">short_name</span><span class="si">}</span><span class="s2">&#39;!&quot;</span>
+                <span class="p">)</span>
+            <span class="n">prop_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;engine&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prop_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">prop_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="c1"># Set up warning message</span>
+        <span class="k">if</span> <span class="n">warn_when_property_changed</span><span class="p">:</span>
+            <span class="n">warning_msg</span> <span class="o">=</span> <span class="s2">&quot;Property in Dose Engine overwritten from pln.propDoseCalc&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warning_msg</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Property &quot;</span><span class="si">{}</span><span class="s1">&quot; not found in Dose Engine!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">warn_when_property_changed</span> <span class="ow">and</span> <span class="n">warning_msg</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning_msg</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;: </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">prop_dict</span><span class="p">[</span><span class="n">field</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="DoseEngineBase.calc_dose_forward">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_dose_forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ct</span><span class="p">:</span> <span class="n">CT</span><span class="p">,</span> <span class="n">cst</span><span class="p">:</span> <span class="n">StructureSet</span><span class="p">,</span> <span class="n">stf</span><span class="p">:</span> <span class="n">SteeringInformation</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform a forward dose calculation.</span>
+
+<span class="sd">        Compute a dose cube by directly applying a set of weights</span>
+<span class="sd">        during dose calculation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ct : CT</span>
+<span class="sd">            The CT scan data.</span>
+<span class="sd">        cst : StructureSet</span>
+<span class="sd">            The structure set containing volumes of interest (VOIs).</span>
+<span class="sd">        stf : SteeringInformation</span>
+<span class="sd">            The steering information containing beam configurations.</span>
+<span class="sd">        w : np.ndarray</span>
+<span class="sd">            The weights to apply during dose calculation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dij</span>
+<span class="sd">            The dose information</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        pyRadPlan handles the forward dose calculation by setting a switch in</span>
+<span class="sd">        the dose engine (_calc_dose_direct) to True. This facilitates reusing</span>
+<span class="sd">        of algorithms in both forward and influence matrix calculations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calc_dose_direct</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">stf</span> <span class="o">=</span> <span class="n">validate_stf</span><span class="p">(</span><span class="n">stf</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No weights given. Using weights stored in stf.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using provided weights for forward dose calculation.&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">stf</span><span class="o">.</span><span class="n">total_number_of_bixels</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of weights does not match the number of bixels in stf.&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Assign the weights to the stf</span>
+            <span class="n">bixel_num</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">beam</span> <span class="ow">in</span> <span class="n">stf</span><span class="o">.</span><span class="n">beams</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ray</span> <span class="ow">in</span> <span class="n">beam</span><span class="o">.</span><span class="n">rays</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">bixel</span> <span class="ow">in</span> <span class="n">ray</span><span class="o">.</span><span class="n">beamlets</span><span class="p">:</span>
+                        <span class="n">bixel</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">bixel_num</span><span class="p">]</span>
+                        <span class="n">bixel_num</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Run dose calculation (direct flag is on)</span>
+        <span class="n">dij</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_dose</span><span class="p">(</span><span class="n">ct</span><span class="p">,</span> <span class="n">cst</span><span class="p">,</span> <span class="n">stf</span><span class="p">)</span>
+
+        <span class="c1"># Now do the forward weighting with w</span>
+        <span class="c1"># This is done because the engine might store the individual fields</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">dij</span><span class="o">.</span><span class="n">compute_result_ct_grid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dij</span><span class="o">.</span><span class="n">total_num_of_bixels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+        <span class="n">time_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Forward dose calculation done in </span><span class="si">%.2f</span><span class="s2"> seconds.&quot;</span><span class="p">,</span> <span class="n">time_elapsed</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="DoseEngineBase.calc_dose_influence">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.calc_dose_influence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_dose_influence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ct</span><span class="p">:</span> <span class="n">CT</span><span class="p">,</span> <span class="n">cst</span><span class="p">:</span> <span class="n">StructureSet</span><span class="p">,</span> <span class="n">stf</span><span class="p">:</span> <span class="n">SteeringInformation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dij</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the set of dose/quantity influence matrices.</span>
+
+<span class="sd">        These are the matrices that map a fluence vector to a dose/quantity</span>
+<span class="sd">        distribution.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ct : CT</span>
+<span class="sd">            The CT scan data.</span>
+<span class="sd">        cst : StructureSet</span>
+<span class="sd">            The structure set containing volumes of interest (VOIs).</span>
+<span class="sd">        stf : SteeringInformation</span>
+<span class="sd">            The steering information containing beam configurations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dij</span>
+<span class="sd">            The dose influence matrix collection</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        pyRadPlan handles the forward dose calculation by setting a switch in</span>
+<span class="sd">        the dose engine (_calc_dose_direct) to True. This facilitates reusing</span>
+<span class="sd">        of algorithms in both forward and influence matrix calculations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calc_dose_direct</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">dij</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_dose</span><span class="p">(</span><span class="n">ct</span><span class="p">,</span> <span class="n">cst</span><span class="p">,</span> <span class="n">stf</span><span class="p">)</span>
+        <span class="n">time_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dose influence matrix calculation done in </span><span class="si">%.2f</span><span class="s2"> seconds.&quot;</span><span class="p">,</span> <span class="n">time_elapsed</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dij</span></div>
+
+
+<div class="viewcode-block" id="DoseEngineBase.set_overlap_priorities">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.set_overlap_priorities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_overlap_priorities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cst</span><span class="p">:</span> <span class="n">StructureSet</span><span class="p">,</span> <span class="n">ct_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StructureSet</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set overlap priorities for the structures in the CST.&quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Adjusting structures for overlap... &quot;</span><span class="p">)</span>
+        <span class="n">t_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">num_of_ct_scenarios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">num_of_scenarios</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cst</span><span class="o">.</span><span class="n">vois</span><span class="p">])</span>
+
+        <span class="c1"># Sanity check</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_of_ct_scenarios</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inconsistent number of scenarios in cst struct.&quot;</span><span class="p">)</span>
+
+        <span class="n">new_cst</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">apply_overlap_priorities</span><span class="p">()</span>
+
+        <span class="n">t_end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Done in </span><span class="si">%.2f</span><span class="s2"> seconds.&quot;</span><span class="p">,</span> <span class="n">t_end</span> <span class="o">-</span> <span class="n">t_start</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new_cst</span></div>
+
+
+<div class="viewcode-block" id="DoseEngineBase.select_voxels_from_cst">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.select_voxels_from_cst">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">select_voxels_from_cst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cst</span><span class="p">,</span> <span class="n">dose_grid</span><span class="p">,</span> <span class="n">selection_mode</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get mask of the voxels (on dose grid).</span>
+
+<span class="sd">        Gets the mask from the cst structures specified by selection_mode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_overlap_priorities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cst</span><span class="p">,</span> <span class="n">dose_grid</span><span class="p">[</span><span class="s2">&quot;dimensions&quot;</span><span class="p">])</span>
+
+        <span class="n">selected_cst_structs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">include_mask</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">dose_grid</span><span class="p">[</span><span class="s2">&quot;dimensions&quot;</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]))</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">selection_mode</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ct_scen_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">include_mask</span><span class="p">)):</span>
+                <span class="n">include_mask</span><span class="p">[</span><span class="n">ct_scen_idx</span><span class="p">][:]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selection_mode</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">selection_mode</span> <span class="o">==</span> <span class="s2">&quot;targetOnly&quot;</span><span class="p">:</span>
+                    <span class="n">selected_cst_structs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cst</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;TARGET&quot;</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">selection_mode</span> <span class="o">==</span> <span class="s2">&quot;objectivesOnly&quot;</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">selected_cst_structs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">selection_mode</span> <span class="o">==</span> <span class="s2">&quot;oarsOnly&quot;</span><span class="p">:</span>
+                    <span class="n">selected_cst_structs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cst</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;OAR&quot;</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">selection_mode</span> <span class="o">==</span> <span class="s2">&quot;robustnessOnly&quot;</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">)):</span>
+                        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">])):</span>
+                            <span class="k">if</span> <span class="p">(</span>
+                                <span class="s2">&quot;robustness&quot;</span> <span class="ow">in</span> <span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                                <span class="ow">and</span> <span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s2">&quot;robustness&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span>
+                            <span class="p">):</span>
+                                <span class="n">selected_cst_structs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unrecognized voxel selection mode: </span><span class="si">{</span><span class="n">selection_mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selection_mode</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                <span class="n">selected_cst_structs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">selection_mode</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">selected_cst_structs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">selection_mode</span><span class="p">)):</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                        <span class="s2">&quot;Specified structures are not compatible with cst structures. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Only performing calculation on structures: </span><span class="si">{</span><span class="n">selected_cst_structs</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+            <span class="c1"># Loop over all cst structures</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># Loop over obj/constraint functions</span>
+                        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">])):</span>
+                            <span class="n">obj</span> <span class="o">=</span> <span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+
+                            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                                <span class="k">try</span><span class="p">:</span>
+                                    <span class="k">pass</span>
+                                    <span class="c1"># TODO: obj = matRad_DoseOptimizationFunction.</span>
+                                    <span class="c1"># createInstanceFromStruct(obj)</span>
+                                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;cst[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,5][</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">] is not a valid Objective/constraint! &quot;</span>
+                                        <span class="s2">&quot;Remove or Replace and try again!&quot;</span>
+                                    <span class="p">)</span>
+
+                            <span class="n">robustness</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;robustness&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span>
+
+                            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">selected_cst_structs</span><span class="p">:</span>
+                                <span class="k">for</span> <span class="n">ct_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">])):</span>
+                                    <span class="n">include_mask</span><span class="p">[</span><span class="n">ct_idx</span><span class="p">][</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">][</span><span class="n">ct_idx</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                                <span class="k">if</span> <span class="n">robustness</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+                                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;Including cst structure </span><span class="si">{</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> even though this &quot;</span>
+                                        <span class="s2">&quot;structure has no robustness.&quot;</span>
+                                    <span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                                    <span class="sa">f</span><span class="s2">&quot;Excluding cst structure </span><span class="si">{</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> even though this &quot;</span>
+                                    <span class="s2">&quot;structure has an objective or constraint.&quot;</span>
+                                <span class="p">)</span>
+
+                                <span class="k">if</span> <span class="n">robustness</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+                                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;Excluding cst structure </span><span class="si">{</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> even though this &quot;</span>
+                                        <span class="s2">&quot;structure has robustness.&quot;</span>
+                                    <span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">selected_cst_structs</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Including cst structure </span><span class="si">{</span><span class="n">cst</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> even though this structure &quot;</span>
+                            <span class="s2">&quot;does not have any objective or constraint&quot;</span>
+                        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">include_mask</span></div>
+
+
+<div class="viewcode-block" id="DoseEngineBase.resize_cst_to_grid">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.resize_cst_to_grid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resize_cst_to_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cst</span><span class="p">:</span> <span class="n">StructureSet</span><span class="p">,</span> <span class="n">dij</span><span class="p">,</span> <span class="n">new_ct</span><span class="p">:</span> <span class="n">CT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StructureSet</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resize the CST to the dose cube resolution.&quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Resampling structure set... &quot;</span><span class="p">)</span>
+
+        <span class="n">t_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">cst</span><span class="o">.</span><span class="n">resample_on_new_ct</span><span class="p">(</span><span class="n">new_ct</span><span class="p">)</span>
+
+        <span class="n">t_end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Done in  </span><span class="si">%.2f</span><span class="s2"> seconds.&quot;</span><span class="p">,</span> <span class="n">t_end</span> <span class="o">-</span> <span class="n">t_start</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cst</span></div>
+
+
+    <span class="c1"># private methods</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init_dose_calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ct</span><span class="p">:</span> <span class="n">CT</span><span class="p">,</span> <span class="n">cst</span><span class="p">:</span> <span class="n">StructureSet</span><span class="p">,</span> <span class="n">stf</span><span class="p">:</span> <span class="n">SteeringInformation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the dose calculation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        self : DoseEngineBase</span>
+<span class="sd">            The instance of the dose engine.</span>
+<span class="sd">        ct : CT</span>
+<span class="sd">            The CT scan data.</span>
+<span class="sd">        cst : StructureSet</span>
+<span class="sd">            The structure set containing volumes of interest (VOIs).</span>
+<span class="sd">        stf : SteeringInformation</span>
+<span class="sd">            The steering information containing beam configurations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary containing the dose influence matrix (dij) and related information.</span>
+
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        This method sets up the necessary grids and parameters for dose calculation. It initializes</span>
+<span class="sd">        the CT and dose grids, checks machine and radiation mode consistency, creates a scenario</span>
+<span class="sd">        model, and sets up arrays for bookkeeping. It also adjusts the isocenter internally for</span>
+<span class="sd">        different dose grids and converts CT subscripts to world coordinates. Additionally, it</span>
+<span class="sd">        loads the machine file from the base data folder and performs voxel selection for dose</span>
+<span class="sd">        calculation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ct_grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">from_sitk_image</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">cube_hu</span><span class="p">)</span>
+
+        <span class="n">dij</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Default: dose influence matrix computation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_dose_direct</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Forward dose calculation using &#39;</span><span class="si">%s</span><span class="s2">&#39; Dose Engine...&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dose influence matrix calculation using &#39;</span><span class="si">%s</span><span class="s2">&#39; Dose Engine...&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Check if machine and radiation_mode are consistent</span>
+        <span class="n">machine</span> <span class="o">=</span> <span class="nb">list</span><span class="p">({</span><span class="n">beam</span><span class="o">.</span><span class="n">machine</span> <span class="k">for</span> <span class="n">beam</span> <span class="ow">in</span> <span class="n">stf</span><span class="o">.</span><span class="n">beams</span><span class="p">})</span>
+        <span class="n">radiation_mode</span> <span class="o">=</span> <span class="nb">list</span><span class="p">({</span><span class="n">beam</span><span class="o">.</span><span class="n">radiation_mode</span> <span class="k">for</span> <span class="n">beam</span> <span class="ow">in</span> <span class="n">stf</span><span class="o">.</span><span class="n">beams</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">machine</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">radiation_mode</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;machine and radiation mode need to be unique within supplied stf!&quot;</span><span class="p">)</span>
+
+        <span class="n">machine</span> <span class="o">=</span> <span class="n">machine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">radiation_mode</span> <span class="o">=</span> <span class="n">radiation_mode</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># ScenarioModel</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mult_scen</span><span class="p">,</span> <span class="n">ScenarioModel</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mult_scen</span> <span class="o">=</span> <span class="n">create_scenario_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mult_scen</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span>
+
+        <span class="c1"># TODO: Add BioModel Support</span>
+        <span class="c1"># if not np.isnan(self.bio_param[&quot;RBE&quot;]):</span>
+        <span class="c1">#     dij[&#39;RBE&#39;] = self.bio_param[&#39;RBE&#39;]</span>
+
+        <span class="c1"># store CT grid</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;ct_grid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">grid</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dose Grid not set. Using default resolution.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">resample</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="p">,</span> <span class="n">Grid</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">ValidationError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">])</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Dose Grid has Dimensions (</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">) with resolution x=</span><span class="si">%f</span><span class="s2">, y=</span><span class="si">%f</span><span class="s2">, z=</span><span class="si">%f</span><span class="s2">.&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="o">.</span><span class="n">resolution</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="o">.</span><span class="n">resolution</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="o">.</span><span class="n">resolution</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;dose_grid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span>
+
+        <span class="c1"># Meta information for dij #TODO: Change dij Model in future</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;num_of_beams&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stf</span><span class="o">.</span><span class="n">beams</span><span class="p">)</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;num_of_scenarios&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># TODO: Add support for multiple scenarios</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;num_of_rays_per_beam&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">stf</span><span class="o">.</span><span class="n">beams</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">num_of_rays</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stf</span><span class="o">.</span><span class="n">beams</span><span class="p">))]</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;total_num_of_bixels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="nb">sum</span><span class="p">([</span><span class="n">stf</span><span class="o">.</span><span class="n">beams</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">total_number_of_bixels</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stf</span><span class="o">.</span><span class="n">beams</span><span class="p">))])</span>
+        <span class="p">)</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;total_num_of_rays&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">dij</span><span class="p">[</span><span class="s2">&quot;num_of_rays_per_beam&quot;</span><span class="p">]))</span>
+
+        <span class="c1"># Check if full dose influence data is required</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_of_columns_dij</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">stf</span><span class="o">.</span><span class="n">beams</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_dose_direct</span> <span class="k">else</span> <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;total_num_of_bixels&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Set up arrays for book keeping</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;bixel_num&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_of_columns_dij</span><span class="p">)</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;ray_num&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_of_columns_dij</span><span class="p">)</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;beam_num&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_of_columns_dij</span><span class="p">)</span>
+
+        <span class="c1"># Default MU calibration</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;min_mu&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_of_columns_dij</span><span class="p">)</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;max_mu&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_of_columns_dij</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="n">dij</span><span class="p">[</span><span class="s2">&quot;num_of_particles_per_mu&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_of_columns_dij</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e6</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">voxel_sub_ix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">voxel_sub_ix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">cst</span><span class="o">.</span><span class="n">vois</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">indices_numpy</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cst</span><span class="o">.</span><span class="n">vois</span><span class="p">))])</span>
+            <span class="p">)</span>
+
+        <span class="n">tmp_vct_grid_scen</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">voxel_sub_ix</span><span class="p">)]</span> <span class="o">*</span> <span class="n">ct</span><span class="o">.</span><span class="n">num_of_ct_scen</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">tmp_vct_grid_scen</span><span class="p">))</span>
+
+        <span class="c1"># Find subindexes for the individual scenarios. This helps with subselection later.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid_scen_ix</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">tmp_vct_grid_scen</span><span class="p">]</span>
+
+        <span class="c1"># Initialize tmp_vdose_grid_scen</span>
+        <span class="n">tmp_vdose_grid_scen</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">ct</span><span class="o">.</span><span class="n">num_of_ct_scen</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ct_grid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="p">:</span>
+            <span class="n">tmp_vdose_grid_scen</span> <span class="o">=</span> <span class="n">tmp_vct_grid_scen</span>
+            <span class="n">resampled_ct</span> <span class="o">=</span> <span class="n">ct</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">resampled_ct</span> <span class="o">=</span> <span class="n">resample_ct</span><span class="p">(</span>
+                <span class="n">ct</span><span class="o">=</span><span class="n">ct</span><span class="p">,</span>
+                <span class="n">interpolator</span><span class="o">=</span><span class="n">sitk</span><span class="o">.</span><span class="n">sitkNearestNeighbor</span><span class="p">,</span>
+                <span class="n">target_grid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">from_sitk_image</span><span class="p">(</span><span class="n">resampled_ct</span><span class="o">.</span><span class="n">cube_hu</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">num_of_ct_scen</span><span class="p">):</span>
+                <span class="c1"># Receive linear indices and grid locations from the dose grid</span>
+                <span class="n">tmp_cube</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">cube_dim</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+                <span class="n">tmp_cube</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">tmp_vct_grid_scen</span><span class="p">[</span><span class="n">s</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                <span class="n">interpolated_tmp_cube</span> <span class="o">=</span> <span class="n">resample_numpy_array</span><span class="p">(</span>
+                    <span class="n">tmp_cube</span><span class="p">,</span>
+                    <span class="n">reference_image</span><span class="o">=</span><span class="n">ct</span><span class="o">.</span><span class="n">cube_hu</span><span class="p">,</span>
+                    <span class="n">interpolator</span><span class="o">=</span><span class="n">sitk</span><span class="o">.</span><span class="n">sitkNearestNeighbor</span><span class="p">,</span>
+                    <span class="n">target_image</span><span class="o">=</span><span class="n">resampled_ct</span><span class="o">.</span><span class="n">cube_hu</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="n">tmp_vdose_grid_scen</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">interpolated_tmp_cube</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Get unique dose grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">tmp_vdose_grid_scen</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># Find subindexes for the dose grid scenarios</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid_scen_ix</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">tmp_vdose_grid_scen</span><span class="p">]</span>
+
+        <span class="c1"># Convert CT subscripts to world coordinates.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vox_world_coords</span> <span class="o">=</span> <span class="n">linear_indices_to_grid_coordinates</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ct_grid</span><span class="p">,</span> <span class="n">index_type</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vox_world_coords_dose_grid</span> <span class="o">=</span> <span class="n">linear_indices_to_grid_coordinates</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="p">,</span> <span class="n">index_type</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Create helper masks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dose_grid</span><span class="o">.</span><span class="n">num_voxels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vdose_grid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">cube_dim</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vct_grid</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Load machine file from base data folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_machine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_machine</span><span class="p">(</span><span class="n">radiation_mode</span><span class="p">,</span> <span class="n">machine</span><span class="p">)</span>
+
+        <span class="c1"># Voxel selection for dose calculation</span>
+        <span class="c1"># TODO: set overlap priorites - Skips most of the function</span>
+        <span class="n">cst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_overlap_priorities</span><span class="p">(</span><span class="n">cst</span><span class="p">,</span> <span class="n">ct_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># resizing cst to dose cube resolution</span>
+        <span class="n">cst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize_cst_to_grid</span><span class="p">(</span><span class="n">cst</span><span class="p">,</span> <span class="n">dij</span><span class="p">,</span> <span class="n">resampled_ct</span><span class="p">)</span>
+
+        <span class="c1"># TODO: this function has not yet been implemented</span>
+        <span class="c1"># structures that are selected here will be included in dose calculation over</span>
+        <span class="c1"># the robust scenarios</span>
+        <span class="c1"># self._robust_voxels_on_grid = select_voxels_from_cst(cst, dij[&quot;ct_grid&quot;])</span>
+
+        <span class="k">return</span> <span class="n">dij</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_finalize_dose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dij</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dij</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">validate_dij</span><span class="p">(</span><span class="n">dij</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_progress_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">total</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="c1"># Private and abstract methods</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calc_dose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ct</span><span class="p">:</span> <span class="n">CT</span><span class="p">,</span> <span class="n">cst</span><span class="p">:</span> <span class="n">StructureSet</span><span class="p">,</span> <span class="n">stf</span><span class="p">:</span> <span class="n">SteeringInformation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dij</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Method &#39;_calc_dose&#39; must be implemented.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># static methods</span>
+<div class="viewcode-block" id="DoseEngineBase.is_available">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.is_available">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_available</span><span class="p">(</span><span class="n">pln</span><span class="p">,</span> <span class="n">machine</span><span class="p">):</span>
+        <span class="n">available</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">available</span><span class="p">,</span> <span class="n">msg</span></div>
+
+
+<div class="viewcode-block" id="DoseEngineBase.load_machine">
+<a class="viewcode-back" href="../../../../api/dose.engines.html#pyRadPlan.dose.engines.DoseEngineBase.load_machine">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_machine</span><span class="p">(</span><span class="n">radiation_mode</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">):</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">radiation_mode</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">machine_name</span> <span class="o">+</span> <span class="s2">&quot;.mat&quot;</span>
+        <span class="n">machines_path</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">&quot;pyRadPlan.data.machines&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">machines_path</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="n">machine</span> <span class="o">=</span> <span class="n">validate_machine</span><span class="p">(</span><span class="n">load_machine_from_mat</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">machine</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, e0404.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
