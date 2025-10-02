@@ -13,7 +13,7 @@ print(os.path.abspath("../pyRadPlan"))
 sys.path.insert(0, os.path.abspath("../pyRadPlan"))  # Adjust to your source folder
 
 project = "pyRadPlan"
-copyright = "2024, e0404"
+copyright = "2025, e0404"
 author = "e0404"
 
 version = __version__
